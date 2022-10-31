@@ -17,7 +17,24 @@ use soft\widget\kartik\Form;
     'form' => $form,
     'attributes' => [
         'name',
-        'price_usd:number',
+        'price_usd' => [
+            "price_usd" => "amount",
+            "title" => t("Hamkordan olingan narx"),
+            "type" => \soft\widget\kartik\InputType::WIDGET,
+            "widgetClass" => \kartik\money\MaskMoney::class,
+            "options" => [
+                'pluginOptions' => [
+                    'prefix' => '$ ',
+                    'affixesStay' => true,
+                    'thousands' => ',',
+                    'decimal' => '.',
+                    'precision' => 2,
+                    'allowZero' => false,
+                    'allowNegative' => false,
+                ]
+            ]
+        ],
+
     ]
 ]); ?>
 <div class="form-group">
