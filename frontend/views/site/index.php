@@ -19,5 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row justify-content-center">
     <div class="col-md-12 text-center">
         <h1>Hush kelibsiz!</h1>
+        <a href="/admin" class="btn btn-primary">BOSHQARUV PANELI</a>
     </div>
 </div>

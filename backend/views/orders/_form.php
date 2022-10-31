@@ -27,7 +27,19 @@ $.ajax("get-client-info",{
 })
 
 
+JS;
 
+$client_unselect_event = <<<JS
+  $("#orders-client_fullname").attr("disabled",false)
+        $("#orders-client_phone").attr("disabled",false)
+          $("#orders-client_fullname").val("")
+        $("#orders-client_phone").val("")
+        $("#orders-client_address").val("")
+JS;
+
+$client_select_event = <<<JS
+        $("#orders-client_fullname").attr("disabled",true)
+        $("#orders-client_phone").attr("disabled",true)
 JS;
 
 ?>
@@ -53,6 +65,8 @@ JS;
                         'data' => map(\common\models\Clients::find()->all(), 'id', 'full_name'),
                         "pluginEvents" => [
                             "change" => "function() { {$client_change_event} }",
+                            "select2:unselect" => "function() { {$client_unselect_event} }",
+                            "select2:select" => "function() { {$client_select_event} }"
                         ]
                     ],
                 ],

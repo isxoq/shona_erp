@@ -11,7 +11,7 @@ return [
     ],
     'language' => 'uz',
     'timeZone' => 'Asia/Tashkent',
-    'name' => 'Beginner Advanced app',
+    'name' => 'SHONA CRM',
     'components' => [
         'firebase' => [
             'class' => 'common\components\Firebase',
