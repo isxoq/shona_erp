@@ -45,6 +45,9 @@ class Order extends \soft\db\ActiveRecord
     const STATUS_COMPLETED = 8;
     const STATUS_CANCELLED_BY_ADMIN = 4;
 
+
+    const TYPE_SHONA_CREDIT = 1;
+    const TYPE_SIMPLE = 2;
     /**
      * Haydovchi klientga tel qilganda, agar klient 'uzr, boshqa mashina kelib qoldi' yoki
      * shunga o'xshash gaplarni aytib, otmen qilsa, haydovchi buyurtmani otmen qildadi va

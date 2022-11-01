@@ -29,13 +29,62 @@ $this->registerAjaxCrudAssets();
     ],
     'cols' => [
         'id',
-        'order_type',
-        'client_id',
+        [
+            "attribute" => "order_type",
+            "value" => "orderTypeLabel",
+            'filter' => \common\models\Orders::getTypeList(),
+            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+            'filterWidgetOptions' => [
+                'options' => ['prompt' => 'Tanlang..'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '220px'
+                ],
+            ],
+        ],
+        [
+            "attribute" => "client_id",
+            "value" => "clientFullname",
+            'filter' => map(\common\models\Clients::find()->all(), "id", 'full_name'),
+            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+            'filterWidgetOptions' => [
+                'options' => ['prompt' => 'Tanlang..'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '220px'
+                ],
+            ],
+        ],
+
 //        'client_fullname',
-        'amount',
-        'payment_type',
+        'amount:integer',
+        [
+            "attribute" => "payment_type",
+            "value" => "paymentType.name",
+            'filter' => map(\common\models\PaymentTypes::find()->all(), "id", 'name'),
+            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+            'filterWidgetOptions' => [
+                'options' => ['prompt' => 'Tanlang..'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '220px'
+                ],
+            ],
+        ],
         'name',
-        'status',
+        [
+            "attribute" => "status",
+            "value" => "statusLabel",
+            'filter' => \common\models\Orders::getStatusList(),
+            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+            'filterWidgetOptions' => [
+                'options' => ['prompt' => 'Tanlang..'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '100px'
+                ],
+            ],
+        ],
         //'client_phone',
         //'client_address',
         //'delivery_type',

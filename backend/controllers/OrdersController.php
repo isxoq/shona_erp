@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\Clients;
+use common\models\Order;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Orders;
@@ -78,7 +79,12 @@ class OrdersController extends SoftController
 
         $request = Yii::$app->request;
 
-        if ($model->load($request->post()) && $model->save()) {
+        if ($model->load($request->post())) {
+
+
+
+            $model->order_type = Orders::TYPE_SIMPLE;
+            $model->save();
 
             $model->createProductSales();
 
