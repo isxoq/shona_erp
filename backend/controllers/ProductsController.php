@@ -133,7 +133,6 @@ class ProductsController extends SoftController
         $viewParams = [];
         $file = null;
         $model = new DynamicModel(compact('file'));
-        $model->file = "/files/user_1/bazaga.xlsx";
         $model->addRule('file', 'string');
 
         if ($this->isAjax) {
@@ -173,7 +172,7 @@ class ProductsController extends SoftController
                         $product->save();
                     }
                 }
-                
+
                 return $this->ajaxCrud->closeModal();
             } else {
                 return $this->ajaxCrud->createModal($model, $params, $viewParams);
