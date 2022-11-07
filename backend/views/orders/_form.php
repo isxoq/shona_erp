@@ -30,16 +30,12 @@ $.ajax("get-client-info",{
 JS;
 
 $client_unselect_event = <<<JS
-  $("#orders-client_fullname").attr("disabled",false)
-        $("#orders-client_phone").attr("disabled",false)
           $("#orders-client_fullname").val("")
         $("#orders-client_phone").val("")
         $("#orders-client_address").val("")
 JS;
 
 $client_select_event = <<<JS
-        $("#orders-client_fullname").attr("disabled",true)
-        $("#orders-client_phone").attr("disabled",true)
 JS;
 
 ?>
@@ -98,9 +94,9 @@ JS;
                         'pluginOptions' => [
                             'prefix' => 'UZS ',
                             'affixesStay' => true,
-                            'thousands' => ',',
+                            'thousands' => ' ',
                             'decimal' => '.',
-                            'precision' => 2,
+                            'precision' => 0,
                             'allowZero' => false,
                             'allowNegative' => false,
                         ]
@@ -120,9 +116,9 @@ JS;
                         'pluginOptions' => [
                             'prefix' => 'UZS ',
                             'affixesStay' => true,
-                            'thousands' => ',',
+                            'thousands' => ' ',
                             'decimal' => '.',
-                            'precision' => 2,
+                            'precision' => 0,
                             'allowZero' => false,
                             'allowNegative' => false,
                         ]
@@ -213,9 +209,9 @@ JS,
                                     'pluginOptions' => [
                                         'prefix' => 'UZS ',
                                         'affixesStay' => true,
-                                        'thousands' => ',',
+                                        'thousands' => ' ',
                                         'decimal' => '.',
-                                        'precision' => 2,
+                                        'precision' => 0,
                                         'allowZero' => false,
                                         'allowNegative' => false,
                                     ]
@@ -229,9 +225,9 @@ JS,
                                     'pluginOptions' => [
                                         'prefix' => 'UZS ',
                                         'affixesStay' => true,
-                                        'thousands' => ',',
+                                        'thousands' => ' ',
                                         'decimal' => '.',
-                                        'precision' => 2,
+                                        'precision' => 0,
                                         'allowZero' => false,
                                         'allowNegative' => false,
                                     ]

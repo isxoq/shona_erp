@@ -26,9 +26,9 @@ use soft\widget\kartik\Form;
                 'pluginOptions' => [
                     'prefix' => '$ ',
                     'affixesStay' => true,
-                    'thousands' => ',',
+                    'thousands' => ' ',
                     'decimal' => '.',
-                    'precision' => 2,
+                    'precision' => 0,
                     'allowZero' => false,
                     'allowNegative' => false,
                 ]

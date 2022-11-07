@@ -10,6 +10,14 @@ use Yii;
  * @property int $id
  * @property string|null $name
  * @property int|null $percent
+ * @property int|null $month_3
+ * @property int|null $month_6
+ * @property int|null $month_9
+ * @property int|null $month_12
+ * @property int|null $month_15
+ * @property int|null $month_18
+ * @property int|null $month_24
+ * @property int|null $type
  * @property int|null $is_deleted
  * @property int|null $deleted_at
  * @property int|null $deleted_by
@@ -20,22 +28,27 @@ use Yii;
  */
 class PaymentTypes extends \soft\db\ActiveRecord
 {
+
+    const TYPE_SIMPLE = 1;
+    const TYPE_HAMKOR = 2;
+
     //<editor-fold desc="Parent" defaultstate="collapsed">
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'payment_types';
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
+            [["month_3", "month_6", "month_9", "month_12", "month_15", "month_18", "month_24", "type"], "integer"],
             [['percent', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
@@ -43,8 +56,8 @@ class PaymentTypes extends \soft\db\ActiveRecord
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function labels()
     {
         return [
@@ -61,14 +74,14 @@ class PaymentTypes extends \soft\db\ActiveRecord
     //</editor-fold>
 
     //<editor-fold desc="Relations" defaultstate="collapsed">
-    
+
     /**
-    * @return \yii\db\ActiveQuery
-    */
+     * @return \yii\db\ActiveQuery
+     */
     public function getDeletedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
     }
-    
+
     //</editor-fold>
 }

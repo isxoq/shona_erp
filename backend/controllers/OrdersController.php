@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use api\components\Phone;
 use common\models\Clients;
 use common\models\Order;
 use soft\helpers\ArrayHelper;
@@ -81,9 +82,21 @@ class OrdersController extends SoftController
 
         if ($model->load($request->post())) {
 
-
+            if (!$model->client_id) {
+                $client = Clients::findOne(['phone' => Phone::clear($model->client_phone)]);
+                if (!$client) {
+                    $client = new Clients([
+                        "full_name" => $model->client_fullname,
+                        "phone" => Phone::clear($model->client_phone),
+                        "address" => $model->client_address,
+                    ]);
+                    $client->save();
+                }
+                $model->client_id = $client->id;
+            }
 
             $model->order_type = Orders::TYPE_SIMPLE;
+            $model->client_phone = Phone::clear($model->client_phone);
             $model->save();
 
             $model->createProductSales();

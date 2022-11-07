@@ -14,12 +14,20 @@ $this->registerAjaxCrudAssets();
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'toolbarTemplate' => '{create}{refresh}',
+    'toolbarTemplate' => '{import}{create}{refresh}',
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => true,
-        ]
+        ],
+        'import' => [
+            /** @see soft\widget\button\Button for other configurations */
+            'modal' => true,
+            "url" => ["import"],
+            "cssClass" => "btn btn-success",
+            "type" => \soft\widget\button\Button::TYPE_LINK,
+            "content" => t("Import"),
+        ],
     ],
     'bulkButtonsTemplate' => '{delete}',
     'bulkButtons' => [
