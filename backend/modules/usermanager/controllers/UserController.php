@@ -107,4 +107,11 @@ class UserController extends SoftController
         return $model;
     }
 
+
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+        return $this->ajaxCrud->closeModalResponse();
+    }
+
 }
