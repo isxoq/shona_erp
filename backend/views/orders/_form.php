@@ -255,7 +255,7 @@ JS,
 ]); ?>
 
 <div class="form-group">
-    <?= Html::submitButton(Yii::t('site', 'Save'), ['visible' => !$this->isAjax]) ?>
+    <?= Html::submitButton(Yii::t('site', "Ta'minotchiga o'tkazish"), ['visible' => !$this->isAjax]) ?>
 </div>
 
 <?php ActiveForm::end(); ?>
