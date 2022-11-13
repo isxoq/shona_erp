@@ -6,13 +6,17 @@ class Phone
 {
     public static function clear($phoneNumber)
     {
-        $tel = trim($phoneNumber);
-        return strtr($tel, [
-            "+" => '',
-            " " => '',
-            "(" => '',
-            ")" => '',
-            "-" => '',
-        ]);
+        if ($phoneNumber) {
+            $tel = trim($phoneNumber);
+            return strtr($tel, [
+                "+" => '',
+                " " => '',
+                "(" => '',
+                ")" => '',
+                "-" => '',
+            ]);
+        } else {
+            return "";
+        }
     }
 }

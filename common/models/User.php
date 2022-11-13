@@ -7,6 +7,7 @@
 
 namespace common\models;
 
+use api\components\Phone;
 use backend\models\Hospital;
 use common\models\query\UserQuery;
 use DateInterval;
@@ -384,13 +385,13 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function checkUniquePhone($attribute)
     {
-        $phone = PhoneHelper::clear($this->phoneField);
+        $phone = Phone::clear($this->phoneField);
         $model = static::findOne(['phone' => $phone]);
         if ($model != null) {
             $this->addError($attribute, "Ushbu telefon raqam avvalroq ro'yxatdan o'tgan!");
             return false;
         }
-        
+
         return true;
     }
 
