@@ -40,7 +40,6 @@ use yii\web\IdentityInterface;
  * @property string $birth_date
  * @property string $first_name
  * @property string $last_name
- * @property string $father_name
  * @property string $phone [varchar(100)]
  * @property string $image [varchar(255)]
  *
@@ -94,7 +93,6 @@ class User extends ActiveRecord implements IdentityInterface
             "auth_key",
             "first_name",
             "last_name",
-            "father_name",
             "phone",
             "jshshir",
             "image" => function ($model) {
@@ -147,14 +145,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['username', 'trim'],
+            [['email', "first_name", "last_name", "username"], 'required'],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             ['username', 'unique', 'message' => 'Ushbu login avvalroq band qilingan.'],
             [['username'], 'string', 'max' => 100],
-            [['first_name', 'last_name', 'father_name', "image"], 'string', 'max' => 255],
-            ['birth_date', 'safe'],
-            ['province_id', 'integer'],
-            ['region_id', 'integer'],
-            ['hospital_id', 'integer'],
+            [['first_name', 'last_name', "image"], 'string', 'max' => 255],
             ['password', 'string', 'min' => 5],
             ['password', 'trim'],
             ['password', 'required', 'on' => [self::SCENARIO_CREATE_CLIENT]],
@@ -194,7 +189,7 @@ class User extends ActiveRecord implements IdentityInterface
         $scenarios[self::SCENARIO_CREATE_CLIENT] = ['username', 'first_name', 'last_name', 'password', 'image', 'phoneField'];
         $scenarios[self::SCENARIO_UPDATE_CLIENT] = ['username', 'first_name', 'last_name', 'password', 'image', 'phoneField'];
         $scenarios[self::SCENARIO_API_CREATE_CLIENT] = ['username', 'first_name', 'last_name', 'password', 'phone'];
-        $scenarios[self::SCENARIO_API_ADD_PROFILE_CLIENT] = ['image', 'first_name', 'last_name', 'father_name', 'birth_date', 'gender', 'province_id', 'region_id'];
+        $scenarios[self::SCENARIO_API_ADD_PROFILE_CLIENT] = ['image', 'first_name', 'last_name', 'birth_date', 'gender', 'province_id', 'region_id'];
         $scenarios[self::SCENARIO_GENERATE_AUTH_KEY] = ['auth_key'];
         return $scenarios;
     }

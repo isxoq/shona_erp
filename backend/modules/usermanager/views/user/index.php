@@ -26,8 +26,8 @@ $this->registerAjaxCrudAssets();
     ],
     'cols' => [
         'username',
-//        'firstname',
-//        'lastname',
+        'first_name',
+        'last_name',
         [
             'attribute' => 'status',
             'filter' => User::statuses(),

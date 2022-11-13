@@ -24,20 +24,20 @@ class UserSearch extends User
         return Model::scenarios();
     }
 
-    public function search($query=null, $defaultPageSize = 20, $params=null)
+    public function search($query = null, $defaultPageSize = 20, $params = null)
     {
 
-        if($params == null){
+        if ($params == null) {
             $params = Yii::$app->request->queryParams;
         }
-        if($query == null){
+        if ($query == null) {
             $query = User::find();
         }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                    'defaultPageSize' => $defaultPageSize,
+                'defaultPageSize' => $defaultPageSize,
             ],
         ]);
 
@@ -58,9 +58,9 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'auth_key', $this->auth_key])
             ->andFilterWhere(['like', 'password_hash', $this->password_hash])
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'email', $this->email]);
-//            ->andFilterWhere(['like', 'firstname', $this->firstname])
-//            ->andFilterWhere(['like', 'lastname', $this->lastname]);
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'first_name', $this->first_name])
+            ->andFilterWhere(['like', 'last_name', $this->last_name]);
         return $dataProvider;
     }
 }
