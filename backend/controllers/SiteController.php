@@ -37,7 +37,6 @@ class SiteController extends SoftController
                     [
                         'actions' => ['logout', 'error', 'index', 'cache-flush', 'excel', 'server'],
                         'allow' => true,
-                        'roles' => ['admin'],
                     ],
                 ],
             ],
