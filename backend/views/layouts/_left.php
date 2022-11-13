@@ -4,7 +4,7 @@
 
 $menuItems = [
     ['label' => "Bosh sahifa", 'url' => ['/site/index'], 'icon' => 'home',],
-    ['label' => "POS", 'url' => ['/orders/create'], 'icon' => 'list',],
+    ['label' => "POS", 'url' => ['/orders/create'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator"])],
     ['label' => "Shona Kredit yaratish", 'url' => ['/orders/create-credit'], 'icon' => 'list',],
     ['label' => "Sotuv", 'icon' => 'list', "items" => [
         ['label' => "Buyurtmalar", 'url' => ['/orders'], 'icon' => 'list',],
@@ -15,6 +15,11 @@ $menuItems = [
         ['label' => "Hamkor do'konlar", 'url' => ['/partner-shops'], 'icon' => 'list',],
     ]],
     ['label' => "Mijozlar", 'url' => ['/clients'], 'icon' => 'list',],
+//    ['label' => "Maosh va bonus", 'url' => ['/salary'], 'icon' => 'list',],
+    ['label' => "Hodimlar", 'icon' => 'list', "items" => [
+        ['label' => "Yangi yaratish", 'url' => ['/usermanager/user/create'], 'icon' => 'list',],
+        ['label' => "Ro'yhat", 'url' => ['/usermanager/user/index'], 'icon' => 'list',],
+    ]],
     ['label' => "To'lov usullari", 'url' => ['/payment-types'], 'icon' => 'list',],
     ['label' => "Yetkazish usullari", 'url' => ['/delivery-types'], 'icon' => 'list',],
     ['label' => "Mijoz oqim turlari", 'url' => ['/network-types'], 'icon' => 'list',],

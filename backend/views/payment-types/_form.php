@@ -24,7 +24,9 @@ use soft\widget\kartik\Form;
             ]
         ],
 //        'percent',
+        'month_1',
         'month_3',
+        'month_4',
         'month_6',
         'month_9',
         'month_12',

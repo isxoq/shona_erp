@@ -20,6 +20,23 @@ use soft\widget\kartik\Form;
         'phone:phone',
         'address',
         'email',
+        'currency' => [
+            "name" => "currency",
+            "title" => t("Hamkordan olingan narx"),
+            "type" => \soft\widget\kartik\InputType::WIDGET,
+            "widgetClass" => \kartik\money\MaskMoney::class,
+            "options" => [
+                'pluginOptions' => [
+                    'prefix' => 'UZS ',
+                    'affixesStay' => true,
+                    'thousands' => ' ',
+                    'decimal' => '.',
+                    'precision' => 0,
+                    'allowZero' => false,
+                    'allowNegative' => false,
+                ]
+            ]
+        ],
     ]
 ]); ?>
 <div class="form-group">

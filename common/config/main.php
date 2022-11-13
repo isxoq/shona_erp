@@ -19,10 +19,6 @@ return [
             'auth_key' => "EIqxcg5x8BXNYeYj15XJhN9H1r6P31G7KHgmA00X"
         ],
 
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
-
         'i18n' => [
             'translations' => [
                 'site*' => [

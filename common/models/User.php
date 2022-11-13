@@ -497,6 +497,18 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->authManager->checkAccess($this->getId(), $permissionName, $params);
     }
 
+    public function checkRoles($roles = [])
+    {
+
+        foreach ($roles as $role) {
+            if ($this->can($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @throws \Exception
      */

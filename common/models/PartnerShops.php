@@ -25,28 +25,28 @@ class PartnerShops extends \soft\db\ActiveRecord
     //<editor-fold desc="Parent" defaultstate="collapsed">
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'partner_shops';
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['is_deleted', "currency", 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'phone', 'address', 'email'], 'string', 'max' => 255],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function labels()
     {
         return [
@@ -65,14 +65,14 @@ class PartnerShops extends \soft\db\ActiveRecord
     //</editor-fold>
 
     //<editor-fold desc="Relations" defaultstate="collapsed">
-    
+
     /**
-    * @return \yii\db\ActiveQuery
-    */
+     * @return \yii\db\ActiveQuery
+     */
     public function getDeletedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
     }
-    
+
     //</editor-fold>
 }

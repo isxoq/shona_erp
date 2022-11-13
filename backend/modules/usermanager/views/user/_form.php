@@ -41,8 +41,8 @@ $roles = AuthItem::userRoles();
             'form' => $form,
             'attributes' => [
                 'username',
-                'firstname',
-                'lastname',
+//                'firstname',
+//                'lastname',
                 'password:widget' => [
                     'widgetClass' => \soft\widget\input\VisiblePasswordInput::class,
                     'hint' => $passwordHint

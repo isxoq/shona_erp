@@ -45,7 +45,7 @@ class UserController extends SoftController
     public function actionCreate()
     {
         $model = new User();
-        $model->scenario = User::SCENARIO_CREATE_BY_ADMIN;
+//        $model->scenario = User::SCENARIO_CREATE_BY_ADMIN;
         $model->status = User::STATUS_ACTIVE;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->password_hash = Yii::$app->security->generatePasswordHash($model->password);
@@ -68,7 +68,7 @@ class UserController extends SoftController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->status = User::STATUS_ACTIVE;
+//        $model->status = User::STATUS_ACTIVE;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             if (!empty($model->password)) {

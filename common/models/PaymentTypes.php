@@ -48,7 +48,7 @@ class PaymentTypes extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
-            [["month_3", "month_6", "month_9", "month_12", "month_15", "month_18", "month_24", "type"], "integer"],
+            [["month_1", "month_4", "month_3", "month_6", "month_9", "month_12", "month_15", "month_18", "month_24", "type"], "integer"],
             [['percent', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
