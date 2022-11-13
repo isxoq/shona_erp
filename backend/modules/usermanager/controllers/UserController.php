@@ -80,7 +80,7 @@ class UserController extends SoftController
                 $model->password_hash = Yii::$app->security->generatePasswordHash($model->password);
                 $model->auth_key = Yii::$app->security->generateRandomString();
             }
-            $model->phone = Phone::clear($model->phone);
+            $model->phone = Phone::clear($model->phoneField);
 
             if ($model->save(false)) {
                 $roleNames = Yii::$app->request->post('RoleName', []);
