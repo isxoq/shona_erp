@@ -85,11 +85,7 @@ class SiteController extends SoftController
         $this->layout = 'blank';
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (Yii::$app->user->can('admin')) {
-                return $this->goBack();
-            } else {
-                Yii::$app->user->logout();
-            }
+            return $this->goBack();
         }
         $model->password = '';
         return $this->render('login', [
