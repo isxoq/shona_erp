@@ -388,8 +388,18 @@ class User extends ActiveRecord implements IdentityInterface
         $phone = Phone::clear($this->phoneField);
         $model = static::findOne(['phone' => $phone]);
         if ($model != null) {
-            $this->addError($attribute, "Ushbu telefon raqam avvalroq ro'yxatdan o'tgan!");
-            return false;
+
+            if ($this->isNewRecord) {
+                $this->addError($attribute, "Ushbu telefon raqam avvalroq ro'yxatdan o'tgan!");
+                return false;
+            }
+
+            if ($model->id != $this->id) {
+                $this->addError($attribute, "Boshqa boshqa model");
+                return false;
+            }
+
+
         }
 
         return true;

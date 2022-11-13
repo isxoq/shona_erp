@@ -201,24 +201,8 @@ JS;
                                 "options" => [
                                     "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'prompt' => '- Tanlang -',
-                                    'onchange' => <<< JS
-if ($(this).val() == 0){
-$(this).parent().parent().parent().find(".list-cell__partner_shop_price  input").attr("disabled",true)    
-$(this).parent().parent().parent().find(".list-cell__sold_price  input").attr("disabled",true)    
-$(this).parent().parent().parent().find(".list-cell__partner_shop_payed").find(".bootstrap-switch").addClass("bootstrap-switch-disabled")    
-
-}else{
-    $(this).parent().parent().parent().find(".list-cell__partner_shop_price  input").attr("disabled",false)    
-$(this).parent().parent().parent().find(".list-cell__sold_price  input").attr("disabled",false)    
-$(this).parent().parent().parent().find(".list-cell__partner_shop_payed").find(".bootstrap-switch").removeClass("bootstrap-switch-disabled")    
-}
-
-
-JS,
                                 ],
-                                'items' => array_merge([
-                                    0 => t("Asosiy ombor")
-                                ], \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name')),
+                                'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name'),
                             ],
                             [
                                 "name" => "partner_shop_price",
