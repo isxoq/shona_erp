@@ -38,7 +38,7 @@ $this->registerAjaxCrudAssets();
                 'options' => ['prompt' => 'Tanlang..'],
                 'pluginOptions' => [
                     'allowClear' => true,
-                    'width' => '220px'
+                    'width' => '100px'
                 ],
             ],
         ],
@@ -51,7 +51,7 @@ $this->registerAjaxCrudAssets();
                 'options' => ['prompt' => 'Tanlang..'],
                 'pluginOptions' => [
                     'allowClear' => true,
-                    'width' => '220px'
+                    'width' => '100px'
                 ],
             ],
         ],
@@ -67,7 +67,7 @@ $this->registerAjaxCrudAssets();
                 'options' => ['prompt' => 'Tanlang..'],
                 'pluginOptions' => [
                     'allowClear' => true,
-                    'width' => '220px'
+                    'width' => '100px'
                 ],
             ],
         ],

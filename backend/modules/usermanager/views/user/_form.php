@@ -59,7 +59,7 @@ $roles = AuthItem::userRoles();
 
         <?php Card::begin() ?>
 
-        <h3>Foydalanuvchi roli</h3>
+        <h3>Foydalanuvchi lavozimi</h3>
 
         <br>
 
