@@ -43,6 +43,7 @@ $roles = AuthItem::userRoles();
                 'username',
                 'first_name',
                 'last_name',
+                'phoneField:phone',
                 'email',
                 'password:widget' => [
                     'widgetClass' => \soft\widget\input\VisiblePasswordInput::class,

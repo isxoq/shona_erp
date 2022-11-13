@@ -2,6 +2,7 @@
 
 namespace backend\modules\usermanager\controllers;
 
+use api\components\Phone;
 use backend\modules\usermanager\models\search\UserSearch;
 use backend\modules\usermanager\models\User;
 use soft\web\SoftController;
@@ -50,6 +51,8 @@ class UserController extends SoftController
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->password_hash = Yii::$app->security->generatePasswordHash($model->password);
             $model->auth_key = Yii::$app->security->generateRandomString();
+            $model->phone = Phone::clear($model->phoneField);
+
             if ($model->save(false)) {
                 $roleNames = Yii::$app->request->post('RoleName', []);
                 $model->assignNewRoles($roleNames);
@@ -68,6 +71,8 @@ class UserController extends SoftController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->phoneField = $model->phone;
+
 //        $model->status = User::STATUS_ACTIVE;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
@@ -75,6 +80,7 @@ class UserController extends SoftController
                 $model->password_hash = Yii::$app->security->generatePasswordHash($model->password);
                 $model->auth_key = Yii::$app->security->generateRandomString();
             }
+            $model->phone = Phone::clear($model->phone);
 
             if ($model->save(false)) {
                 $roleNames = Yii::$app->request->post('RoleName', []);
@@ -95,7 +101,7 @@ class UserController extends SoftController
     private function findModel($id)
     {
         $model = User::findOne($id);
-        if ($model == null){
+        if ($model == null) {
             not_found();
         }
         return $model;
