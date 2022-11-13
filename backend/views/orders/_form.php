@@ -58,6 +58,7 @@ JS;
             'attributes' => [
                 'client_id:select2' => [
                     'options' => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
                         'data' => map(\common\models\Clients::find()->all(), 'id', 'full_name'),
                         "pluginEvents" => [
                             "change" => "function() { {$client_change_event} }",
@@ -66,9 +67,17 @@ JS;
                         ]
                     ],
                 ],
-                'client_fullname',
+                'client_fullname' => [
+                    "options" => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"])
+                    ]
+                ],
                 'client_phone:phone',
-                'client_address',
+                'client_address' => [
+                    "options" => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"])
+                    ]
+                ],
             ]
         ],
         "order_details" => [
@@ -81,6 +90,7 @@ JS;
             'attributes' => [
                 'payment_type:select2' => [
                     'options' => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
                         'data' => map(\common\models\PaymentTypes::find()->all(), 'id', 'name')
                     ]
                 ],
@@ -91,6 +101,7 @@ JS;
                     "type" => InputType::WIDGET,
                     "widgetClass" => \kartik\money\MaskMoney::class,
                     "options" => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
                         'pluginOptions' => [
                             'prefix' => 'UZS ',
                             'affixesStay' => true,
@@ -104,6 +115,7 @@ JS;
                 ],
                 'delivery_type:select2' => [
                     'options' => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                         'data' => map(\common\models\DeliveryTypes::find()->all(), 'id', 'name')
                     ]
                 ],
@@ -113,6 +125,7 @@ JS;
                     "type" => InputType::WIDGET,
                     "widgetClass" => \kartik\money\MaskMoney::class,
                     "options" => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                         'pluginOptions' => [
                             'prefix' => 'UZS ',
                             'affixesStay' => true,
@@ -126,17 +139,22 @@ JS;
                 ],
                 'network_id:select2' => [
                     'options' => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
                         'data' => map(\common\models\NetworkTypes::find()->all(), 'id', 'name')
                     ]
                 ],
 
                 'status:dropdownList' => [
-                    'items' => \common\models\Orders::getStatusList()
+                    'items' => \common\models\Orders::getStatusForRole() ?? []
                 ],
 
 //                'order_type',
 //                'credit_file',
-                'partner_order_id',
+                'partner_order_id' => [
+                    "options" => [
+                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
+                    ]
+                ],
                 'name',
             ]
         ],
@@ -181,6 +199,7 @@ JS;
                                 'type' => 'dropDownList',
                                 'title' => t("Ombor"),
                                 "options" => [
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'prompt' => '- Tanlang -',
                                     'onchange' => <<< JS
 if ($(this).val() == 0){
@@ -206,6 +225,7 @@ JS,
                                 "title" => t("Hamkordan olingan narx"),
                                 "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'pluginOptions' => [
                                         'prefix' => 'UZS ',
                                         'affixesStay' => true,
@@ -222,6 +242,7 @@ JS,
                                 "title" => t("Mijozga sotilgan narx"),
                                 "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'pluginOptions' => [
                                         'prefix' => 'UZS ',
                                         'affixesStay' => true,
@@ -238,6 +259,7 @@ JS,
                                 "title" => "Hamkorga to'lov qilinganligi",
                                 "type" => \kartik\widgets\SwitchInput::class,
                                 "options" => [
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'pluginOptions' => [
                                         'onText' => t("Ha"),
                                         'offText' => t("Yo'q"),

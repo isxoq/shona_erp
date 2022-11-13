@@ -43,6 +43,8 @@ class Orders extends \soft\db\ActiveRecord
     const STATUS_DELIVERED = 3;
     const STATUS_CANCELLED = 4;
     const STATUS_HAS_PROBLEM = 5;
+    const STATUS_READY_FOR_DELIVERY = 6;
+    const STATUS_DELAY = 7;
 
     const TYPE_SHONA_CREDIT = 1;
     const TYPE_SIMPLE = 2;
@@ -150,11 +152,31 @@ class Orders extends \soft\db\ActiveRecord
 
         return [
             self::STATUS_NEW => t("Yangi"),
+            self::STATUS_READY_FOR_DELIVERY => t("Yetkazib berish uchun tayyor"),
             self::STATUS_DELIVERY => t("Yetkazish jarayonida"),
             self::STATUS_DELIVERED => t("Yetkazib berilldi"),
             self::STATUS_CANCELLED => t("Bekor qilindi"),
             self::STATUS_HAS_PROBLEM => t("Muammoli"),
+            self::STATUS_DELAY => t("Kechiktirildi"),
         ];
+
+    }
+
+    public static function getStatusForRole()
+    {
+        $statuses = self::getStatusList();
+        if (Yii::$app->user->identity->checkRoles(["Operator", "Diller"])) {
+            unset($statuses[self::STATUS_READY_FOR_DELIVERY]);
+            unset($statuses[self::STATUS_DELIVERY]);
+            unset($statuses[self::STATUS_DELAY]);
+        }
+
+        if (Yii::$app->user->identity->checkRoles(["Ta'minotchi"])) {
+            unset($statuses[self::STATUS_NEW]);
+            unset($statuses[self::STATUS_DELIVERED]);
+            unset($statuses[self::STATUS_HAS_PROBLEM]);
+            unset($statuses[self::STATUS_CANCELLED]);
+        }
 
     }
 
