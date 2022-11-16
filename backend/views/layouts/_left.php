@@ -4,8 +4,8 @@
 
 $menuItems = [
     ['label' => "Bosh sahifa", 'url' => ['/site/index'], 'icon' => 'home',],
-    ['label' => "POS", 'url' => ['/orders/create'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator"])],
-    ['label' => "Shona Kredit yaratish", 'url' => ['/orders/create-credit'], 'icon' => 'list',],
+    ['label' => "POS", 'url' => ['/orders/create'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
+    ['label' => "Shona Kredit yaratish", 'url' => ['/orders/create-credit'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
     ['label' => "Sotuv", 'icon' => 'list', "items" => [
         ['label' => "Buyurtmalar", 'url' => ['/orders'], 'icon' => 'list',],
     ]],
@@ -13,17 +13,17 @@ $menuItems = [
         ['label' => "Import", 'url' => ['/product-imports'], 'icon' => 'list',],
         ['label' => "Mahsulotlar", 'url' => ['/products'], 'icon' => 'list',],
         ['label' => "Hamkor do'konlar", 'url' => ['/partner-shops'], 'icon' => 'list',],
-    ]],
-    ['label' => "Mijozlar", 'url' => ['/clients'], 'icon' => 'list',],
+    ], "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ['label' => "Mijozlar", 'url' => ['/clients'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
 //    ['label' => "Maosh va bonus", 'url' => ['/salary'], 'icon' => 'list',],
     ['label' => "Hodimlar", 'icon' => 'list', "items" => [
         ['label' => "Yangi yaratish", 'url' => ['/usermanager/user/create'], 'icon' => 'list',],
         ['label' => "Ro'yhat", 'url' => ['/usermanager/user/index'], 'icon' => 'list',],
-    ]],
-    ['label' => "To'lov usullari", 'url' => ['/payment-types'], 'icon' => 'list',],
-    ['label' => "Yetkazish usullari", 'url' => ['/delivery-types'], 'icon' => 'list',],
-    ['label' => "Mijoz oqim turlari", 'url' => ['/network-types'], 'icon' => 'list',],
-    ['label' => "Translations", 'url' => ['/translate-manager'], 'icon' => 'list',],
+    ], "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ['label' => "To'lov usullari", 'url' => ['/payment-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ['label' => "Yetkazish usullari", 'url' => ['/delivery-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ['label' => "Mijoz oqim turlari", 'url' => ['/network-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ['label' => "Translations", 'url' => ['/translate-manager'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin"])],
     ['label' => "Gii", 'url' => ['/gii'], 'icon' => 'code,fas', 'visible' => YII_DEBUG],
     ['label' => "Clear cache", 'url' => ['/site/cache-flush'], 'icon' => 'broom,fas', 'visible' => YII_DEBUG],
 ];
