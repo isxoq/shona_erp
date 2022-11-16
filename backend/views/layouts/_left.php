@@ -10,10 +10,10 @@ $menuItems = [
         ['label' => "Buyurtmalar", 'url' => ['/orders'], 'icon' => 'list',],
     ]],
     ['label' => "Import", 'icon' => 'list', "items" => [
-        ['label' => "Import", 'url' => ['/product-imports'], 'icon' => 'list',],
-        ['label' => "Mahsulotlar", 'url' => ['/products'], 'icon' => 'list',],
-        ['label' => "Hamkor do'konlar", 'url' => ['/partner-shops'], 'icon' => 'list',],
-    ], "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+        ['label' => "Import", 'url' => ['/product-imports'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+        ['label' => "Mahsulotlar", 'url' => ['/products'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
+        ['label' => "Hamkor do'konlar", 'url' => ['/partner-shops'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ]],
     ['label' => "Mijozlar", 'url' => ['/clients'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
 //    ['label' => "Maosh va bonus", 'url' => ['/salary'], 'icon' => 'list',],
     ['label' => "Hodimlar", 'icon' => 'list', "items" => [
@@ -23,6 +23,8 @@ $menuItems = [
     ['label' => "To'lov usullari", 'url' => ['/payment-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ['label' => "Yetkazish usullari", 'url' => ['/delivery-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ['label' => "Mijoz oqim turlari", 'url' => ['/network-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
+    ['label' => "Mening bonuslarim", 'url' => ['/staff/bonus'], 'icon' => 'list'],
+    ['label' => "Oylik maosh", 'url' => ['/staff/salary'], 'icon' => 'list'],
     ['label' => "Translations", 'url' => ['/translate-manager'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin"])],
     ['label' => "Gii", 'url' => ['/gii'], 'icon' => 'code,fas', 'visible' => YII_DEBUG],
     ['label' => "Clear cache", 'url' => ['/site/cache-flush'], 'icon' => 'broom,fas', 'visible' => YII_DEBUG],
