@@ -30,19 +30,6 @@ $this->registerAjaxCrudAssets();
     'cols' => [
         'id',
         [
-            "attribute" => "order_type",
-            "value" => "orderTypeLabel",
-            'filter' => \common\models\Orders::getTypeList(),
-            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => 'Tanlang..'],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                    'width' => '100px'
-                ],
-            ],
-        ],
-        [
             "attribute" => "client_id",
             "value" => "clientFullname",
             'filter' => map(\common\models\Clients::find()->all(), "id", 'full_name'),
@@ -55,9 +42,15 @@ $this->registerAjaxCrudAssets();
                 ],
             ],
         ],
-
-//        'client_fullname',
+        "client.phone",
+        "client.address",
         'amount:integer',
+        [
+            "label" => "Yetkazish",
+            "value" => function ($model) {
+                return $model->delivery->name . PHP_EOL . Yii::$app->formatter->asSum($model->delivery_price);
+            }
+        ],
         [
             "attribute" => "payment_type",
             "value" => "paymentType.name",
@@ -71,10 +64,17 @@ $this->registerAjaxCrudAssets();
                 ],
             ],
         ],
-        'name',
+//        'name',
         [
             "attribute" => "status",
-            "value" => "statusLabel",
+            "value" => function ($model) {
+                $btn = Html::a($model->statusBtn, ["/orders/change-status", "id" => $model->id], [
+                    "role" => "modal-remote",
+                    "class" => "btn btn-primary"
+                ]);
+                return $btn;
+            },
+            "format" => "raw",
             'filter' => \common\models\Orders::getStatusList(),
             'filterType' => \soft\grid\GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
@@ -85,18 +85,6 @@ $this->registerAjaxCrudAssets();
                 ],
             ],
         ],
-        //'client_phone',
-        //'client_address',
-        //'delivery_type',
-        //'delivery_price',
-        //'network_id',
-        //'credit_file',
-        //'partner_order_id',
-        //'is_deleted',
-        //'deleted_at',
-        //'deleted_by',
-        //'created_at',
-        //'updated_at',
         'actionColumn' => [
             'viewOptions' => [
                 'role' => 'modal-remote',

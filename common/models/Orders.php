@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "orders".
@@ -214,8 +215,18 @@ class Orders extends \soft\db\ActiveRecord
         return $this->hasOne(PaymentTypes::class, ['id' => "payment_type"]);
     }
 
+    public function getDelivery()
+    {
+        return $this->hasOne(DeliveryTypes::class, ['id' => "payment_type"]);
+    }
+
 
     public function getStatusLabel()
+    {
+        return self::getStatusList()[$this->status];
+    }
+
+    public function getStatusBtn()
     {
         return self::getStatusList()[$this->status];
     }

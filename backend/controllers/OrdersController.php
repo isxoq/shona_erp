@@ -50,6 +50,8 @@ class OrdersController extends SoftController
     public function actionIndex()
     {
         $searchModel = new OrdersSearch();
+
+        $searchModel->order_type = Order::TYPE_SIMPLE;
         $dataProvider = $searchModel->search();
 
         return $this->render('index', [
@@ -211,5 +213,30 @@ class OrdersController extends SoftController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         return Clients::findOne($id);
+    }
+
+    public function actionChangeStatus($id)
+    {
+
+        $request = Yii::$app->request;
+
+        $model = $this->findModel($id);
+        $params = [];
+        $viewParams = [];
+
+        $params['view'] = "_changeStatus";
+
+        if ($model->load($request->post()) && $model->save()) {
+
+            $forceClose = ArrayHelper::getValue($params, 'forceClose', true);
+            if ($forceClose) {
+                return $this->ajaxCrud->closeModal();
+            } else {
+                return $this->ajaxCrud->viewAction($model, ['footer' => $this->afterCreateFooter(), 'forceReload' => '#crud-datatable-pjax']);
+            }
+
+        } else {
+            return $this->ajaxCrud->createModal($model, $params, $viewParams);
+        }
     }
 }
