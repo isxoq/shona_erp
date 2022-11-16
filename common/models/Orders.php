@@ -164,6 +164,7 @@ class Orders extends \soft\db\ActiveRecord
     public static function getStatusForRole()
     {
         $statuses = self::getStatusList();
+        return $statuses;
         if (Yii::$app->user->identity->checkRoles(["Operator", "Diller"])) {
             unset($statuses[self::STATUS_READY_FOR_DELIVERY]);
             unset($statuses[self::STATUS_DELIVERY]);
