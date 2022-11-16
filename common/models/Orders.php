@@ -130,7 +130,6 @@ class Orders extends \soft\db\ActiveRecord
 
             $order_product['order_id'] = $this->id;
 
-
             if (array_key_exists("partner_shop_payed", $order_product)) {
                 if ($order_product['partner_shop_payed'] == "on") {
                     $order_product['partner_shop_payed'] = 1;
@@ -226,6 +225,11 @@ class Orders extends \soft\db\ActiveRecord
     public function getDeletedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
+    }
+
+    public function getSalesProducts()
+    {
+        return $this->hasMany(ProductSales::class, ['order_id' => 'id']);
     }
 
     //</editor-fold>

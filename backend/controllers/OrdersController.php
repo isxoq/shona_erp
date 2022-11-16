@@ -5,6 +5,7 @@ namespace backend\controllers;
 use api\components\Phone;
 use common\models\Clients;
 use common\models\Order;
+use common\models\ProductSales;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Orders;
@@ -99,6 +100,8 @@ class OrdersController extends SoftController
             $model->client_phone = Phone::clear($model->client_phone);
             $model->save();
 
+//            dd($model->order_products);
+
             $model->createProductSales();
 
             $returnUrl = ['view', 'id' => $model->id];
@@ -115,13 +118,45 @@ class OrdersController extends SoftController
      * Updates an existing Orders model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        return $this->ajaxCrud->updateAction($model);
+        $model->order_products = $model->salesProducts;
+        $request = Yii::$app->request;
+
+        if ($model->load($request->post())) {
+
+
+            if (!$model->client_id) {
+                $client = Clients::findOne(['phone' => Phone::clear($model->client_phone)]);
+                if (!$client) {
+                    $client = new Clients([
+                        "full_name" => $model->client_fullname,
+                        "phone" => Phone::clear($model->client_phone),
+                        "address" => $model->client_address,
+                    ]);
+                    $client->save();
+                }
+                $model->client_id = $client->id;
+            }
+
+            $model->order_type = Orders::TYPE_SIMPLE;
+            $model->client_phone = Phone::clear($model->client_phone);
+            $model->save();
+
+            ProductSales::deleteAll(['order_id' => $model->id]);
+            $model->createProductSales();
+
+
+            $returnUrl = ['view', 'id' => $model->id];
+            return $this->redirect($returnUrl);
+        }
+
+        return $this->render("update", [
+            'model' => $model
+        ]);
     }
 
     /**
