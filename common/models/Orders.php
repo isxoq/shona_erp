@@ -228,7 +228,7 @@ class Orders extends \soft\db\ActiveRecord
 
     public function getStatusBtn()
     {
-        return self::getStatusList()[$this->status];
+        return self::getStatusList()[$this->status] ?? "";
     }
 
     //<editor-fold desc="Relations" defaultstate="collapsed">
