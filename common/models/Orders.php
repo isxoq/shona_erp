@@ -45,6 +45,7 @@ class Orders extends \soft\db\ActiveRecord
     const STATUS_HAS_PROBLEM = 5;
     const STATUS_READY_FOR_DELIVERY = 6;
     const STATUS_DELAY = 7;
+    const STATUS_PAYED = 8;
 
     const TYPE_SHONA_CREDIT = 1;
     const TYPE_SIMPLE = 2;
@@ -157,6 +158,7 @@ class Orders extends \soft\db\ActiveRecord
             self::STATUS_CANCELLED => t("Bekor qilindi"),
             self::STATUS_HAS_PROBLEM => t("Muammoli"),
             self::STATUS_DELAY => t("Kechiktirildi"),
+            self::STATUS_PAYED => t("Pul to'langan")
         ];
 
     }
