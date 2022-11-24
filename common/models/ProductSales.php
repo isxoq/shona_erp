@@ -27,28 +27,28 @@ class ProductSales extends \soft\db\ActiveRecord
     //<editor-fold desc="Parent" defaultstate="collapsed">
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'product_sales';
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['order_id', 'product_id', 'product_source', 'partner_shop_payed', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['order_id', "count", 'product_id', 'product_source', 'partner_shop_payed', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['sold_price', 'partner_shop_price'], 'number'],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function labels()
     {
         return [
@@ -69,14 +69,14 @@ class ProductSales extends \soft\db\ActiveRecord
     //</editor-fold>
 
     //<editor-fold desc="Relations" defaultstate="collapsed">
-    
+
     /**
-    * @return \yii\db\ActiveQuery
-    */
+     * @return \yii\db\ActiveQuery
+     */
     public function getDeletedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
     }
-    
+
     //</editor-fold>
 }

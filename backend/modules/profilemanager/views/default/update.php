@@ -20,8 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <h3 align="center"><?= $this->title ?></h3>
         <?php $form = ActiveForm::begin() ?>
         <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-        <?= $form->field($model, 'firstname') ?>
-        <?= $form->field($model, 'lastname') ?>
+        <?= $form->field($model, 'first_name') ?>
+        <?= $form->field($model, 'last_name') ?>
         <?= Html::submitButton('Saqlash', ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Bekor qilish', ['index'], ['class' => 'btn btn-warning']) ?>
         <?php ActiveForm::end() ?>

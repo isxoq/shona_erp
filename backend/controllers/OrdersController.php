@@ -52,6 +52,13 @@ class OrdersController extends SoftController
         $searchModel = new OrdersSearch();
 
         $searchModel->order_type = Order::TYPE_SIMPLE;
+
+
+        if (Yii::$app->user->identity->checkRoles(["Operator", "Diller"])) {
+            $searchModel->operator_diller_id = Yii::$app->user->id;
+        }
+
+
         $dataProvider = $searchModel->search();
 
         return $this->render('index', [
@@ -100,7 +107,9 @@ class OrdersController extends SoftController
 
             $model->order_type = Orders::TYPE_SIMPLE;
             $model->client_phone = Phone::clear($model->client_phone);
+            $model->operator_diller_id = Yii::$app->user->id;
             $model->save();
+
 
 //            dd($model->order_products);
 
@@ -238,5 +247,22 @@ class OrdersController extends SoftController
         } else {
             return $this->ajaxCrud->createModal($model, $params, $viewParams);
         }
+    }
+
+    public function actionAcceptOrder($id)
+    {
+        $request = Yii::$app->request;
+        $order = $this->findModel($id);
+        $params = [];
+        $viewParams = [];
+        if ($order->taminotchi_id != null) {
+            Yii::$app->session->setFlash("alreadyAccepted", "Ushbu buyurtma boshqa taminotchi tomonidan qabul qilib bo'lingan!");
+            return $this->ajaxCrud->viewAction($order, ['footer' => $this->afterCreateFooter(), 'forceReload' => '#crud-datatable-pjax']);
+        }
+
+        $order->taminotchi_id = Yii::$app->user->id;
+        $order->save();
+        Yii::$app->session->setFlash("successfullyAccepted", "Muvaffaqiyatli qabul qilindi!");
+        return $this->redirect(Yii::$app->request->referrer);
     }
 }

@@ -87,6 +87,7 @@ class Orders extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
+            [['operator_diller_id', "taminotchi_id"], "integer"],
             ['order_products', 'safe'],
             [['payment_type', 'client_id', 'delivery_type', 'network_id', 'status', 'order_type', 'partner_order_id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'delivery_price'], 'number'],
@@ -166,20 +167,26 @@ class Orders extends \soft\db\ActiveRecord
 
     public static function getStatusForRole()
     {
-        $statuses = self::getStatusList();
-        return $statuses;
+        $statuses = [];
+
         if (Yii::$app->user->identity->checkRoles(["Operator", "Diller"])) {
-            unset($statuses[self::STATUS_READY_FOR_DELIVERY]);
-            unset($statuses[self::STATUS_DELIVERY]);
-            unset($statuses[self::STATUS_DELAY]);
+            $statuses = [
+                self::STATUS_NEW => t("Yangi"),
+                self::STATUS_DELIVERED => t("Yetkazib berilldi"),
+                self::STATUS_CANCELLED => t("Bekor qilindi"),
+                self::STATUS_HAS_PROBLEM => t("Muammoli"),
+            ];
         }
 
         if (Yii::$app->user->identity->checkRoles(["Ta'minotchi"])) {
-            unset($statuses[self::STATUS_NEW]);
-            unset($statuses[self::STATUS_DELIVERED]);
-            unset($statuses[self::STATUS_HAS_PROBLEM]);
-            unset($statuses[self::STATUS_CANCELLED]);
+            $statuses = [
+                self::STATUS_READY_FOR_DELIVERY => t("Yetkazib berish uchun tayyor"),
+                self::STATUS_DELIVERY => t("Yetkazish jarayonida"),
+                self::STATUS_DELIVERED => t("Yetkazib berilldi"),
+                self::STATUS_DELAY => t("Kechiktirildi"),
+            ];
         }
+        return $statuses;
 
     }
 

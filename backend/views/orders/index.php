@@ -10,6 +10,26 @@ $this->title = Yii::t('app', 'Orders');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerAjaxCrudAssets();
 ?>
+
+
+<?php if (Yii::$app->session->hasFlash("alreadyAccepted")): ?>
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-exclamation-triangle"></i> Diqqat!</h5>
+        <?= Yii::$app->session->getFlash("alreadyAccepted") ?>
+    </div>
+<?php endif ?>
+
+
+<?php if (Yii::$app->session->hasFlash("successfullyAccepted")): ?>
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-check"></i> Alert!</h5>
+        <?= Yii::$app->session->getFlash("successfullyAccepted") ?>
+    </div>
+<?php endif ?>
+
+
 <?= \soft\grid\GridView::widget([
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
@@ -84,6 +104,26 @@ $this->registerAjaxCrudAssets();
                     'width' => '100px'
                 ],
             ],
+        ],
+        [
+            "attribute" => "taminotchi_id",
+            "value" => function ($model) {
+                $btn = Html::a("Qabul", ["/orders/accept-order", "id" => $model->id], [
+//                    "role" => "modal-remote",
+                    "class" => "btn btn-warning"
+                ]);
+
+                if ($model->taminotchi_id) {
+                    if ($model->taminotchi_id == user("id")) {
+                        return "Zakaz qabul qilingan";
+                    } else {
+                        return "Bu boshqaning buyurtmasi";
+                    }
+                }
+
+                return $btn;
+            },
+            "format" => "raw",
         ],
         'actionColumn' => [
             'viewOptions' => [

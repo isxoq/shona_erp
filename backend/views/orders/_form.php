@@ -194,6 +194,12 @@ JS;
                                     ]
                                 ]
                             ],
+
+                            [
+                                'name' => 'count',
+                                'type' => InputType::TEXT,
+                                'title' => t("Mahsulot soni"),
+                            ],
                             [
                                 'name' => 'product_source',
                                 'type' => 'dropDownList',

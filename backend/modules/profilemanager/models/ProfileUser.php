@@ -14,9 +14,9 @@ class ProfileUser extends User
     public function rules()
     {
         return [
-            [['username', 'firstname'], 'required'],
+            [['username', 'first_name'], 'required'],
             ['username', 'unique'],
-            [['username', 'lastname', 'firstname'], 'string', 'max' => 255],
+            [['username', 'last_name', 'first_name'], 'string', 'max' => 255],
 
         ];
     }
@@ -33,7 +33,7 @@ class ProfileUser extends User
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_UPDATE] = ['username', 'firstname', 'lastname'];
+        $scenarios[self::SCENARIO_UPDATE] = ['username', 'first_name', 'last_name'];
         $scenarios[self::SCENARIO_CHANGE_PASSWORD] = ['password_hash'];
         return $scenarios;
     }

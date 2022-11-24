@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Orders;
+use yii\db\Expression;
 
 class OrdersSearch extends Orders
 {
@@ -16,7 +17,7 @@ class OrdersSearch extends Orders
     {
         return [
             ['phone', 'string'],
-            [['id', 'payment_type', 'client_id', 'delivery_type', 'network_id', 'status', 'order_type', 'partner_order_id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'payment_type', 'operator_diller_id', 'taminotchi_id', 'client_id', 'delivery_type', 'network_id', 'status', 'order_type', 'partner_order_id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'client_fullname', 'client_phone', 'client_address', 'credit_file'], 'safe'],
             [['amount', 'delivery_price'], 'number'],
         ];
@@ -54,6 +55,7 @@ class OrdersSearch extends Orders
             return $dataProvider;
         }
 
+
         $query->andFilterWhere([
             'id' => $this->id,
             'payment_type' => $this->payment_type,
@@ -70,7 +72,14 @@ class OrdersSearch extends Orders
             'deleted_by' => $this->deleted_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'operator_diller_id' => $this->operator_diller_id,
         ]);
+
+
+        if (Yii::$app->user->identity->checkRoles(["Ta'minotchi"])) {
+            $query->orWhere(['=', "taminotchi_id", user("id")]);
+            $query->orWhere(['IS', "taminotchi_id", new Expression("NULL")]);
+        }
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'client_fullname', $this->client_fullname])
