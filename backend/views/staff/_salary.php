@@ -54,9 +54,9 @@ use common\services\SalaryService;
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Oy</th>
+                                <th>Oylik maosh</th>
                                 <th>Bonus</th>
                                 <th>Jarima</th>
-                                <th>Oylik maosh</th>
                                 <th>Jami</th>
                             </tr>
                             </thead>
@@ -64,15 +64,23 @@ use common\services\SalaryService;
                             <?php
                             for ($i = 1; $i <= 12; $i++) {
 
+
+                                $bonus = SalaryService::getStaffMonthlyOrderSalesBonus(strtotime(date("Y-{$i}-1")), strtotime(date("Y-{$i}-t")), Yii::$app->user->id);
+                                $fine = SalaryService::getStaffMonthlyOrderSalesFine(strtotime(date("Y-{$i}-1")), strtotime(date("Y-{$i}-t")), Yii::$app->user->id);
+                                $salary = SalaryService::getStaffMonthlyOrderSalary(strtotime(date("Y-{$i}-1")), strtotime(date("Y-{$i}-t")), Yii::$app->user->id);
+
+                                $totalsalary = $bonus + $salary - $fine;
+
                                 ?>
 
                                 <tr>
                                     <td><?= $i ?></td>
                                     <td><?= t(date("F", strtotime(date("Y-{$i}-1")))) ?></td>
-                                    <td><?= Yii::$app->formatter->asSum(500000) ?></td>
-                                    <td><?= Yii::$app->formatter->asSum(120000) ?></td>
-                                    <td><?= Yii::$app->formatter->asSum(SalaryService::getOperatorMonthlyOrderSalary(strtotime(date("Y-{$i}-1")), strtotime(date("Y-{$i}-t")))) ?></td>
-                                    <td class="text-success"><b><?= Yii::$app->formatter->asSum(1880000) ?></b></td>
+                                    <td><?= Yii::$app->formatter->asSum($salary) ?></td>
+                                    <td><?= Yii::$app->formatter->asSum($bonus) ?></td>
+                                    <td class="<?= $fine > 0 ? "text-danger" : "" ?>"><?= Yii::$app->formatter->asSum($fine) ?></td>
+                                    <td class="text-success"><b><?= Yii::$app->formatter->asSum($totalsalary) ?></b>
+                                    </td>
                                 </tr>
                                 <?php
                             }

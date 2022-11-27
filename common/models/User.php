@@ -66,6 +66,11 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    const TYPE_OPERATOR = 1;
+    const TYPE_TAMINOTCHI = 2;
+    const TYPE_DILLER = 3;
+
+
     const MALE = 1;
     const FEMALE = 0;
 

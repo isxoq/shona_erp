@@ -35,7 +35,7 @@ class Formatter extends YiiFormatter
     public function asSum($value)
     {
         if ($value == null) {
-            return "";
+            return $this->asInteger(0) . " " . Yii::t('site', "sum");
         }
         return $this->asInteger($value) . " " . Yii::t('site', "sum");
     }
