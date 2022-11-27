@@ -232,7 +232,7 @@ JS;
                                 "title" => t("Mijozga sotilgan narx"),
                                 "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'pluginOptions' => [
                                         'prefix' => 'UZS ',
                                         'affixesStay' => true,
