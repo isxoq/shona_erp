@@ -172,7 +172,7 @@ JS;
                     'widgetClass' => \unclead\multipleinput\MultipleInput::class,
                     'options' => [
                         "iconSource" => \unclead\multipleinput\MultipleInput::ICONS_SOURCE_FONTAWESOME,
-                        'max' => 4,
+                        'max' => 10,
                         "iconMap" => [
                             'fa' => [
                                 'drag-handle' => 'fa fa-bars',
