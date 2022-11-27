@@ -39,6 +39,16 @@ $this->registerAjaxCrudAssets();
         ],
         'created_at',
         "roles",
+        [
+            "label" => t("Enter"),
+            "format" => "raw",
+            "value" => function ($model) {
+                return \yii\helpers\Html::a(t("Enter"), ['/usermanager/user/user-login', "id" => $model->id], [
+                    "class" => "btn btn-info",
+                    "target" => "_blank"
+                ]);
+            }
+        ],
 //        'updated_at',
         'actionColumn',
     ],

@@ -114,4 +114,11 @@ class UserController extends SoftController
         return $this->ajaxCrud->closeModalResponse();
     }
 
+    public function actionUserLogin($id)
+    {
+        $user = \common\models\User::findOne($id);
+        Yii::$app->user->login($user, 3600);
+        return $this->redirect(['/site/index']);
+    }
+
 }
