@@ -38,6 +38,7 @@ $this->registerAjaxCrudAssets();
             }
         ],
         'created_at',
+        "roles",
 //        'updated_at',
         'actionColumn',
     ],

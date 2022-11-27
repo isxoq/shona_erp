@@ -7,6 +7,7 @@
 
 namespace backend\modules\usermanager\models;
 
+use soft\helpers\ArrayHelper;
 use Yii;
 
 class User extends \common\models\User
@@ -60,6 +61,12 @@ class User extends \common\models\User
                 $this->revokeRole($roleName);
             }
         }
+    }
+
+
+    public function getRoles()
+    {
+        return implode(",", array_keys(Yii::$app->authManager->getRolesByUser($this->id)));
     }
 
 }
