@@ -190,6 +190,7 @@ JS;
                                 "options" => [
                                     'data' => \soft\helpers\ArrayHelper::map(\common\models\Products::find()->asArray()->all(), 'id', 'name'),
                                     "options" => [
+                                        "width" => "30px",
                                         "placeholder" => t("Tanlang...")
                                     ]
                                 ]
@@ -205,7 +206,7 @@ JS;
                                 'type' => 'dropDownList',
                                 'title' => t("Ombor"),
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Operator"]),
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'prompt' => '- Tanlang -',
                                 ],
                                 'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name'),
@@ -267,7 +268,7 @@ JS;
 ]); ?>
 
 <div class="form-group">
-    <?= Html::submitButton(Yii::t('site', "Ta'minotchiga o'tkazish"), ['visible' => !$this->isAjax]) ?>
+    <?= Html::submitButton(Yii::t('app', "Save"), ['visible' => !$this->isAjax]) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

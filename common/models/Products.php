@@ -82,4 +82,5 @@ class Products extends \soft\db\ActiveRecord
     }
 
     //</editor-fold>
+
 }
