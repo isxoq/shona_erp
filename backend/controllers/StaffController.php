@@ -12,4 +12,11 @@ class StaffController extends SoftController
     {
         return $this->render("_salary");
     }
+
+    public function actionTotalSalary()
+    {
+        return $this->render("_total_salary");
+    }
+
+
 }
