@@ -360,7 +360,6 @@ class AjaxCrud extends \yii\base\Component
 
             if ($model->load($request->post()) && $model->save()) {
 
-                dd($model);
                 if (isset($params['returnUrl'])) {
                     $returnUrl = $params['returnUrl'];
                 } else {

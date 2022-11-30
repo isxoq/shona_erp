@@ -25,7 +25,7 @@ use common\services\SalaryService;
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title"><?= t(date("F-{$year}", strtotime(date("{$year}-{$i}-1")))) ?></h3>
+                                <h3 class="card-title"><?= t(date("F", strtotime(date("{$year}-{$i}-1")))) . "-" . $year ?></h3>
                             </div>
 
                             <div class="card-body">
