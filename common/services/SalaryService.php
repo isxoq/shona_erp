@@ -95,6 +95,7 @@ class SalaryService
 
     public static function getUserOrdersQueryDateInterval($from, $to, $user_id)
     {
+
         $orders = Orders::find()
             ->andWhere(['>=', "orders.created_at", $from])
             ->andWhere(['<=', "orders.created_at", $to])

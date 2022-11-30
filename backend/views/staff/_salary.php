@@ -64,6 +64,9 @@ use common\services\SalaryService;
                             <?php
                             for ($i = 1; $i <= 12; $i++) {
 
+                                if ($i < 11 && date("Y") == 2022) {
+                                    continue;
+                                }
 
                                 $bonus = SalaryService::getStaffMonthlyOrderSalesBonus(strtotime(date("Y-{$i}-1")), strtotime(date("Y-{$i}-t")), Yii::$app->user->id);
                                 $fine = SalaryService::getStaffMonthlyOrderSalesFine(strtotime(date("Y-{$i}-1")), strtotime(date("Y-{$i}-t")), Yii::$app->user->id);
