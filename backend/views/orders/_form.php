@@ -205,7 +205,7 @@ JS;
                                 'type' => 'dropDownList',
                                 'title' => t("Ombor"),
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Operator"]),
                                     'prompt' => '- Tanlang -',
                                 ],
                                 'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name'),
@@ -232,7 +232,7 @@ JS;
                                 "title" => t("Mijozga sotilgan narx"),
                                 "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
+                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Operator"]),
                                     'pluginOptions' => [
                                         'prefix' => 'UZS ',
                                         'affixesStay' => true,

@@ -107,6 +107,7 @@ $this->registerAjaxCrudAssets();
         ],
         [
             "attribute" => "taminotchi_id",
+            "visible" => Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
             "value" => function ($model) {
                 $btn = Html::a("Qabul", ["/orders/accept-order", "id" => $model->id], [
 //                    "role" => "modal-remote",
