@@ -90,7 +90,7 @@ $this->registerAjaxCrudAssets();
             "value" => function ($model) {
                 $btn = Html::a($model->statusBtn, ["/orders/change-status", "id" => $model->id], [
                     "role" => "modal-remote",
-                    "class" => "btn btn-primary"
+                    "class" => "badge badge-primary btn-primary btn-small class-color-{$model->status}"
                 ]);
                 return $btn;
             },
