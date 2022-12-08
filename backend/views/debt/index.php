@@ -32,9 +32,24 @@ $this->registerAjaxCrudAssets();
         'name',
 //        'phone',
 //        'phone',
-        'monthlySales:integer',
-        'payedAmount:integer',
-        'debtAmount:integer',
+        'monthlySales' => [
+            "label" => "Jami sotuv",
+            "value" => function ($model) {
+                return Yii::$app->formatter->asSum($model->monthlySales);
+            }
+        ],
+        'payedAmount' => [
+            "label" => "To'langan",
+            "value" => function ($model) {
+                return Yii::$app->formatter->asSum($model->payedAmount);
+            }
+        ],
+        'debtAmount' => [
+            "label" => "Qarz",
+            "value" => function ($model) {
+                return Yii::$app->formatter->asSum($model->debtAmount);
+            }
+        ],
 //        'address',
 //        'email:email',
         //'is_deleted',
@@ -44,9 +59,9 @@ $this->registerAjaxCrudAssets();
         //'updated_at',
         //'currency',
         [
-            "label" => "Pay debt",
+            "label" => "Hamkorga to'lov",
             "value" => function ($model) {
-                $btn = Html::a("To'lov", ["/debt/pay-debt", "id" => $model->id], [
+                $btn = Html::a("To'lov qilish", ["/debt/pay-debt", "id" => $model->id], [
                     "role" => "modal-remote",
                     "class" => "btn btn-warning"
                 ]);
