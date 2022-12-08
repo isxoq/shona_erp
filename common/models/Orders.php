@@ -24,6 +24,7 @@ use yii\helpers\Html;
  * @property int|null $status
  * @property int|null $order_type
  * @property string|null $credit_file
+ * @property string|null $delivery_code
  * @property int|null $partner_order_id
  * @property int|null $is_deleted
  * @property int|null $deleted_at
@@ -91,7 +92,7 @@ class Orders extends \soft\db\ActiveRecord
             ['order_products', 'safe'],
             [['payment_type', 'client_id', 'delivery_type', 'network_id', 'status', 'order_type', 'partner_order_id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'delivery_price'], 'number'],
-            [['name', 'client_fullname', 'client_phone', 'client_address', 'credit_file'], 'string', 'max' => 255],
+            [['name', 'client_fullname', "delivery_code", 'client_phone', 'client_address', 'credit_file'], 'string', 'max' => 255],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
     }
@@ -104,6 +105,7 @@ class Orders extends \soft\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', "Kommentariya"),
+            'delivery_code' => Yii::t('app', "Yetkazib berish kodi"),
             'payment_type' => Yii::t('app', 'Payment Type'),
             'client_id' => Yii::t('app', 'Client ID'),
             'client_fullname' => Yii::t('app', 'Client Fullname'),

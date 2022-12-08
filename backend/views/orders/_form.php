@@ -137,6 +137,7 @@ JS;
                         ]
                     ]
                 ],
+                "delivery_code",
                 'network_id:select2' => [
                     'options' => [
                         "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),

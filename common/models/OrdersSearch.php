@@ -18,7 +18,7 @@ class OrdersSearch extends Orders
         return [
             ['phone', 'string'],
             [['id', 'payment_type', 'operator_diller_id', 'taminotchi_id', 'client_id', 'delivery_type', 'network_id', 'status', 'order_type', 'partner_order_id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'client_fullname', 'client_phone', 'client_address', 'credit_file'], 'safe'],
+            [['name', 'client_fullname', 'client_phone',"delivery_code", 'client_address', 'credit_file'], 'safe'],
             [['amount', 'delivery_price'], 'number'],
         ];
     }
@@ -86,6 +86,7 @@ class OrdersSearch extends Orders
             ->andFilterWhere(['like', 'client_phone', $this->client_phone])
             ->andFilterWhere(['like', 'client_address', $this->client_address])
             ->andFilterWhere(['like', 'credit_file', $this->credit_file])
+            ->andFilterWhere(['like', 'delivery_code', $this->delivery_code])
             ->andFilterWhere(['like', 'client.phone', $this->phone]);
 
         return $dataProvider;

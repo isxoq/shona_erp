@@ -71,6 +71,7 @@ $this->registerAjaxCrudAssets();
                 return $model->delivery->name . PHP_EOL . Yii::$app->formatter->asSum($model->delivery_price);
             }
         ],
+        "delivery_code",
         [
             "label" => "Foyda",
             "value" => function ($model) {
