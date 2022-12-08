@@ -3,9 +3,10 @@
 use soft\helpers\Html;
 use soft\widget\kartik\ActiveForm;
 use soft\widget\kartik\Form;
+use soft\widget\kartik\InputType;
 
 /* @var $this soft\web\View */
-/* @var $model common\models\PartnerShops */
+/* @var $model common\models\Orders */
 
 ?>
 
@@ -15,16 +16,12 @@ use soft\widget\kartik\Form;
 <?= Form::widget([
     'model' => $model,
     'form' => $form,
+    'columns' => 1,
     'attributes' => [
-        'name',
-        'phone:phone',
-        'address',
-        'email',
-        'is_main:status',
-        'currency' => [
-            "name" => "currency",
-            "title" => t("Hamkordan olingan narx"),
-            "type" => \soft\widget\kartik\InputType::WIDGET,
+        'pay_amount' => [
+            "name" => "pay_amount",
+            "title" => t("To'lov"),
+            "type" => InputType::WIDGET,
             "widgetClass" => \kartik\money\MaskMoney::class,
             "options" => [
                 'pluginOptions' => [
@@ -40,8 +37,9 @@ use soft\widget\kartik\Form;
         ],
     ]
 ]); ?>
+
 <div class="form-group">
-    <?= Html::submitButton(Yii::t('site', 'Save'), ['visible' => !$this->isAjax]) ?>
+    <?= Html::submitButton(Yii::t('site', "Ta'minotchiga o'tkazish"), ['visible' => !$this->isAjax]) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

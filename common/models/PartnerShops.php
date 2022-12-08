@@ -17,14 +17,18 @@ use Yii;
  * @property int|null $deleted_by
  * @property int|null $created_at
  * @property int|null $updated_at
+ * @property int|null $pay_amount
  *
  * @property User $deletedBy
  */
 class PartnerShops extends \soft\db\ActiveRecord
 {
+
+    public $pay_amount;
     //<editor-fold desc="Parent" defaultstate="collapsed">
 
     /**
+     *
      * {@inheritdoc}
      */
     public static function tableName()
@@ -38,7 +42,7 @@ class PartnerShops extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
-            [['is_deleted', "currency", 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['is_deleted', "pay_amount", "is_main", "currency", 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'phone', 'address', 'email'], 'string', 'max' => 255],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
@@ -60,6 +64,7 @@ class PartnerShops extends \soft\db\ActiveRecord
             'deleted_by' => Yii::t('app', 'Deleted By'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'is_main' => Yii::t('app', 'IS MAIN STORE'),
         ];
     }
     //</editor-fold>
@@ -75,4 +80,43 @@ class PartnerShops extends \soft\db\ActiveRecord
     }
 
     //</editor-fold>
+
+    public function getMonthlySales($start = null, $end = null)
+    {
+//        if (!$start) {
+//            $start = strtotime(date("Y-m-1 00:00:00"));
+//        } else {
+//            $start = strtotime($start);
+//        }
+//
+//        if (!$end) {
+//            $end = strtotime(date("Y-m-t 23:59:59"));
+//        } else {
+//            $end = strtotime($end);
+//        }
+        $productSales = ProductSales::find()
+//            ->joinWith("order")
+//            ->andWhere(['>=', "orders.created_at", $start])
+//            ->andWhere(['<=', "orders.created_at", $end])
+
+            ->andWhere(['=', "product_sales.product_source", $this->id])
+            ->sum("product_sales.partner_shop_price");
+
+        return $productSales;
+
+    }
+
+    public function getPayedAmount()
+    {
+        $pays = PartnerShopPays::find()
+            ->andWhere(['partner_shop_id' => $this->id])
+            ->sum("amount");
+
+        return $pays;
+    }
+
+    public function getDebtAmount()
+    {
+        return $this->getMonthlySales() - $this->getPayedAmount();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\ProductImports;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Products;
@@ -132,8 +133,11 @@ class ProductsController extends SoftController
         ];
         $viewParams = [];
         $file = null;
-        $model = new DynamicModel(compact('file'));
+        $store_id = null;
+        $model = new DynamicModel(compact('file', "store_id"));
+
         $model->addRule('file', 'string');
+        $model->addRule('store_id', 'integer');
 
         if ($this->isAjax) {
 
@@ -158,19 +162,27 @@ class ProductsController extends SoftController
 
                 for ($rowIndex = 2; $rowIndex <= $rowsCols['row']; $rowIndex++) {
 
-                    $priceValue = $activeSheet->getCellByColumnAndRow(2, $rowIndex)->getValue();
                     $nameValue = $activeSheet->getCellByColumnAndRow(1, $rowIndex)->getValue();
-                    if ($priceValue) {
-                        $product = Products::findOne(['name' => $nameValue]);
-                        if (!$product) {
-                            $product = new Products([
-                                "name" => $nameValue,
-                                "price_usd" => $priceValue,
-                            ]);
-                        }
-                        $product->price_usd = $priceValue;
-                        $product->save();
+                    $priceValue = $activeSheet->getCellByColumnAndRow(2, $rowIndex)->getValue();
+                    $quantityValue = $activeSheet->getCellByColumnAndRow(3, $rowIndex)->getValue();
+                    $product = Products::findOne(['name' => $nameValue]);
+                    if (!$product) {
+                        $product = new Products([
+                            "name" => $nameValue,
+                            "price_usd" => (int)$priceValue,
+                        ]);
                     }
+                    $product->price_usd = (int)$priceValue;
+                    $product->save();
+
+                    ProductImports::deleteAll(['product_id' => $product->id, "partner_id" => $store_id]);
+
+                    $newIMportProduct = new ProductImports([
+                        "product_id" => $product->id,
+                        "partner_id" => $model->store_id,
+                        "quantity" => $quantityValue,
+                    ]);
+                    $newIMportProduct->save();
                 }
 
                 return $this->ajaxCrud->closeModal();

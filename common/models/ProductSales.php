@@ -78,5 +78,15 @@ class ProductSales extends \soft\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
     }
 
+    public function getOrder()
+    {
+        return $this->hasOne(Orders::class, ["id" => "order_id"]);
+    }
+
+    public function getPartnerShop()
+    {
+        return $this->hasOne(PartnerShops::class, ["id" => "product_source"]);
+    }
+
     //</editor-fold>
 }

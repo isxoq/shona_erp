@@ -21,6 +21,11 @@ use soft\widget\kartik\Form;
                 'filter' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]
         ],
+        "store_id:select2" => [
+            'options' => [
+                'data' => map(\common\models\PartnerShops::find()->all(), 'id', 'name')
+            ]
+        ]
     ],
 ]); ?>
 <div class="form-group">
