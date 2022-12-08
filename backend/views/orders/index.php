@@ -143,9 +143,15 @@ $this->registerAjaxCrudAssets();
             ],
             'deleteOptions' => [
                 'role' => 'modal-remote',
-                "class" => "btn btn-danger"
+                "class" => "btn btn-danger",
             ],
+            'visibleButtons' => [
+                'delete' => function ($model) {
+                    return Yii::$app->user->identity->checkRoles(["Rahbar", "admin"]);
+                },
+            ]
         ],
+
     ],
 ]); ?>
     
