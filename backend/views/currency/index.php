@@ -38,12 +38,7 @@ $this->registerAjaxCrudAssets();
                     "class" => "btn btn-info"
                 ]);
 
-                if (!$model->is_main) {
                     return $btn;
-                } else {
-                    return "";
-                }
-
 
             },
             "format" => "raw",
