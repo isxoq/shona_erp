@@ -19,6 +19,7 @@ use Yii;
  * @property int|null $deleted_by
  * @property int|null $created_at
  * @property int|null $updated_at
+ * @property int|null $currency_partner_price
  *
  * @property User $deletedBy
  */
@@ -40,7 +41,7 @@ class ProductSales extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', "count", 'product_id', 'product_source', 'partner_shop_payed', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['order_id', "currency_partner_price", "count", 'product_id', 'product_source', 'partner_shop_payed', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['sold_price', 'partner_shop_price'], 'number'],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
@@ -64,6 +65,7 @@ class ProductSales extends \soft\db\ActiveRecord
             'deleted_by' => Yii::t('app', 'Deleted By'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'currency_partner_price' => Yii::t('app', 'Partner Price Currency'),
         ];
     }
     //</editor-fold>

@@ -92,6 +92,7 @@ class OrdersController extends SoftController
 
         if ($model->load($request->post())) {
 
+
             if (!$model->client_id) {
                 $client = Clients::findOne(['phone' => Phone::clear($model->client_phone)]);
                 if (!$client) {
@@ -109,9 +110,6 @@ class OrdersController extends SoftController
             $model->client_phone = Phone::clear($model->client_phone);
             $model->operator_diller_id = Yii::$app->user->id;
             $model->save();
-
-
-//            dd($model->order_products);
 
             $model->createProductSales();
 
@@ -158,7 +156,7 @@ class OrdersController extends SoftController
             $model->save();
 
             ProductSales::deleteAll(['order_id' => $model->id]);
-            $model->updateProductSales();
+            $model->createProductSales();
 
 
             $returnUrl = ['view', 'id' => $model->id];

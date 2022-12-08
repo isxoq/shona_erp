@@ -212,8 +212,8 @@ JS;
                                 'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name'),
                             ],
                             [
-                                "name" => "partner_shop_price",
-                                "title" => t("Hamkordan olingan narx"),
+                                "name" => "currency_partner_price",
+                                "title" => t("Hamkordan olingan narx $"),
 //                                "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
                                     "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
@@ -230,7 +230,7 @@ JS;
                             ],
                             [
                                 "name" => "sold_price",
-                                "title" => t("Mijozga sotilgan narx"),
+                                "title" => t("Mijozga sotilgan narx UZS"),
 //                                "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
                                     "readonly" => !Yii::$app->user->identity->checkRoles(["Operator"]),

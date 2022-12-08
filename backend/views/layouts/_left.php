@@ -23,7 +23,7 @@ $menuItems = [
     ['label' => "To'lov usullari", 'url' => ['/payment-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ['label' => "Yetkazish usullari", 'url' => ['/delivery-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ['label' => "Mijoz oqim turlari", 'url' => ['/network-types'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
-    ['label' => "Mening bonuslarim", 'url' => ['/staff/bonus'], 'icon' => 'list'],
+    ['label' => "Kurslar", 'url' => ['/currency/index'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
     ['label' => "Oylik maosh", 'url' => ['/staff/salary'], 'icon' => 'list', "visible" => !Yii::$app->user->identity->checkRoles(["Administrator", "Rahbar"])],
     ['label' => "Oylik maosh", 'url' => ['/staff/total-salary'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
     ['label' => "Qarzdorlik", 'url' => ['/debt/index'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],

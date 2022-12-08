@@ -133,6 +133,16 @@ class Orders extends \soft\db\ActiveRecord
 
             $order_product['order_id'] = $this->id;
 
+            if ($order_product['currency_partner_price'] && $order_product['product_source']) {
+                $partnerShop = PartnerShops::findOne($order_product['product_source']);
+
+                if ($partnerShop) {
+                    if ($partnerShop->currency) {
+                        $order_product['partner_shop_price'] = $order_product['currency_partner_price'] * $partnerShop->currency;
+                    }
+                }
+            }
+
             if (array_key_exists("partner_shop_payed", $order_product)) {
                 if ($order_product['partner_shop_payed'] == "on") {
                     $order_product['partner_shop_payed'] = 1;

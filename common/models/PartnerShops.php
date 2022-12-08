@@ -18,6 +18,7 @@ use Yii;
  * @property int|null $created_at
  * @property int|null $updated_at
  * @property int|null $pay_amount
+ * @property int|null $currency
  *
  * @property User $deletedBy
  */

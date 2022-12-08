@@ -10,10 +10,12 @@ use common\models\PartnerShops;
 class PartnerShopsSearch extends PartnerShops
 {
 
+    public $only_partner;
+
     public function rules()
     {
         return [
-            [['id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'is_deleted', "only_partner", 'is_main', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'phone', 'address', 'email'], 'safe'],
         ];
     }
@@ -24,13 +26,13 @@ class PartnerShopsSearch extends PartnerShops
         return Model::scenarios();
     }
 
-    public function search($query=null, $defaultPageSize = 20, $params=null)
+    public function search($query = null, $defaultPageSize = 20, $params = null)
     {
 
-        if($params == null){
+        if ($params == null) {
             $params = Yii::$app->request->queryParams;
         }
-        if($query == null){
+        if ($query == null) {
             $query = PartnerShops::find();
         }
 
@@ -45,6 +47,10 @@ class PartnerShopsSearch extends PartnerShops
 
         if (!$this->validate()) {
             return $dataProvider;
+        }
+
+        if ($this->only_partner) {
+            $query->andWhere(['!=', "is_main", 1]);
         }
 
         $query->andFilterWhere([
