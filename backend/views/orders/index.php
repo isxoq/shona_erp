@@ -41,7 +41,7 @@ $this->registerAjaxCrudAssets();
             'modal' => false,
         ]
     ],
-    'bulkButtonsTemplate' => '{delete}',
+    'bulkButtonsTemplate' => '',
     'bulkButtons' => [
         'delete' => [
             /** @see soft\widget\button\BulkButton for other configurations */

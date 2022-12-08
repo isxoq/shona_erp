@@ -113,7 +113,7 @@ class OrdersController extends SoftController
 
             $model->createProductSales();
 
-            $returnUrl = ['view', 'id' => $model->id];
+            $returnUrl = ['index'];
             return $this->redirect($returnUrl);
         }
 
@@ -158,8 +158,7 @@ class OrdersController extends SoftController
             ProductSales::deleteAll(['order_id' => $model->id]);
             $model->createProductSales();
 
-
-            $returnUrl = ['view', 'id' => $model->id];
+            $returnUrl = ['index'];
             return $this->redirect($returnUrl);
         }
 
