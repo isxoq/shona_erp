@@ -133,8 +133,18 @@ $this->registerAjaxCrudAssets();
             "format" => "raw",
         ],
         'actionColumn' => [
+            "template" => "{update} {delete}",
             'viewOptions' => [
                 'role' => 'modal-remote',
+                "class" => "btn btn-info"
+            ],
+            'updateOptions' => [
+                'role' => 'modal-remote',
+                "class" => "btn btn-warning"
+            ],
+            'deleteOptions' => [
+                'role' => 'modal-remote',
+                "class" => "btn btn-danger"
             ],
         ],
     ],
