@@ -19,6 +19,42 @@
     text-align: center;
 }
 
-.btn-small{
-    font-size: 0.8rem!important;
+.btn-small {
+    font-size: 0.8rem !important;
+}
+
+.class-color-1 {
+    background-color: lightskyblue;
+    /*new*/
+}
+
+.class-color-2 {
+    background-color: yellow;
+    /*yetkazishda*/
+    color: #0a0a0a;
+}
+
+.class-color-3 {
+    background-color: limegreen;
+    /*yetjazilsi*/
+}
+
+.class-color-4 {
+    background-color: red;
+    /*cancelled*/
+}
+
+.class-color-5 {
+    background-color: red;
+    /*muammol*/
+}
+
+.class-color-6 {
+    background-color: #8a6d3b;
+    /*yetkazishga tayyor*/
+}
+
+.class-color-7 {
+    background-color: mediumvioletred;
+    /*kechiktirildi*/
 }

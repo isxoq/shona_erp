@@ -96,7 +96,7 @@ $this->registerAjaxCrudAssets();
             "value" => function ($model) {
                 $btn = Html::a($model->statusBtn, ["/orders/change-status", "id" => $model->id], [
                     "role" => "modal-remote",
-                    "class" => "badge badge-primary btn-primary btn-small class-color-{$model->status}"
+                    "class" => "badge badge-info btn-small class-color-{$model->status}"
                 ]);
                 return $btn;
             },
@@ -117,7 +117,7 @@ $this->registerAjaxCrudAssets();
             "value" => function ($model) {
                 $btn = Html::a("Qabul", ["/orders/accept-order", "id" => $model->id], [
 //                    "role" => "modal-remote",
-                    "class" => "btn btn-warning"
+                    "class" => "btn btn-success"
                 ]);
 
                 if ($model->taminotchi_id) {
