@@ -72,6 +72,12 @@ $this->registerAjaxCrudAssets();
             }
         ],
         [
+            "label" => "Foyda",
+            "value" => function ($model) {
+                return Yii::$app->formatter->asSum($model->benefit);
+            }
+        ],
+        [
             "attribute" => "payment_type",
             "value" => "paymentType.name",
             'filter' => map(\common\models\PaymentTypes::find()->all(), "id", 'name'),

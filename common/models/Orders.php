@@ -271,6 +271,16 @@ class Orders extends \soft\db\ActiveRecord
         return self::getStatusList()[$this->status] ?? "";
     }
 
+
+    public function getBenefit()
+    {
+        $benefit = 0;
+        foreach ($this->salesProducts as $salesProduct) {
+            $benefit += ($salesProduct->sold_price - $salesProduct->partner_shop_price) * $salesProduct->count;
+        }
+        return $benefit;
+    }
+
     //<editor-fold desc="Relations" defaultstate="collapsed">
 
     /**
