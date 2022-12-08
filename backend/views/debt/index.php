@@ -6,7 +6,7 @@ use soft\helpers\Html;
 /* @var $searchModel common\models\PartnerShopsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Partner Shops');
+$this->title = Yii::t('app', 'Hamkorlardan qarzdorlik');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerAjaxCrudAssets();
 ?>
