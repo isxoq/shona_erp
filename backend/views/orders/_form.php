@@ -206,7 +206,7 @@ JS;
                                 'type' => 'dropDownList',
                                 'title' => t("Ombor"),
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
+                                    "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'prompt' => '- Tanlang -',
                                 ],
                                 'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name'),
@@ -214,35 +214,35 @@ JS;
                             [
                                 "name" => "partner_shop_price",
                                 "title" => t("Hamkordan olingan narx"),
-                                "type" => \kartik\money\MaskMoney::class,
+//                                "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
-                                    'pluginOptions' => [
-                                        'prefix' => 'UZS ',
-                                        'affixesStay' => true,
-                                        'thousands' => ' ',
-                                        'decimal' => '.',
-                                        'precision' => 0,
-                                        'allowZero' => false,
-                                        'allowNegative' => false,
-                                    ]
+                                    "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
+//                                    'pluginOptions' => [
+//                                        'prefix' => 'UZS ',
+//                                        'affixesStay' => true,
+//                                        'thousands' => ' ',
+//                                        'decimal' => '.',
+//                                        'precision' => 0,
+//                                        'allowZero' => false,
+//                                        'allowNegative' => false,
+//                                    ]
                                 ]
                             ],
                             [
                                 "name" => "sold_price",
                                 "title" => t("Mijozga sotilgan narx"),
-                                "type" => \kartik\money\MaskMoney::class,
+//                                "type" => \kartik\money\MaskMoney::class,
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Operator"]),
-                                    'pluginOptions' => [
-                                        'prefix' => 'UZS ',
-                                        'affixesStay' => true,
-                                        'thousands' => ' ',
-                                        'decimal' => '.',
-                                        'precision' => 0,
-                                        'allowZero' => false,
-                                        'allowNegative' => false,
-                                    ]
+                                    "readonly" => !Yii::$app->user->identity->checkRoles(["Operator"]),
+//                                    'pluginOptions' => [
+//                                        'prefix' => 'UZS ',
+//                                        'affixesStay' => true,
+//                                        'thousands' => ' ',
+//                                        'decimal' => '.',
+//                                        'precision' => 0,
+//                                        'allowZero' => false,
+//                                        'allowNegative' => false,
+//                                    ]
                                 ]
                             ],
                             [
@@ -250,7 +250,7 @@ JS;
                                 "title" => "Hamkorga to'lov qilinganligi",
                                 "type" => \kartik\widgets\SwitchInput::class,
                                 "options" => [
-                                    "disabled" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
+                                    "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'pluginOptions' => [
                                         'onText' => t("Ha"),
                                         'offText' => t("Yo'q"),

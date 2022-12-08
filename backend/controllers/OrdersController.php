@@ -158,7 +158,7 @@ class OrdersController extends SoftController
             $model->save();
 
             ProductSales::deleteAll(['order_id' => $model->id]);
-            $model->createProductSales();
+            $model->updateProductSales();
 
 
             $returnUrl = ['view', 'id' => $model->id];

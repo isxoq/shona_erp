@@ -149,6 +149,29 @@ class Orders extends \soft\db\ActiveRecord
         }
     }
 
+
+    public function updateProductSales()
+    {
+        foreach ($this->order_products as $order_product) {
+
+            $order_product['order_id'] = $this->id;
+
+            if (array_key_exists("partner_shop_payed", $order_product)) {
+                if ($order_product['partner_shop_payed'] == "on") {
+                    $order_product['partner_shop_payed'] = 1;
+                } else {
+                    $order_product['partner_shop_payed'] = 0;
+                }
+            } else {
+                $order_product['partner_shop_payed'] = 0;
+            }
+
+            $order_product_model = new ProductSales($order_product);
+            $order_product_model->save();
+
+        }
+    }
+
     public static function getStatusList()
     {
 
