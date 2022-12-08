@@ -49,6 +49,8 @@ $this->registerAjaxCrudAssets();
     ],
     'cols' => [
         'id',
+        'created_at',
+        "delivery_code",
         [
             "attribute" => "client_id",
             "value" => "clientFullname",
@@ -71,7 +73,6 @@ $this->registerAjaxCrudAssets();
                 return $model->delivery->name . PHP_EOL . Yii::$app->formatter->asSum($model->delivery_price);
             }
         ],
-        "delivery_code",
         [
             "label" => "Foyda",
             "value" => function ($model) {
@@ -91,7 +92,6 @@ $this->registerAjaxCrudAssets();
                 ],
             ],
         ],
-        'created_at',
         [
             "attribute" => "status",
             "value" => function ($model) {
