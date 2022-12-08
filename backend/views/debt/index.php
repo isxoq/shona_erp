@@ -65,7 +65,14 @@ $this->registerAjaxCrudAssets();
                     "role" => "modal-remote",
                     "class" => "btn btn-warning"
                 ]);
-                return $btn;
+
+                if (!$model->is_main) {
+                    return $btn;
+                } else {
+                    return "";
+                }
+
+
             },
             "format" => "raw",
         ],
