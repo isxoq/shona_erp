@@ -41,8 +41,8 @@ class ProductSales extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', "currency_partner_price", "count", 'product_id', 'product_source', 'partner_shop_payed', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
-            [['sold_price', 'partner_shop_price'], 'number'],
+            [['order_id', "count", 'product_id', 'product_source', 'partner_shop_payed', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['sold_price', 'currency_partner_price', 'partner_shop_price'], 'number'],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
     }
