@@ -139,7 +139,6 @@ $this->registerAjaxCrudAssets();
                 "class" => "btn btn-info"
             ],
             'updateOptions' => [
-                'role' => 'modal-remote',
                 "class" => "btn btn-warning"
             ],
             'deleteOptions' => [
