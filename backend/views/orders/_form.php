@@ -195,7 +195,6 @@ JS;
                                     ]
                                 ]
                             ],
-
                             [
                                 'name' => 'count',
                                 'type' => InputType::TEXT,
