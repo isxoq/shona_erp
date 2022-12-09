@@ -18,7 +18,7 @@ use soft\widget\kartik\Form;
     'attributes' => [
         'product_id:select2' => [
             'options' => [
-                'data' => map(\common\models\Products::find()->all(), 'id', 'name')
+                'data' => map(\common\models\Products::find()->orderBy('created_at DESC')->all(), 'id', 'name')
             ]
         ],
         'partner_id:select2' => [
