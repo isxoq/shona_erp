@@ -81,6 +81,11 @@ class Products extends \soft\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
     }
 
+    public function getProductToStores()
+    {
+        return $this->hasMany(ProductImports::class, ["product_id" => "id"]);
+    }
+
     //</editor-fold>
 
 }
