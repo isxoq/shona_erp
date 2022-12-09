@@ -5,6 +5,7 @@
 $menuItems = [
     ['label' => "Bosh sahifa", 'url' => ['/site/index'], 'icon' => 'home',],
     ['label' => "Buyurtma yaratish", 'url' => ['/orders/create'], 'icon' => 'cart-plus', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
+    ['label' => "Harajat qilish", 'url' => ['/expenses/create'], 'icon' => 'tasks', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
 //    ['label' => "Shona Kredit yaratish", 'url' => ['/orders/create-credit'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
     ['label' => "Sotuv", 'icon' => 'list-alt', "items" => [
         ['label' => "Buyurtmalar", 'url' => ['/orders'], 'icon' => 'clipboard-list',],

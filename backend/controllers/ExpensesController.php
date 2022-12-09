@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Expenses;
 use common\models\ExpensesSearch;
@@ -13,8 +14,8 @@ class ExpensesController extends SoftController
 {
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -38,9 +39,9 @@ class ExpensesController extends SoftController
     }
 
     /**
-    * Lists all Expenses models.
-    * @return mixed
-    */
+     * Lists all Expenses models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $searchModel = new ExpensesSearch();
@@ -53,11 +54,11 @@ class ExpensesController extends SoftController
     }
 
     /**
-    * Displays a single Expenses model.
-    * @param integer $id
-    * @return string
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Displays a single Expenses model.
+     * @param integer $id
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionView($id)
     {
         $model = $this->findModel($id);
@@ -65,23 +66,58 @@ class ExpensesController extends SoftController
     }
 
     /**
-    * Creates a new Expenses model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    * @return string
-    */
+     * Creates a new Expenses model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string
+     */
     public function actionCreate()
     {
         $model = new Expenses();
-        return $this->ajaxCrud->createAction($model);
+        $params = [];
+        $viewParams = [];
+
+        $request = Yii::$app->request;
+
+        if ($this->isAjax) {
+
+            if ($model->load($request->post()) && $model->save()) {
+
+                $forceClose = ArrayHelper::getValue($params, 'forceClose', true);
+                if ($forceClose) {
+                    return $this->ajaxCrud->closeModal();
+                } else {
+                    return $this->ajaxCrud->viewAction($model, ['footer' => $this->ajaxCrud->afterCreateFooter(), 'forceReload' => '#crud-datatable-pjax']);
+                }
+
+            } else {
+                return $this->ajaxCrud->createModal($model, $params, $viewParams);
+            }
+
+        } else {
+
+            if ($model->load($request->post()) && $model->save()) {
+
+                if (isset($params['returnUrl'])) {
+                    $returnUrl = $params['returnUrl'];
+                } else {
+                    $returnUrl = ['index'];
+                }
+                return $this->redirect($returnUrl);
+            }
+
+            $view = ArrayHelper::getValue($params, 'view', 'create');
+            $viewParams['model'] = $model;
+            return $this->render($view, $viewParams);
+        }
     }
 
     /**
-    * Updates an existing Expenses model.
-    * If update is successful, the browser will be redirected to the 'view' page.
-    * @param integer $id
-    * @return string
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Updates an existing Expenses model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -89,12 +125,12 @@ class ExpensesController extends SoftController
     }
 
     /**
-    * Deletes an existing Expenses model.
-    * If deletion is successful, the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Deletes an existing Expenses model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -102,13 +138,13 @@ class ExpensesController extends SoftController
     }
 
     /**
-    * Delete multiple existing Expenses model.
-    * For ajax request will return json object
-    * and for non-ajax request if deletion is successful,
-    * the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    */
+     * Delete multiple existing Expenses model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful,
+     * the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionBulkdelete()
     {
         $request = Yii::$app->request;
@@ -121,15 +157,15 @@ class ExpensesController extends SoftController
     }
 
     /**
-    * Finds a single model for crud actions
-    * @param $id
-    * @return Expenses
-    * @throws yii\web\NotFoundHttpException
-    */
+     * Finds a single model for crud actions
+     * @param $id
+     * @return Expenses
+     * @throws yii\web\NotFoundHttpException
+     */
     public function findModel($id)
     {
         $model = Expenses::find()->andWhere(['id' => $id])->one();
-        if ($model == null){
+        if ($model == null) {
             not_found();
         }
         return $model;
