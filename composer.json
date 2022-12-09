@@ -40,7 +40,8 @@
     "kartik-v/yii2-widget-timepicker": "dev-master",
     "unclead/yii2-multiple-input": "~2.0",
     "kartik-v/yii2-money": "dev-master",
-    "phpoffice/phpspreadsheet": "dev-master"
+    "phpoffice/phpspreadsheet": "dev-master",
+    "kartik-v/yii2-date-range": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

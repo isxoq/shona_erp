@@ -49,7 +49,17 @@ $this->registerAjaxCrudAssets();
     ],
     'cols' => [
         'id',
-        'created_at',
+        [
+            "attribute" => "created_at",
+            'format' => 'dateTimeUz',
+            'filterType' => \soft\widget\kartik\DateRangePicker::class,
+            "filterWidgetOptions" => [
+                "initDefaultRangeExpr" => true,
+                "pluginOptions" => [
+                    "autocomplete" => "off"
+                ]
+            ],
+        ],
         "delivery_code",
         [
             "attribute" => "client_id",

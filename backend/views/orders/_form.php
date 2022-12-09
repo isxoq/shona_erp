@@ -199,6 +199,9 @@ JS;
                             [
                                 'name' => 'count',
                                 'type' => InputType::TEXT,
+                                "options" => [
+                                    "width" => "300px",
+                                ],
                                 'title' => t("Mahsulot soni"),
                             ],
                             [

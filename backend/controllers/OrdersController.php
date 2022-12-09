@@ -49,6 +49,8 @@ class OrdersController extends SoftController
      */
     public function actionIndex()
     {
+
+
         $searchModel = new OrdersSearch();
 
         $searchModel->order_type = Order::TYPE_SIMPLE;
