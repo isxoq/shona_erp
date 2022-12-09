@@ -280,7 +280,7 @@ class Orders extends \soft\db\ActiveRecord
         foreach ($this->salesProducts as $salesProduct) {
             $benefit += ($salesProduct->sold_price - $salesProduct->partner_shop_price) * $salesProduct->count;
         }
-        return $benefit;
+        return $benefit - $this->delivery_price;
     }
 
     //<editor-fold desc="Relations" defaultstate="collapsed">
