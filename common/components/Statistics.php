@@ -69,6 +69,7 @@ class Statistics
             foreach ($order->salesProducts as $salesProduct) {
                 $benefit += ($salesProduct->sold_price - $salesProduct->partner_shop_price) * $salesProduct->count;
             }
+            $benefit -= $order->delivery_price;
         }
 
         return $benefit;
