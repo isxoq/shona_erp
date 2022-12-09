@@ -18,6 +18,7 @@ $this->registerAjaxCrudAssets();
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
+            "content" => "Omborga qo'shish",
             'modal' => true,
         ]
     ],
