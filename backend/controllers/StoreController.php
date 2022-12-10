@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\ProductImports;
+use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Products;
 use common\models\ProductsStoreSearch;
@@ -68,13 +69,30 @@ class StoreController extends SoftController
     /**
      * Creates a new Products model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string
      */
     public function actionCreate()
     {
         $model = new ProductImports();
-        $model->partner_id = \common\models\PartnerShops::find()->andWhere(['is_main' => 1])->one()->id;
-        return $this->ajaxCrud->createAction($model);
+        $params = [];
+        $viewParams = [];
+        $request = Yii::$app->request;
+
+        if ($this->isAjax) {
+
+            if ($model->load($request->post()) && $model->save()) {
+
+                $forceClose = ArrayHelper::getValue($params, 'forceClose', true);
+                if ($forceClose) {
+                    return $this->closeModal();
+                } else {
+                    return $this->ajaxCrud->viewAction($model, ['footer' => $this->ajaxCrud->afterCreateFooter(), 'forceReload' => '#crud-datatable-pjax']);
+                }
+
+            } else {
+                return $this->ajaxCrud->createModal($model, $params, $viewParams);
+            }
+
+        }
     }
 
     /**

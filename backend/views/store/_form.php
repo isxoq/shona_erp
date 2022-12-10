@@ -23,11 +23,27 @@ use soft\widget\kartik\Form;
         ],
         'partner_id:select2' => [
             'options' => [
-                'data' => map(\common\models\PartnerShops::find()->andWhere(['is_main' => 1])->all(), 'id', 'name'),
-            ],
-            "value" => 9
+                'data' => map(\common\models\PartnerShops::find()->all(), 'id', 'name'),
+            ]
         ],
-        'quantity',
+        'import_price' => [
+            "name" => "import_price",
+            "title" => t("Hamkordan olingan narx"),
+            "type" => \soft\widget\kartik\InputType::WIDGET,
+            "widgetClass" => \kartik\money\MaskMoney::class,
+            "options" => [
+                'pluginOptions' => [
+                    'prefix' => '$ ',
+                    'affixesStay' => true,
+                    'thousands' => ' ',
+                    'decimal' => '.',
+                    'precision' => 0,
+                    'allowZero' => false,
+                    'allowNegative' => false,
+                ]
+            ]
+        ],
+        'quantity:number',
     ]
 ]); ?>
 <div class="form-group">
