@@ -36,7 +36,7 @@ $this->registerAjaxCrudAssets();
     'filterModel' => $searchModel,
     'panel' => [
         'before' => "<h6>Umumiy savdo: <b>" . Yii::$app->formatter->asSum($filterSales) . "</b></h6>" . "<h6>Jami foyda: <b>" . Yii::$app->formatter->asSum($filterBenefit) . "</b></h6>",
-        'footer' => false
+//        'footer' => true
     ],
     'toolbarTemplate' => '{create}{refresh}',
     'toolbarButtons' => [
