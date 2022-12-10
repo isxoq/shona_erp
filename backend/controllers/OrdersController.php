@@ -56,7 +56,6 @@ class OrdersController extends SoftController
 
         $searchModel->order_type = Order::TYPE_SIMPLE;
 
-
         if (Yii::$app->user->identity->checkRoles(["Operator", "Diller"])) {
             $searchModel->operator_diller_id = Yii::$app->user->id;
         }
