@@ -34,18 +34,16 @@ $this->registerAjaxCrudAssets();
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'panel' => [
+        'before' => "<h6>Umumiy savdo: <b>" . Yii::$app->formatter->asSum($filterSales) . "</b></h6>" . "<h6>Jami foyda: <b>" . Yii::$app->formatter->asSum($filterBenefit) . "</b></h6>",
+        'footer' => false
+    ],
     'toolbarTemplate' => '{create}{refresh}',
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => false,
         ]
-    ],
-    'bulkButtonsTemplate' => '',
-    'bulkButtons' => [
-        'delete' => [
-            /** @see soft\widget\button\BulkButton for other configurations */
-        ],
     ],
     'cols' => [
         'id',

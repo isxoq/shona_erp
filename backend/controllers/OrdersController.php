@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use api\components\Phone;
+use common\components\Statistics;
 use common\models\Clients;
 use common\models\Order;
 use common\models\ProductSales;
@@ -62,10 +63,14 @@ class OrdersController extends SoftController
 
 
         $dataProvider = $searchModel->search();
+        $filterSales = Statistics::calculateOrdersSales($dataProvider->models);
+        $filterBenefit = Statistics::calculateOrdersBenefits($dataProvider->models);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'filterSales' => $filterSales,
+            'filterBenefit' => $filterBenefit,
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace common\components;
 
 use common\models\Clients;
+use common\models\Order;
 use common\models\Orders;
 
 class Statistics
@@ -73,6 +74,26 @@ class Statistics
         }
 
         return $benefit;
+    }
+
+    public static function calculateOrdersSales($models)
+    {
+        $totalSale = 0;
+        foreach ($models as $model) {
+            $totalSale += $model->getSalesProducts()->sum("sold_price");
+        }
+
+        return $totalSale;
+    }
+
+    public static function calculateOrdersBenefits($models)
+    {
+        $totalSale = 0;
+        foreach ($models as $model) {
+            $totalSale += $model->benefit;
+        }
+
+        return $totalSale;
     }
 
 }
