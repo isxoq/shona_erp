@@ -72,8 +72,8 @@ $this->registerAjaxCrudAssets();
                 ],
             ],
         ],
-        "client.phone",
-        "client.address",
+        "client_phone",
+        "client_address",
         'amount:integer',
         [
             "label" => "Yetkazish",
