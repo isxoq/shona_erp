@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\PartnerShops;
 use common\models\ProductImports;
 use soft\helpers\ArrayHelper;
 use Yii;
@@ -79,11 +80,16 @@ class StoreController extends SoftController
 
         if ($this->isAjax) {
 
-            if ($model->load($request->post()) && $model->save()) {
+            if ($model->load($request->post())) {
+
+                $partner = PartnerShops::findOne($model->partner_id);
+                $model->import_price_uzs = $model->import_price * $partner->currency;
+                $model->currency_price = $partner->currency;
+                $model->save();
 
                 $forceClose = ArrayHelper::getValue($params, 'forceClose', true);
                 if ($forceClose) {
-                    return $this->closeModal();
+                    return $this->ajaxCrud->closeModal();
                 } else {
                     return $this->ajaxCrud->viewAction($model, ['footer' => $this->ajaxCrud->afterCreateFooter(), 'forceReload' => '#crud-datatable-pjax']);
                 }
