@@ -78,7 +78,11 @@ $this->registerAjaxCrudAssets();
         [
             "label" => "Yetkazish",
             "value" => function ($model) {
-                return $model->delivery->name . PHP_EOL . Yii::$app->formatter->asSum($model->delivery_price);
+                if ($model->delivery) {
+                    return $model->delivery->name . PHP_EOL . Yii::$app->formatter->asSum($model->delivery_price);
+                } else {
+                    return "";
+                }
             }
         ],
         [
