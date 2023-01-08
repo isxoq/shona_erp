@@ -86,6 +86,18 @@ class Products extends \soft\db\ActiveRecord
         return $this->hasMany(ProductImports::class, ["product_id" => "id"]);
     }
 
+
+    public function getSalesCount()
+    {
+        $salesCount = ProductSales::find()
+            ->joinWith("partnerShop")
+            ->andWhere(['product_sales.product_id' => $this->id])
+            ->andWhere(['partner_shops.is_main' => 1])
+            ->sum("count");
+
+        return $salesCount;
+    }
+
     //</editor-fold>
 
 }

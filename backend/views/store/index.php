@@ -28,7 +28,7 @@ $this->registerAjaxCrudAssets();
         [
             "label" => t("Soni"),
             "value" => function ($model) {
-                return $model->getProductToStores()->sum("quantity");
+                return $model->getProductToStores()->sum("quantity") - $model->salesCount;
             }
         ],
     ],
