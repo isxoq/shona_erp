@@ -102,10 +102,26 @@ class PartnerShops extends \soft\db\ActiveRecord
 
             ->andWhere(['=', "product_sales.product_source", $this->id])
             ->andWhere(['!=', "orders.status", Orders::STATUS_CANCELLED])
-            ->sum("product_sales.partner_shop_price");
+            ->sum("product_sales.partner_shop_price*count");
+
 
         return $productSales;
 
+    }
+
+    public function getImportedAmount()
+    {
+        $productImportsUsd = ProductImports::find()
+            ->andWhere(['partner_id' => $this->id])
+            ->sum("import_price*quantity");
+        $productImportsUzs = ProductImports::find()
+            ->andWhere(['partner_id' => $this->id])
+            ->sum("import_price_uzs*quantity");
+
+        return [
+            "usd" => $productImportsUsd,
+            "uzs" => $productImportsUzs,
+        ];
     }
 
     public function getPayedAmount()
@@ -119,6 +135,6 @@ class PartnerShops extends \soft\db\ActiveRecord
 
     public function getDebtAmount()
     {
-        return $this->getMonthlySales() - $this->getPayedAmount();
+        return $this->getImportedAmount()['uzs'] + $this->getMonthlySales() - $this->getPayedAmount();
     }
 }

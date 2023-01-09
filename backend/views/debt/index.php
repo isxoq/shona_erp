@@ -32,8 +32,14 @@ $this->registerAjaxCrudAssets();
         'name',
 //        'phone',
 //        'phone',
+        'imported' => [
+            "label" => "Jami omborga Import",
+            "value" => function ($model) {
+                return "{$model->importedAmount['usd']} $ = " . Yii::$app->formatter->asSum($model->importedAmount['uzs']);
+            }
+        ],
         'monthlySales' => [
-            "label" => "Jami sotuv",
+            "label" => "Jami yo'l-yo'lakay sotuv",
             "value" => function ($model) {
                 return Yii::$app->formatter->asSum($model->monthlySales);
             }
