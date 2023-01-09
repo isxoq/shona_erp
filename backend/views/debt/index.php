@@ -35,13 +35,13 @@ $this->registerAjaxCrudAssets();
         'imported' => [
             "label" => "Jami omborga Import",
             "value" => function ($model) {
-                return Yii::$app->formatter->asDollar($model->importedAmount['usd']);
+                return Yii::$app->formatter->asDollar($model->importedAmount['usd'] + $model->base_imported);
             }
         ],
         'monthlySales' => [
             "label" => "Jami yo'l-yo'lakay sotuv",
             "value" => function ($model) {
-                return Yii::$app->formatter->asDollar($model->notPayedSales);
+                return Yii::$app->formatter->asDollar($model->notPayedSales + $model->base_order_sold);
             }
         ],
         'payedAmount' => [
@@ -53,7 +53,7 @@ $this->registerAjaxCrudAssets();
         'debtAmount' => [
             "label" => "Qarz",
             "value" => function ($model) {
-                return Yii::$app->formatter->asDollar($model->debtAmount);
+                return Yii::$app->formatter->asDollar($model->debtAmount + $model->base_debt);
             }
         ],
 //        'address',

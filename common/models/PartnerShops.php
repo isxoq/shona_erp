@@ -19,6 +19,9 @@ use Yii;
  * @property int|null $updated_at
  * @property int|null $pay_amount
  * @property int|null $currency
+ * @property int|null $base_imported
+ * @property int|null $base_order_sold
+ * @property int|null $base_debt
  *
  * @property User $deletedBy
  */
@@ -43,6 +46,7 @@ class PartnerShops extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
+            [['base_debt', 'base_order_sold', 'base_imported'], 'safe'],
             [['is_deleted', "pay_amount", "is_main", "currency", 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'phone', 'address', 'email'], 'string', 'max' => 255],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],

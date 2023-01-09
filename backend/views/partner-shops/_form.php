@@ -38,6 +38,57 @@ use soft\widget\kartik\Form;
                 ]
             ]
         ],
+        'base_imported' => [
+            "name" => "base_imported",
+            "title" => t("Jami omborga Import"),
+            "type" => \soft\widget\kartik\InputType::WIDGET,
+            "widgetClass" => \kartik\money\MaskMoney::class,
+            "options" => [
+                'pluginOptions' => [
+                    'prefix' => '$ ',
+                    'affixesStay' => true,
+                    'thousands' => ' ',
+                    'decimal' => '.',
+                    'precision' => 1,
+                    'allowZero' => false,
+                    'allowNegative' => true,
+                ]
+            ]
+        ],
+        'base_order_sold' => [
+            "name" => "base_order_sold",
+            "title" => t("Jami yo'l-yo'lakay sotuv"),
+            "type" => \soft\widget\kartik\InputType::WIDGET,
+            "widgetClass" => \kartik\money\MaskMoney::class,
+            "options" => [
+                'pluginOptions' => [
+                    'prefix' => '$ ',
+                    'affixesStay' => true,
+                    'thousands' => ' ',
+                    'decimal' => '.',
+                    'precision' => 1,
+                    'allowZero' => false,
+                    'allowNegative' => true,
+                ]
+            ]
+        ],
+        'base_debt' => [
+            "name" => "base_debt",
+            "title" => t("Qarz"),
+            "type" => \soft\widget\kartik\InputType::WIDGET,
+            "widgetClass" => \kartik\money\MaskMoney::class,
+            "options" => [
+                'pluginOptions' => [
+                    'prefix' => '$ ',
+                    'affixesStay' => true,
+                    'thousands' => ' ',
+                    'decimal' => '.',
+                    'precision' => 1,
+                    'allowZero' => false,
+                    'allowNegative' => true,
+                ]
+            ]
+        ],
     ]
 ]); ?>
 <div class="form-group">
