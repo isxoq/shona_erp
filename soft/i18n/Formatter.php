@@ -29,7 +29,10 @@ class Formatter extends YiiFormatter
 
     public function asDollar($value)
     {
-        return $this->asDecimal($value, 1) . "$";
+        if ($value == null) {
+            return $this->asInteger(0) . " " . Yii::t('site', "$");
+        }
+        return $this->asInteger($value) . " " . Yii::t('site', "$");
     }
 
     public function asSum($value)
