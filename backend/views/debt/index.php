@@ -41,7 +41,7 @@ $this->registerAjaxCrudAssets();
         'monthlySales' => [
             "label" => "Jami yo'l-yo'lakay sotuv",
             "value" => function ($model) {
-                return Yii::$app->formatter->asSum($model->notPayedSales);
+                return ($model->notPayedSales ?? 0) . " $";
             }
         ],
         'payedAmount' => [
