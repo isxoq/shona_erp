@@ -26,7 +26,19 @@ $this->registerAjaxCrudAssets();
 //        'id',
         'name',
         [
-            "label" => t("Soni"),
+            "label" => t("Jami import qilingan"),
+            "value" => function ($model) {
+                return $model->getProductToStores()->sum("quantity");
+            }
+        ],
+        [
+            "label" => t("Jami sotilgan"),
+            "value" => function ($model) {
+                return $model->salesCount;
+            }
+        ],
+        [
+            "label" => t("Omborda qolgan"),
             "value" => function ($model) {
                 return $model->getProductToStores()->sum("quantity") - $model->salesCount;
             }
