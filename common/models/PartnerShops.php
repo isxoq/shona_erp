@@ -96,11 +96,12 @@ class PartnerShops extends \soft\db\ActiveRecord
 //            $end = strtotime($end);
 //        }
         $productSales = ProductSales::find()
-//            ->joinWith("order")
+            ->joinWith("order")
 //            ->andWhere(['>=', "orders.created_at", $start])
 //            ->andWhere(['<=', "orders.created_at", $end])
 
             ->andWhere(['=', "product_sales.product_source", $this->id])
+            ->andWhere(['!=', "orders.status", Orders::STATUS_CANCELLED])
             ->sum("product_sales.partner_shop_price");
 
         return $productSales;
