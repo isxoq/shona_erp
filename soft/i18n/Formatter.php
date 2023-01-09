@@ -32,7 +32,7 @@ class Formatter extends YiiFormatter
         if ($value == null) {
             return $this->asInteger(0) . " " . Yii::t('site', "$");
         }
-        return $this->asInteger($value) . " " . Yii::t('site', "$");
+        return $value . " " . Yii::t('site', "$");
     }
 
     public function asSum($value)
