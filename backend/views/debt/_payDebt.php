@@ -25,7 +25,7 @@ use soft\widget\kartik\InputType;
             "widgetClass" => \kartik\money\MaskMoney::class,
             "options" => [
                 'pluginOptions' => [
-                    'prefix' => 'UZS ',
+                    'prefix' => '$ ',
                     'affixesStay' => true,
                     'thousands' => ' ',
                     'decimal' => '.',
