@@ -49,7 +49,7 @@ use soft\widget\kartik\Form;
                     'affixesStay' => true,
                     'thousands' => ' ',
                     'decimal' => '.',
-                    'precision' => 1,
+                    'precision' => 2,
                     'allowZero' => false,
                     'allowNegative' => true,
                 ]
@@ -66,7 +66,7 @@ use soft\widget\kartik\Form;
                     'affixesStay' => true,
                     'thousands' => ' ',
                     'decimal' => '.',
-                    'precision' => 1,
+                    'precision' => 2,
                     'allowZero' => false,
                     'allowNegative' => true,
                 ]
@@ -83,7 +83,7 @@ use soft\widget\kartik\Form;
                     'affixesStay' => true,
                     'thousands' => ' ',
                     'decimal' => '.',
-                    'precision' => 1,
+                    'precision' => 2,
                     'allowZero' => false,
                     'allowNegative' => true,
                 ]
