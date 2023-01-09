@@ -109,6 +109,19 @@ class PartnerShops extends \soft\db\ActiveRecord
 
     }
 
+    public function getNotPayedSales()
+    {
+        $productSales = ProductSales::find()
+            ->joinWith("order")
+            ->andWhere(['=', "product_sales.product_source", $this->id])
+            ->andWhere(['!=', "product_sales.partner_shop_payed", 1])
+            ->andWhere(['!=', "orders.status", Orders::STATUS_CANCELLED])
+            ->sum("product_sales.currency_partner_price*count");
+
+
+        return $productSales;
+    }
+
     public function getImportedAmount()
     {
         $productImportsUsd = ProductImports::find()
@@ -135,6 +148,6 @@ class PartnerShops extends \soft\db\ActiveRecord
 
     public function getDebtAmount()
     {
-        return $this->getImportedAmount()['uzs'] + $this->getMonthlySales() - $this->getPayedAmount();
+        return $this->getImportedAmount()['usd'] + $this->getNotPayedSales() - $this->getPayedAmount();
     }
 }
