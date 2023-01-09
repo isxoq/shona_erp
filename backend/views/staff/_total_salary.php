@@ -13,7 +13,7 @@ use common\services\SalaryService;
 ?>
 
 <section class="content">
-    <?php for ($year = 2022; $year <= 2023; $year++): ?>
+    <?php for ($year = 2023; $year <= 2023; $year++): ?>
         <div class="container-fluid">
             <?php for ($i = 1; $i <= 12; $i++): ?>
                 <?php
