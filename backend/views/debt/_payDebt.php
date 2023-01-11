@@ -29,7 +29,7 @@ use soft\widget\kartik\InputType;
                     'affixesStay' => true,
                     'thousands' => ' ',
                     'decimal' => '.',
-                    'precision' => 0,
+                    'precision' => 2,
                     'allowZero' => false,
                     'allowNegative' => false,
                 ]
