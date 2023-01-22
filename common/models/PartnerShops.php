@@ -154,4 +154,6 @@ class PartnerShops extends \soft\db\ActiveRecord
     {
         return $this->getImportedAmount()['usd'] + $this->getNotPayedSales() - $this->getPayedAmount();
     }
+
+
 }

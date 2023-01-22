@@ -6,6 +6,8 @@ use api\components\Phone;
 use common\components\Statistics;
 use common\models\Clients;
 use common\models\Order;
+use common\models\PartnerShops;
+use common\models\Products;
 use common\models\ProductSales;
 use soft\helpers\ArrayHelper;
 use Yii;
@@ -159,9 +161,32 @@ class OrdersController extends SoftController
 
             $model->order_type = Orders::TYPE_SIMPLE;
             $model->client_phone = Phone::clear($model->client_phone);
-            $model->save();
 
             ProductSales::deleteAll(['order_id' => $model->id]);
+
+            foreach ($model->order_products as $item) {
+                if ($item['product_id'] && $item['product_source'] && $item['count']) {
+                    $partnerShop = PartnerShops::findOne($item['product_source']);
+                    if ($partnerShop->is_main) {
+                        $productModel = Products::findOne($item['product_id']);
+                        $mainStoreCount = $productModel->getProductToStores()->sum("quantity") - $productModel->salesCountWithoutOrder($model->id);
+                        if ($mainStoreCount < $item['count']) {
+                            $model->addError("order_products", "Mahsulotlar asosiy omborda yetarli emas!");
+                            return $this->render("update", [
+                                'model' => $model
+                            ]);
+                        }
+                    }
+                } else {
+                    $model->addError("order_products", "Mahsulotlar soni 0 dan katta bo'lishi kerak!");
+                    return $this->render("update", [
+                        'model' => $model
+                    ]);
+                }
+            }
+
+
+            $model->save();
             $model->createProductSales();
 
             $returnUrl = ['index'];

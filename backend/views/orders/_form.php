@@ -189,7 +189,7 @@ JS;
                                 'type' => \kartik\widgets\Select2::class,
                                 'title' => t("Mahsulot"),
                                 "options" => [
-                                    'data' => \soft\helpers\ArrayHelper::map(\common\models\Products::find()->asArray()->all(), 'id', 'name'),
+                                    'data' => \soft\helpers\ArrayHelper::map(\common\models\Products::find()->all(), 'id', 'fullName'),
                                     "options" => [
                                         "width" => "30px",
                                         "placeholder" => t("Tanlang...")
@@ -212,7 +212,7 @@ JS;
                                     "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'prompt' => '- Tanlang -',
                                 ],
-                                'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->asArray()->all(), 'id', 'name'),
+                                'items' => \soft\helpers\ArrayHelper::map(\common\models\PartnerShops::find()->all(), 'id', 'name'),
                             ],
                             [
                                 "name" => "currency_partner_price",

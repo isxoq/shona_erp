@@ -100,6 +100,26 @@ class Products extends \soft\db\ActiveRecord
         return $salesCount;
     }
 
+    public function salesCountWithoutOrder($id)
+    {
+        $salesCount = ProductSales::find()
+            ->joinWith("partnerShop")
+            ->joinWith("order")
+            ->andWhere(['product_sales.product_id' => $this->id])
+            ->andWhere(['partner_shops.is_main' => 1])
+            ->andWhere(["!=", 'orders.status', Orders::STATUS_CANCELLED])
+            ->andWhere(["!=", 'orders.id', $id])
+            ->sum("count");
+
+        return $salesCount;
+    }
+
     //</editor-fold>
+
+    public function getFullName()
+    {
+        $count = $this->getProductToStores()->sum("quantity") - $this->salesCount;
+        return $this->name . " (Omborda {$count} ta qolgan)";
+    }
 
 }
