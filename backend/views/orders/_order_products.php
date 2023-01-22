@@ -13,7 +13,7 @@
         <?php foreach ($model->salesProducts as $item) : ?>
             <tr>
                 <td><?=$item->partnerShop->name??""?></td>
-                <td><?=$item->product->name?></td>
+                <td><?=$item->product->name??""?></td>
                 <td><?=$item->count?></td>
                 <td><?=$item->partner_shop_price?></td>
                 <td><?=$item->sold_price?></td>
