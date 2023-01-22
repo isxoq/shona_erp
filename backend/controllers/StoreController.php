@@ -173,6 +173,9 @@ class StoreController extends SoftController
         $query->joinWith("productToStores");
         $query->andWhere([">", 'product_imports.quantity', 0]);
 
+        foreach (range('A', $sheet->getHighestColumn()) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
 
         $sheet->setCellValue("A1", "Mahsulot nomi");
         $sheet->setCellValue("B1", "Ombor");
