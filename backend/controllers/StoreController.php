@@ -170,8 +170,8 @@ class StoreController extends SoftController
 
 
         $query = Products::find();
-        $query->joinWith("productToStores");
-        $query->andWhere([">", 'product_imports.quantity', 0]);
+//        $query->joinWith("productToStores");
+//        $query->andWhere([">", 'product_imports.quantity', 0]);
 
         foreach (range('A', $sheet->getHighestColumn()) as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);

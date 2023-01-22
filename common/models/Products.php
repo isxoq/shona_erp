@@ -86,6 +86,11 @@ class Products extends \soft\db\ActiveRecord
         return $this->hasMany(ProductImports::class, ["product_id" => "id"]);
     }
 
+    public function getProductToSales()
+    {
+        return $this->hasMany(ProductSales::class, ["product_id" => "id"]);
+    }
+
 
     public function getSalesCount()
     {

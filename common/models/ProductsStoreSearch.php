@@ -48,9 +48,11 @@ class ProductsStoreSearch extends Products
             return $dataProvider;
         }
 
-        $query->joinWith("productToStores");
+//        $query->joinWith("productToStores");
+//        $query->joinWith("productToSales");
 
-        $query->andWhere([">", 'product_imports.quantity', 0]);
+//        $query->orWhere([">", 'product_imports.quantity', 0]);
+//        $query->orWhere([">", 'product_sales.count', 0]);
 
         $query->andFilterWhere([
             'id' => $this->id,
