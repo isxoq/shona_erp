@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use common\models\PartnerShops;
 use common\models\ProductImports;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Products;
@@ -159,5 +161,35 @@ class StoreController extends SoftController
             not_found();
         }
         return $model;
+    }
+
+    public function actionExportData()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $query = Products::find();
+        $query->joinWith("productToStores");
+        $query->andWhere([">", 'product_imports.quantity', 0]);
+
+
+        $sheet->setCellValue("A1", "Mahsulot nomi");
+        $sheet->setCellValue("B1", "Ombor");
+        $sheet->setCellValue("C1", "Qolgan mahsulot soni");
+        $i = 2;
+        foreach ($query->all() as $item) {
+            $sheet->setCellValue("A{$i}", $item->name);
+            $sheet->setCellValue("B{$i}", "Dokon");
+            $sheet->setCellValue("C{$i}", $item->getProductToStores()->sum("quantity") - $item->salesCount);
+            $i++;
+        }
+
+//        dd($query->all());
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export.xlsx');
+
+        return Yii::$app->response->sendFile("export.xlsx");
     }
 }
