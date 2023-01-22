@@ -46,6 +46,21 @@ $this->registerAjaxCrudAssets();
         ]
     ],
     'cols' => [
+
+        [
+            'class' => 'kartik\grid\ExpandRowColumn',
+            'width' => '50px',
+            'value' => function ($model, $key, $index, $column) {
+                return \soft\grid\GridView::ROW_COLLAPSED;
+            },
+            // uncomment below and comment detail if you need to render via ajax
+            // 'detailUrl' => Url::to(['/site/book-details']),
+            'detail' => function ($model, $key, $index, $column) {
+                return Yii::$app->controller->renderPartial('_order_products', ['model' => $model]);
+            },
+            'headerOptions' => ['class' => 'kartik-sheet-style'],
+            'expandOneOnly' => true
+        ],
         'id',
         [
             "attribute" => "created_at",
@@ -58,20 +73,20 @@ $this->registerAjaxCrudAssets();
                 ]
             ],
         ],
-        "delivery_code",
-        [
-            "attribute" => "client_id",
-            "value" => "clientFullname",
-            'filter' => map(\common\models\Clients::find()->all(), "id", 'full_name'),
-            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => 'Tanlang..'],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                    'width' => '100px'
-                ],
-            ],
-        ],
+//        "delivery_code",
+//        [
+//            "attribute" => "client_id",
+//            "value" => "clientFullname",
+//            'filter' => map(\common\models\Clients::find()->all(), "id", 'full_name'),
+//            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+//            'filterWidgetOptions' => [
+//                'options' => ['prompt' => 'Tanlang..'],
+//                'pluginOptions' => [
+//                    'allowClear' => true,
+//                    'width' => '100px'
+//                ],
+//            ],
+//        ],
         "client_phone",
         "client_address",
         'amount:integer',

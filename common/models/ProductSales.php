@@ -90,5 +90,10 @@ class ProductSales extends \soft\db\ActiveRecord
         return $this->hasOne(PartnerShops::class, ["id" => "product_source"]);
     }
 
+    public function getProduct()
+    {
+        return $this->hasOne(Products::class, ["id" => "product_id"]);
+    }
+
     //</editor-fold>
 }
