@@ -162,7 +162,6 @@ class OrdersController extends SoftController
             $model->order_type = Orders::TYPE_SIMPLE;
             $model->client_phone = Phone::clear($model->client_phone);
 
-//            ProductSales::deleteAll(['order_id' => $model->id]);
 
 //            foreach ($model->order_products as $item) {
 //                if ($item['product_id'] && $item['product_source'] && $item['count']) {
@@ -188,7 +187,6 @@ class OrdersController extends SoftController
 
             $model->save();
             ProductSales::deleteAll(['order_id' => $model->id]);
-
             $model->createProductSales();
 
             $returnUrl = ['index'];
