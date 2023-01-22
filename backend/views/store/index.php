@@ -14,7 +14,14 @@ $this->registerAjaxCrudAssets();
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'toolbarTemplate' => '{create}{refresh}',
+    'export' => [
+        'fontAwesome' => true
+    ],
+    'exportConfig' => [
+        'xls' => [],
+    ],
+
+    'toolbarTemplate' => '{create}{refresh} {toggleData}{export}',
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */

@@ -14,6 +14,12 @@ $this->registerAjaxCrudAssets();
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'export' => [
+        'fontAwesome' => true
+    ], 'exportConfig' => [
+        'xlsx' => [],
+    ],
+
     'toolbarTemplate' => '{create}{refresh}',
     'toolbarButtons' => [
         'create' => [
