@@ -39,7 +39,8 @@ class PartnerShopPays extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
-            [['partner_shop_id', 'amount', 'created_at', 'updated_at'], 'integer'],
+            [['partner_shop_id', 'created_at', 'updated_at'], 'integer'],
+            ['amount', "safe"]
         ];
     }
 

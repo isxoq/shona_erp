@@ -32,7 +32,7 @@ class Formatter extends YiiFormatter
         if ($value == null) {
             return $this->asInteger(0) . " " . Yii::t('site', "$");
         }
-        return $value . " " . Yii::t('site', "$");
+        return round($value, 2) . " " . Yii::t('site', "$");
     }
 
     public function asSum($value)
@@ -40,7 +40,7 @@ class Formatter extends YiiFormatter
         if ($value == null) {
             return $this->asInteger(0) . " " . Yii::t('site', "sum");
         }
-        return $this->asInteger($value) . " " . Yii::t('site', "sum");
+        return round($value, 2) . " " . Yii::t('site', "sum");
     }
 
     public function asLittleImage($value, $width = '150px')
