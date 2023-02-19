@@ -178,13 +178,15 @@ class StoreController extends SoftController
         }
 
         $sheet->setCellValue("A1", "Mahsulot nomi");
-        $sheet->setCellValue("B1", "Ombor");
-        $sheet->setCellValue("C1", "Qolgan mahsulot soni");
+        $sheet->setCellValue("B1", "Mahsulot narxi $");
+        $sheet->setCellValue("C1", "Ombor");
+        $sheet->setCellValue("D1", "Qolgan mahsulot soni");
         $i = 2;
         foreach ($query->all() as $item) {
             $sheet->setCellValue("A{$i}", $item->name);
-            $sheet->setCellValue("B{$i}", "Dokon");
-            $sheet->setCellValue("C{$i}", $item->getProductToStores()->sum("quantity") - $item->salesCount);
+            $sheet->setCellValue("B{$i}", $item->priceUsd);
+            $sheet->setCellValue("C{$i}", "Dokon");
+            $sheet->setCellValue("D{$i}", $item->getProductToStores()->sum("quantity") - $item->salesCount);
             $i++;
         }
 

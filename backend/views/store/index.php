@@ -36,6 +36,7 @@ $this->registerAjaxCrudAssets();
     'cols' => [
 //        'id',
         'name',
+        'priceUsd',
         [
             "label" => t("Jami import qilingan"),
             "value" => function ($model) {
