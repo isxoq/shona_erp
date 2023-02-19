@@ -2,7 +2,11 @@
 
 namespace backend\controllers;
 
+use common\models\Debts;
 use common\models\PartnerShopPays;
+use common\models\Products;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\PartnerShops;
@@ -167,5 +171,43 @@ class DebtController extends SoftController
         } else {
             return $this->ajaxCrud->createModal($model, $params, $viewParams);
         }
+    }
+
+    public function actionExportData()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $query = PartnerShops::find();
+
+//        $query->joinWith("productToStores");
+//        $query->andWhere([">", 'product_imports.quantity', 0]);
+
+        foreach (range('A', $sheet->getHighestColumn()) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->setCellValue("A1", "Nomi");
+        $sheet->setCellValue("B1", "Jami omborga import");
+        $sheet->setCellValue("C1", "Jami yo'l yo'lakay sotuv");
+        $sheet->setCellValue("D1", "To'langan");
+        $sheet->setCellValue("E1", "Qarz");
+        $i = 2;
+        foreach ($query->all() as $item) {
+            $sheet->setCellValue("A{$i}", $item->name);
+            $sheet->setCellValue("B{$i}", Yii::$app->formatter->asDollar($item->importedAmount['usd'] + $item->base_imported));
+            $sheet->setCellValue("C{$i}", Yii::$app->formatter->asDollar($item->notPayedSales + $item->base_order_sold));
+            $sheet->setCellValue("D{$i}", Yii::$app->formatter->asDollar($item->payedAmount));
+            $sheet->setCellValue("E{$i}",  Yii::$app->formatter->asDollar($item->debtAmount + $item->base_debt));
+            $i++;
+        }
+
+//        dd($query->all());
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export.xlsx');
+
+        return Yii::$app->response->sendFile("export.xlsx");
     }
 }

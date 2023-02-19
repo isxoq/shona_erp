@@ -25,7 +25,7 @@ $this->registerAjaxCrudAssets();
             /** @see soft\widget\button\Button for other configurations */
             "content" => Html::button('<i class="fas fa-download"></i>', [
                 'class' => 'btn btn-success',
-                'title' => Yii::t('app', 'Add Book'),
+                'title' => Yii::t('app', 'Export'),
 
             ]),
             "url" => 'store/export-data',

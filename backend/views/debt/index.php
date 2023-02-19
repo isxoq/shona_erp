@@ -14,11 +14,22 @@ $this->registerAjaxCrudAssets();
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'toolbarTemplate' => '{create}{refresh}',
+    'toolbarTemplate' => '{create}{refresh}{exportData}',
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => true,
+        ],
+        'exportData' => [
+            /** @see soft\widget\button\Button for other configurations */
+            "content" => Html::button('<i class="fas fa-download"></i>', [
+                'class' => 'btn btn-success',
+                'title' => Yii::t('app', 'Export'),
+
+            ]),
+            "url" => 'export-data',
+            "pjax" => false
+//            'modal' => true,
         ]
     ],
     'bulkButtonsTemplate' => '{delete}',
