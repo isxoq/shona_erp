@@ -127,4 +127,9 @@ class Products extends \soft\db\ActiveRecord
         return $this->name . " (Omborda {$count} ta qolgan)";
     }
 
+    public function getPriceUsd()
+    {
+        return "{$this->price_usd} $";
+    }
+
 }
