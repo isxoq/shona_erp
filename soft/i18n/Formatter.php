@@ -40,7 +40,7 @@ class Formatter extends YiiFormatter
         if ($value == null) {
             return $this->asInteger(0) . " " . Yii::t('site', "sum");
         }
-        return round($value, 2) . " " . Yii::t('site', "sum");
+        return $this->asDecimal(round($value, 2)) . " " . Yii::t('site', "sum");
     }
 
     public function asLittleImage($value, $width = '150px')

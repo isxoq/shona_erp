@@ -277,10 +277,35 @@ class Orders extends \soft\db\ActiveRecord
     public function getBenefit()
     {
         $benefit = 0;
+        if (!$this->salesProducts) {
+            return 0;
+        }
         foreach ($this->salesProducts as $salesProduct) {
+
+            if (!$salesProduct->sold_price || !$salesProduct->partner_shop_price || !$salesProduct->count) {
+                return 0;
+            }
+
             $benefit += ($salesProduct->sold_price - $salesProduct->partner_shop_price) * $salesProduct->count;
         }
         return $benefit - $this->delivery_price;
+    }
+
+    public function getBuyPrice()
+    {
+        $prePrice = 0;
+        if (!$this->salesProducts) {
+            return 0;
+        }
+        foreach ($this->salesProducts as $salesProduct) {
+
+            if (!$salesProduct->sold_price || !$salesProduct->partner_shop_price || !$salesProduct->count) {
+                return 0;
+            }
+
+            $prePrice += $salesProduct->partner_shop_price * $salesProduct->count;
+        }
+        return $prePrice;
     }
 
     //<editor-fold desc="Relations" defaultstate="collapsed">

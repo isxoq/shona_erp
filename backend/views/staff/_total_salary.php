@@ -46,7 +46,7 @@ use common\services\SalaryService;
                                     <?php foreach ($staffs as $staff): ?>
 
                                         <?php
-                                        if ($staff->checkRoles(["admin", "Rahbar"])) {
+                                        if ($staff->checkRoles(["admin","Administrator", "Rahbar"])) {
                                             continue;
                                         }
 

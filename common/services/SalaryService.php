@@ -5,6 +5,7 @@ namespace common\services;
 use common\models\User;
 use common\models\Orders;
 use common\models\ProductSales;
+use soft\helpers\ArrayHelper;
 
 class SalaryService
 {
@@ -54,7 +55,40 @@ class SalaryService
 
     public static function getStaffMonthlyOrderSalesBonus($from, $to, $user_id)
     {
+
+        $ordersQuery = static::getUserOrdersQueryDateInterval($from, $to, $user_id);
+
+        $orders = $ordersQuery
+            ->distinct("orders.id")
+            ->andWhere(["!=", "orders.id", Orders::STATUS_CANCELLED])
+            ->andWhere(["!=", "orders.id", Orders::STATUS_HAS_PROBLEM]);
+
+        $revenue = 0;
+        $prePrice = 0;
+        $bonus = 0;
+        foreach ($orders->all() as $item) {
+            $revenue += $item->benefit;
+            $prePrice += $item->buyPrice;
+        }
+
+
+        if ($prePrice) {
+            $percent = $revenue / $prePrice * 100;
+        }
+
+
+        if ($prePrice <= 5) {
+            $bonus = $revenue * 0.05;
+        } elseif ($percent > 5 && $percent < 15) {
+            $bonus = $revenue * 0.08;
+        } elseif ($percent >= 15) {
+            $bonus = $revenue * 0.15;
+        }
+
+        return $bonus;
+
         $revenue = static::getOrdersRevenue($from, $to, $user_id);
+        return $revenue;
 
         $bonus = 0;
         if (\Yii::$app->authManager->checkAccess($user_id, "Operator") || \Yii::$app->authManager->checkAccess($user_id, "Diller")) {
