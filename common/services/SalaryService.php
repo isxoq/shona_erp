@@ -28,7 +28,7 @@ class SalaryService
             $salary += $revenue * \Yii::$app->params['salary']['taminotchi'] / 100;
         }
 
-        return $salary;
+        return 1000000;
 
     }
 
@@ -56,6 +56,10 @@ class SalaryService
     public static function getStaffMonthlyOrderSalesBonus($from, $to, $user_id)
     {
 
+
+
+
+
         $ordersQuery = static::getUserOrdersQueryDateInterval($from, $to, $user_id);
 
         $orders = $ordersQuery
@@ -71,6 +75,11 @@ class SalaryService
             $prePrice += $item->buyPrice;
         }
 
+        $bonus = 0;
+        if (\Yii::$app->authManager->checkAccess($user_id, "Ta'minotchi")) {
+            $bonus += $revenue * \Yii::$app->params['salary']['taminotchi'] / 100;
+            return $bonus;
+        }
 
         if ($prePrice) {
             $percent = $revenue / $prePrice * 100;
@@ -85,25 +94,9 @@ class SalaryService
             $bonus = $revenue * 0.15;
         }
 
-        return $bonus;
-
-        $revenue = static::getOrdersRevenue($from, $to, $user_id);
-        return $revenue;
-
-        $bonus = 0;
-        if (\Yii::$app->authManager->checkAccess($user_id, "Operator") || \Yii::$app->authManager->checkAccess($user_id, "Diller")) {
-            if ($revenue > \Yii::$app->params['fines']['operator']) {
-                $bonus = ($revenue - \Yii::$app->params['fines']['operator']) * 0.01;
-            }
-        }
-
-
-//        if (\Yii::$app->authManager->checkAccess($user_id, "Ta'minotchi")) {
-//            $salary += $revenue * \Yii::$app->params['salary']['taminotchi'] / 100;
-//        }
-
 
         return $bonus;
+
 
     }
 
