@@ -13,7 +13,7 @@ class PaymentTypesSearch extends PaymentTypes
     public function rules()
     {
         return [
-            [['id', 'percent', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'percent', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at','type'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -55,6 +55,7 @@ class PaymentTypesSearch extends PaymentTypes
             'deleted_by' => $this->deleted_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'type' => $this->type,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

@@ -119,6 +119,8 @@ class OrdersController extends SoftController
             $model->operator_diller_id = Yii::$app->user->id;
             $model->save();
 
+
+            $model->createPartnerFees();
             $model->createProductSales();
 
             $returnUrl = ['index'];
@@ -141,6 +143,7 @@ class OrdersController extends SoftController
     {
         $model = $this->findModel($id);
         $model->order_products = $model->salesProducts;
+        $model->partner_fees = $model->partnerFees;
         $request = Yii::$app->request;
 
         if ($model->load($request->post())) {
@@ -187,6 +190,8 @@ class OrdersController extends SoftController
 
             $model->save();
             ProductSales::deleteAll(['order_id' => $model->id]);
+
+            $model->createPartnerFees();
             $model->createProductSales();
 
             $returnUrl = ['index'];

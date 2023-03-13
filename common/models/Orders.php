@@ -39,6 +39,7 @@ class Orders extends \soft\db\ActiveRecord
 {
 
     public $order_products;
+    public $partner_fees;
 
     const STATUS_NEW = 1;
     const STATUS_DELIVERY = 2;
@@ -90,6 +91,7 @@ class Orders extends \soft\db\ActiveRecord
         return [
             [['operator_diller_id', "taminotchi_id"], "integer"],
             ['order_products', 'safe'],
+            ['partner_fees', 'safe'],
             [['payment_type', 'client_id', 'delivery_type', 'network_id', 'status', 'order_type', 'partner_order_id', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'delivery_price'], 'number'],
             [['name', 'client_fullname', "delivery_code", 'client_phone', 'client_address', 'credit_file'], 'string', 'max' => 255],
@@ -158,6 +160,16 @@ class Orders extends \soft\db\ActiveRecord
             $order_product_model = new ProductSales($order_product);
             $order_product_model->save();
 
+        }
+    }
+
+    public function createPartnerFees()
+    {
+        PartnerFees::deleteAll(['order_id' => $this->id]);
+        foreach ($this->partner_fees as $partner_fee) {
+            $partner_fee['order_id'] = $this->id;
+            $partnerFeeModel = new PartnerFees($partner_fee);
+            $partnerFeeModel->save();
         }
     }
 
@@ -321,6 +333,11 @@ class Orders extends \soft\db\ActiveRecord
     public function getSalesProducts()
     {
         return $this->hasMany(ProductSales::class, ['order_id' => 'id']);
+    }
+
+    public function getPartnerFees()
+    {
+        return $this->hasMany(PartnerFees::class, ['order_id' => 'id']);
     }
 
     //</editor-fold>

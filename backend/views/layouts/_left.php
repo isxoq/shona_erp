@@ -28,6 +28,7 @@ $menuItems = [
     ['label' => "Oylik maosh", 'url' => ['/staff/salary'], 'icon' => 'money-bill-wave', "visible" => !Yii::$app->user->identity->checkRoles(["Administrator", "Rahbar"])],
     ['label' => "Oylik maosh", 'url' => ['/staff/total-salary'], 'icon' => 'money-bill-wave', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
     ['label' => "Qarzdorlik", 'url' => ['/debt/index'], 'icon' => 'money-check-alt', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
+    ['label' => "Haqdorlik", 'url' => ['/fee/index'], 'icon' => 'money-check-alt', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
     ['label' => "Harajatlar", 'icon' => 'money-check', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"]), "items" => [
         ['label' => "Ro'yhat", 'url' => ['/expenses/index'], 'icon' => 'list',],
         ['label' => "Harajat turlari", 'url' => ['/expense-types/index'], 'icon' => 'list',],

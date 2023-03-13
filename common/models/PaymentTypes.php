@@ -29,6 +29,8 @@ use Yii;
 class PaymentTypes extends \soft\db\ActiveRecord
 {
 
+
+    public $payed_amount_fee;
     const TYPE_SIMPLE = 1;
     const TYPE_HAMKOR = 2;
 
@@ -51,6 +53,7 @@ class PaymentTypes extends \soft\db\ActiveRecord
             [["month_1", "month_4", "month_3", "month_6", "month_9", "month_12", "month_15", "month_18", "month_24", "type"], "integer"],
             [['percent', 'is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            ['payed_amount_fee', "number"],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
         ];
     }
@@ -84,4 +87,14 @@ class PaymentTypes extends \soft\db\ActiveRecord
     }
 
     //</editor-fold>
+
+    public function getAllSale()
+    {
+        return PartnerFees::find()->andWhere(['payment_type' => $this->id])->sum("amount");
+    }
+
+    public function getAllPayed()
+    {
+        return PartnerFeePays::find()->andWhere(['partner_id' => $this->id])->sum("amount");
+    }
 }

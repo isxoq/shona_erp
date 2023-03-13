@@ -159,6 +159,56 @@ JS;
                 'name',
             ]
         ],
+        "partner_fees" => [
+            'label' => "Homiy to'lovlari",
+            'labelSpan' => 2,
+            "labelOptions" => [
+                "class" => "text-primary"
+            ],
+            'attributes' => [
+                "partner_fees" => [
+                    "attribute" => "partner_fees",
+                    "label" => "Homiy to'lovlarini qo'shish",
+                    'type' => InputType::WIDGET,
+                    'widgetClass' => \unclead\multipleinput\MultipleInput::class,
+                    'options' => [
+                        "iconSource" => \unclead\multipleinput\MultipleInput::ICONS_SOURCE_FONTAWESOME,
+                        'max' => 10,
+                        "iconMap" => [
+                            'fa' => [
+                                'drag-handle' => 'fa fa-bars',
+                                'remove' => 'fa fa-times',
+                                'add' => 'fa fa-plus',
+                                'clone' => 'fa fa-copy',
+                            ],
+                        ],
+                        'cloneButton' => true,
+                        'columns' => [
+                            [
+                                'name' => 'payment_type',
+                                'type' => \kartik\widgets\Select2::class,
+                                'title' => t("Homiy"),
+                                "options" => [
+                                    'data' => \soft\helpers\ArrayHelper::map(\common\models\PaymentTypes::find()->all(), 'id', 'name'),
+                                    "options" => [
+                                        "width" => "30px",
+                                        "placeholder" => t("Tanlang...")
+                                    ]
+                                ]
+                            ],
+                            [
+                                'name' => 'amount',
+                                'type' => InputType::TEXT,
+                                "options" => [
+                                    "width" => "300px",
+                                ],
+                                'title' => t("Summa"),
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ],
         "order_products" => [
             'label' => "Mahsulotlar",
             'labelSpan' => 2,
