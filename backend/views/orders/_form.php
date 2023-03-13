@@ -174,6 +174,7 @@ JS;
                     'options' => [
                         "iconSource" => \unclead\multipleinput\MultipleInput::ICONS_SOURCE_FONTAWESOME,
                         'max' => 10,
+                        'min' =>0,
                         "iconMap" => [
                             'fa' => [
                                 'drag-handle' => 'fa fa-bars',

@@ -166,10 +166,12 @@ class Orders extends \soft\db\ActiveRecord
     public function createPartnerFees()
     {
         PartnerFees::deleteAll(['order_id' => $this->id]);
-        foreach ($this->partner_fees as $partner_fee) {
-            $partner_fee['order_id'] = $this->id;
-            $partnerFeeModel = new PartnerFees($partner_fee);
-            $partnerFeeModel->save();
+        if ($this->partner_fees) {
+            foreach ($this->partner_fees as $partner_fee) {
+                $partner_fee['order_id'] = $this->id;
+                $partnerFeeModel = new PartnerFees($partner_fee);
+                $partnerFeeModel->save();
+            }
         }
     }
 
