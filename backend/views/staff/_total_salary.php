@@ -53,6 +53,7 @@ use common\services\SalaryService;
                                         $bonus = SalaryService::getStaffMonthlyOrderSalesBonus(strtotime(date("{$year}-{$i}-1")), strtotime(date("{$year}-{$i}-t")), $staff->id);
                                         $fine = SalaryService::getStaffMonthlyOrderSalesFine(strtotime(date("{$year}-{$i}-1")), strtotime(date("{$year}-{$i}-t")), $staff->id);
                                         $salary = SalaryService::getStaffMonthlyOrderSalary(strtotime(date("{$year}-{$i}-1")), strtotime(date("{$year}-{$i}-t")), $staff->id);
+//                                        $totalsalary = $bonus + $salary - $fine;
                                         $totalsalary = $bonus + $salary - $fine;
                                         ?>
 

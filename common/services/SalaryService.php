@@ -57,22 +57,25 @@ class SalaryService
     {
 
 
-
-
-
         $ordersQuery = static::getUserOrdersQueryDateInterval($from, $to, $user_id);
 
         $orders = $ordersQuery
             ->distinct("orders.id")
-            ->andWhere(["!=", "orders.id", Orders::STATUS_CANCELLED])
-            ->andWhere(["!=", "orders.id", Orders::STATUS_HAS_PROBLEM]);
+            ->andWhere(["=", "orders.status", Orders::STATUS_DELIVERED]);
+//            ->andWhere(["!=", "orders.status", Orders::STATUS_CANCELLED])
+//            ->andWhere(["!=", "orders.status", Orders::STATUS_HAS_PROBLEM]);
 
         $revenue = 0;
         $prePrice = 0;
         $bonus = 0;
+        $jarima = 0;
         foreach ($orders->all() as $item) {
-            $revenue += $item->benefit;
-            $prePrice += $item->buyPrice;
+            if ($item->benefit > 0) {
+                $revenue += $item->benefit;
+                $prePrice += $item->buyPrice;
+            } else {
+                $jarima += $item->benefit;
+            }
         }
 
         $bonus = 0;
@@ -82,7 +85,7 @@ class SalaryService
         }
 
         if ($prePrice) {
-            $percent = $revenue / $prePrice * 100;
+            $percent = ($revenue / $prePrice) * 100;
         }
 
 
@@ -94,9 +97,7 @@ class SalaryService
             $bonus = $revenue * 0.15;
         }
 
-
-        return $bonus;
-
+        return $bonus + $jarima;
 
     }
 

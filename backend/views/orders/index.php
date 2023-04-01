@@ -35,18 +35,28 @@ $this->registerAjaxCrudAssets();
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
     'panel' => [
-        'before' => "<h6>Umumiy savdo: <b>" . Yii::$app->formatter->asSum($filterSales) . "</b></h6>" . "<h6>Jami foyda: <b>" . Yii::$app->formatter->asSum($filterBenefit) . "</b></h6>",
+        'before' => $this->render("_panel", compact("filterSales", "filterBenefit")),
 //        'footer' => true
     ],
-    'toolbarTemplate' => '{create}{refresh}',
+    'toolbarTemplate' => '{exportData}{create}{refresh}',
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => false,
+        ],
+        'exportData' => [
+            /** @see soft\widget\button\Button for other configurations */
+            "content" => Html::button('<i class="fas fa-download"></i>', [
+                'class' => 'btn btn-success',
+                'title' => Yii::t('app', 'Export'),
+
+            ]),
+            "url" => ['orders/export-data',Yii::$app->request->queryParams],
+            "pjax" => false
+//            'modal' => true,
         ]
     ],
     'cols' => [
-
         [
             'class' => 'kartik\grid\ExpandRowColumn',
             'width' => '50px',
@@ -73,20 +83,39 @@ $this->registerAjaxCrudAssets();
                 ]
             ],
         ],
-//        "delivery_code",
-//        [
-//            "attribute" => "client_id",
-//            "value" => "clientFullname",
-//            'filter' => map(\common\models\Clients::find()->all(), "id", 'full_name'),
-//            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
-//            'filterWidgetOptions' => [
-//                'options' => ['prompt' => 'Tanlang..'],
-//                'pluginOptions' => [
-//                    'allowClear' => true,
-//                    'width' => '100px'
-//                ],
-//            ],
-//        ],
+        "delivery_code",
+        [
+            "attribute" => "operator_diller_id",
+            "value" => function ($model) {
+                return $model->operatorFullName;
+            },
+            'filter' => map(\common\models\User::find()->all(), "id", 'fullName'),
+            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+            'filterWidgetOptions' => [
+                'options' => ['prompt' => 'Tanlang..'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '100px'
+                ],
+            ],
+        ],
+
+        [
+            "attribute" => "taminotchi_id",
+            "value" => function ($model) {
+                return $model->taminotchiFullName;
+            },
+            'filter' => map(\common\models\User::find()->all(), "id", 'fullName'),
+            'filterType' => \soft\grid\GridView::FILTER_SELECT2,
+            'filterWidgetOptions' => [
+                'options' => ['prompt' => 'Tanlang..'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'width' => '100px'
+                ],
+            ],
+        ],
+//        "",
         "client_phone",
         "client_address",
         'amount:integer',

@@ -9,6 +9,8 @@ use common\models\Order;
 use common\models\PartnerShops;
 use common\models\Products;
 use common\models\ProductSales;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Orders;
@@ -297,5 +299,66 @@ class OrdersController extends SoftController
         $order->save();
         Yii::$app->session->setFlash("successfullyAccepted", "Muvaffaqiyatli qabul qilindi!");
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+
+    public function actionExportData()
+    {
+
+        $searchModel = new OrdersSearch();
+        $searchModel->order_type = Order::TYPE_SIMPLE;
+        $dataProvider = $searchModel->search(null,10,Yii::$app->request->queryParams[1]);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+//        $query = Products::find();
+//        $query->joinWith("productToStores");
+//        $query->andWhere([">", 'product_imports.quantity', 0]);
+
+        foreach (range('A', $sheet->getHighestColumn()) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->setCellValue("A1", "ID");
+        $sheet->setCellValue("B1", "Yaratildi");
+        $sheet->setCellValue("C1", "Operator/Diller");
+        $sheet->setCellValue("D1", "Ta'minotchi");
+        $sheet->setCellValue("E1", "Mijoz telefoni");
+        $sheet->setCellValue("F1", "Address");
+        $sheet->setCellValue("G1", "Miqdor");
+        $sheet->setCellValue("H1", "Yetkazish");
+        $sheet->setCellValue("I1", "Foyda");
+        $sheet->setCellValue("J1", "To'lov turi");
+        $sheet->setCellValue("K1", "Status");
+        $i = 2;
+
+        foreach ($dataProvider->query->all() as $item) {
+            if ($item->delivery) {
+                $delivery = $item->delivery->name . PHP_EOL . Yii::$app->formatter->asSum($item->delivery_price);
+            } else {
+                $delivery = "";
+            }
+            $sheet->setCellValue("A{$i}", $item->id);
+            $sheet->setCellValue("B{$i}", date("d.m.Y", $item->created_at));
+            $sheet->setCellValue("C{$i}", $item->operatorFullName);
+            $sheet->setCellValue("D{$i}", $item->taminotchiFullName);
+            $sheet->setCellValue("E{$i}", "+" . $item->client_phone);
+            $sheet->setCellValue("F{$i}", $item->client_address);
+            $sheet->setCellValue("G{$i}", $item->amount);
+            $sheet->setCellValue("H{$i}", $delivery);
+            $sheet->setCellValue("I{$i}", $item->benefit);
+            $sheet->setCellValue("J{$i}", $item->paymentType->name);
+            $sheet->setCellValue("K{$i}", $item->statusBtn);
+//            $sheet->setCellValue("C{$i}", "Dokon");
+//            $sheet->setCellValue("D{$i}", $item->getProductToStores()->sum("quantity") - $item->salesCount);
+            $i++;
+        }
+
+//        dd($query->all());
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export.xlsx');
+
+        return Yii::$app->response->sendFile("export.xlsx");
     }
 }
