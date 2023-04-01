@@ -325,13 +325,17 @@ class Orders extends \soft\db\ActiveRecord
     public function getOperatorFullName()
     {
         $user = User::findOne(['id' => $this->operator_diller_id]);
-        return $user->fullname;
+        if ($user) {
+            return $user->fullname;
+        }
     }
 
     public function getTaminotchiFullName()
     {
         $user = User::findOne(['id' => $this->taminotchi_id]);
-        return $user->fullname;
+        if ($user) {
+            return $user->fullname;
+        }
     }
 
     //<editor-fold desc="Relations" defaultstate="collapsed">
