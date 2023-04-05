@@ -16,6 +16,7 @@ use Yii;
 use common\models\Orders;
 use common\models\OrdersSearch;
 use soft\web\SoftController;
+use yii\db\Expression;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -62,6 +63,11 @@ class OrdersController extends SoftController
 
         if (Yii::$app->user->identity->checkRoles(["Operator", "Diller"])) {
             $searchModel->operator_diller_id = Yii::$app->user->id;
+        }
+
+
+        if (Yii::$app->user->identity->checkRoles(["Ta'minotchi"])) {
+            $searchModel->taminotchi_id = Yii::$app->user->id;
         }
 
 
@@ -307,7 +313,7 @@ class OrdersController extends SoftController
 
         $searchModel = new OrdersSearch();
         $searchModel->order_type = Order::TYPE_SIMPLE;
-        $dataProvider = $searchModel->search(null,10,Yii::$app->request->queryParams[1]);
+        $dataProvider = $searchModel->search(null, 10, Yii::$app->request->queryParams[1]);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 

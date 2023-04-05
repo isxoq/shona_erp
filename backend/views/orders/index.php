@@ -9,6 +9,15 @@ use soft\helpers\Html;
 $this->title = Yii::t('app', 'Orders');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerAjaxCrudAssets();
+
+$user = \common\models\User::findOne(Yii::$app->user->id);
+if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
+    $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
+} else {
+    $filtered = [
+        Yii::$app->user->id => $user->fullname
+    ];
+}
 ?>
 
 
@@ -51,7 +60,7 @@ $this->registerAjaxCrudAssets();
                 'title' => Yii::t('app', 'Export'),
 
             ]),
-            "url" => ['orders/export-data',Yii::$app->request->queryParams],
+            "url" => ['orders/export-data', Yii::$app->request->queryParams],
             "pjax" => false
 //            'modal' => true,
         ]
@@ -89,12 +98,12 @@ $this->registerAjaxCrudAssets();
             "value" => function ($model) {
                 return $model->operatorFullName;
             },
-            'filter' => map(\common\models\User::find()->all(), "id", 'fullName'),
+            'filter' => $filtered,
             'filterType' => \soft\grid\GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => 'Tanlang..'],
                 'pluginOptions' => [
-                    'allowClear' => true,
+                    'allowClear' => Yii::$app->user->identity->checkRoles(["Rahbar", "admin"]),
                     'width' => '100px'
                 ],
             ],
@@ -105,7 +114,7 @@ $this->registerAjaxCrudAssets();
             "value" => function ($model) {
                 return $model->taminotchiFullName;
             },
-            'filter' => map(\common\models\User::find()->all(), "id", 'fullName'),
+            'filter' => $filtered,
             'filterType' => \soft\grid\GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => 'Tanlang..'],

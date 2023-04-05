@@ -85,6 +85,7 @@ class OrdersSearch extends Orders
             'orders.deleted_by' => $this->deleted_by,
             'orders.updated_at' => $this->updated_at,
             'orders.operator_diller_id' => $this->operator_diller_id,
+            'orders.taminotchi_id' => $this->taminotchi_id,
         ]);
 
 
