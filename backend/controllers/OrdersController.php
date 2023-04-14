@@ -336,7 +336,8 @@ class OrdersController extends SoftController
         $sheet->setCellValue("I1", "Foyda");
         $sheet->setCellValue("J1", "To'lov turi");
         $sheet->setCellValue("K1", "Mahsulotlar");
-        $sheet->setCellValue("L1", "Status");
+        $sheet->setCellValue("L1", "Hamkordan to'lovlar");
+        $sheet->setCellValue("M1", "Status");
         $i = 2;
 
         foreach ($dataProvider->query->all() as $item) {
@@ -362,7 +363,16 @@ class OrdersController extends SoftController
             }
 
             $sheet->setCellValue("K{$i}", $text);
-            $sheet->setCellValue("L{$i}", $item->statusBtn);
+
+
+            $partnerFeeText = "";
+            foreach ($item->partnerFees as $partnerFee) {
+                $partnerFeeText .= "{$partnerFee->partner->name} - {$partnerFee->amount} UZS" . PHP_EOL;
+            }
+            $sheet->setCellValue("L{$i}", $partnerFeeText);
+
+
+            $sheet->setCellValue("M{$i}", $item->statusBtn);
 
 //            $sheet->setCellValue("C{$i}", "Dokon");
 //            $sheet->setCellValue("D{$i}", $item->getProductToStores()->sum("quantity") - $item->salesCount);

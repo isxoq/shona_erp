@@ -17,16 +17,16 @@ class PartnerFees extends \soft\db\ActiveRecord
     //<editor-fold desc="Parent" defaultstate="collapsed">
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'partner_fees';
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
@@ -36,8 +36,8 @@ class PartnerFees extends \soft\db\ActiveRecord
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function labels()
     {
         return [
@@ -47,6 +47,12 @@ class PartnerFees extends \soft\db\ActiveRecord
             'amount' => Yii::t('app', 'Amount'),
         ];
     }
+
     //</editor-fold>
+
+    public function getPartner()
+    {
+        return $this->hasOne(PartnerShops::class, ["id" => "payment_type"]);
+    }
 
 }
