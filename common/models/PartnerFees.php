@@ -52,7 +52,7 @@ class PartnerFees extends \soft\db\ActiveRecord
 
     public function getPartner()
     {
-        return $this->hasOne(PartnerShops::class, ["id" => "payment_type"]);
+        return $this->hasOne(PaymentTypes::class, ["id" => "payment_type"]);
     }
 
 }
