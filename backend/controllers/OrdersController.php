@@ -313,7 +313,7 @@ class OrdersController extends SoftController
 
         $searchModel = new OrdersSearch();
         $searchModel->order_type = Order::TYPE_SIMPLE;
-        $dataProvider = $searchModel->search(null, 10, Yii::$app->request->queryParams[1]);
+        $dataProvider = $searchModel->search(null, 10, Yii::$app->request->queryParams[1]??[]);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -359,7 +359,7 @@ class OrdersController extends SoftController
 
             $text = "";
             foreach ($item->salesProducts as $salesProduct) {
-                $text .= "{$salesProduct->product->name} {$salesProduct->count} ta. {$salesProduct->sold_price} UZS. {$salesProduct->partnerShop->name} - {$salesProduct->partner_shop_price} UZS" . PHP_EOL;
+                $text .= "{$salesProduct->product?->name} {$salesProduct->count} ta. {$salesProduct->sold_price} UZS. {$salesProduct->partnerShop?->name} - {$salesProduct->partner_shop_price} UZS" . PHP_EOL;
             }
 
             $sheet->setCellValue("K{$i}", $text);
@@ -367,7 +367,7 @@ class OrdersController extends SoftController
 
             $partnerFeeText = "";
             foreach ($item->partnerFees as $partnerFee) {
-                $partnerFeeText .= "{$partnerFee->partner->name} - {$partnerFee->amount} UZS" . PHP_EOL;
+                $partnerFeeText .= "{$partnerFee->partner?->name} - {$partnerFee->amount} UZS" . PHP_EOL;
             }
             $sheet->setCellValue("L{$i}", $partnerFeeText);
 
