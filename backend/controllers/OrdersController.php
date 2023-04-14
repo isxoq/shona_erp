@@ -335,7 +335,8 @@ class OrdersController extends SoftController
         $sheet->setCellValue("H1", "Yetkazish");
         $sheet->setCellValue("I1", "Foyda");
         $sheet->setCellValue("J1", "To'lov turi");
-        $sheet->setCellValue("K1", "Status");
+        $sheet->setCellValue("K1", "Mahsulotlar");
+        $sheet->setCellValue("L1", "Status");
         $i = 2;
 
         foreach ($dataProvider->query->all() as $item) {
@@ -354,7 +355,15 @@ class OrdersController extends SoftController
             $sheet->setCellValue("H{$i}", $delivery);
             $sheet->setCellValue("I{$i}", $item->benefit);
             $sheet->setCellValue("J{$i}", $item->paymentType->name);
-            $sheet->setCellValue("K{$i}", $item->statusBtn);
+
+            $text = "";
+            foreach ($item->salesProducts as $salesProduct) {
+                $text .= "{$salesProduct->product->name} {$salesProduct->count} ta. {$salesProduct->sold_price} UZS. {$salesProduct->partnerShop->name} - {$salesProduct->partner_shop_price} UZS" . PHP_EOL;
+            }
+
+            $sheet->setCellValue("K{$i}", $text);
+            $sheet->setCellValue("L{$i}", $item->statusBtn);
+
 //            $sheet->setCellValue("C{$i}", "Dokon");
 //            $sheet->setCellValue("D{$i}", $item->getProductToStores()->sum("quantity") - $item->salesCount);
             $i++;
