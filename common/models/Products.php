@@ -46,6 +46,7 @@ class Products extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
+            [['ikpu', 'package'], "string"],
             [['price_usd'], 'number'],
             [['is_deleted', 'deleted_at', 'deleted_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],

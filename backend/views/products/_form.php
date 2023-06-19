@@ -17,6 +17,8 @@ use soft\widget\kartik\Form;
     'form' => $form,
     'attributes' => [
         'name',
+        'ikpu',
+        'package',
         'price_usd' => [
             "price_usd" => "amount",
             "title" => t("Hamkordan olingan narx"),

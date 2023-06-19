@@ -38,6 +38,8 @@ $this->registerAjaxCrudAssets();
     'cols' => [
         'id',
         'name',
+        'ikpu',
+        'package',
         'price_usd',
 //            'is_deleted',
 //            'deleted_at',

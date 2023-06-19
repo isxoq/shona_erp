@@ -165,7 +165,11 @@ class ProductsController extends SoftController
                     $nameValue = $activeSheet->getCellByColumnAndRow(1, $rowIndex)->getValue();
                     $priceValue = $activeSheet->getCellByColumnAndRow(2, $rowIndex)->getValue();
                     $quantityValue = $activeSheet->getCellByColumnAndRow(3, $rowIndex)->getValue();
+                    $ikpu = $activeSheet->getCellByColumnAndRow(4, $rowIndex)->getValue();
+                    $package = $activeSheet->getCellByColumnAndRow(5, $rowIndex)->getValue();
+
                     $product = Products::findOne(['name' => $nameValue]);
+
                     if (!$product) {
                         $product = new Products([
                             "name" => $nameValue,
@@ -173,6 +177,8 @@ class ProductsController extends SoftController
                         ]);
                     }
                     $product->price_usd = (int)$priceValue;
+                    $product->ikpu = $ikpu;
+                    $product->package = $package;
                     $product->save();
 
                     ProductImports::deleteAll(['product_id' => $product->id, "partner_id" => $store_id]);
