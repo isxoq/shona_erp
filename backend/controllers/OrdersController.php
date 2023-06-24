@@ -313,7 +313,7 @@ class OrdersController extends SoftController
 
         $searchModel = new OrdersSearch();
         $searchModel->order_type = Order::TYPE_SIMPLE;
-        $dataProvider = $searchModel->search(null, 10, Yii::$app->request->queryParams[1]??[]);
+        $dataProvider = $searchModel->search(null, 10, Yii::$app->request->queryParams[1] ?? []);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -385,5 +385,13 @@ class OrdersController extends SoftController
         $writer->save('export.xlsx');
 
         return Yii::$app->response->sendFile("export.xlsx");
+    }
+
+    public function actionFaktura($id)
+    {
+        $order = Orders::findOne($id);
+        return $this->renderAjax("faktura", [
+            'order' => $order
+        ]);
     }
 }

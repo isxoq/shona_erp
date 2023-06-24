@@ -82,6 +82,20 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
         ],
         'id',
         [
+            "label" => "Faktura",
+            "value" => function ($model) {
+                $btn = Html::a("<i class='fa fa-download'></i>", ["/orders/faktura", "id" => $model->id], [
+//                    "role" => "modal-remote",
+                    "class" => "btn btn-info",
+                    'target'=>'_blank',
+                    'data-pjax'=>0
+
+                ]);
+                return $btn;
+            },
+            "format" => "raw",
+        ],
+        [
             "attribute" => "created_at",
             'format' => 'dateTimeUz',
             'filterType' => \soft\widget\kartik\DateRangePicker::class,
@@ -177,6 +191,18 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
                 ],
             ],
         ],
+//        [
+//            "label" => "Bekor qilish",
+//            "value" => function ($model) {
+//                $btn = Html::a("<i class=''></i> Bekor qilish", ["/orders/faktura", "id" => $model->id], [
+////                    "role" => "modal-remote",
+//                    "class" => "btn btn-danger"
+//                ]);
+//
+//                return $btn;
+//            },
+//            "format" => "raw",
+//        ],
         [
             "attribute" => "taminotchi_id",
             "visible" => Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
