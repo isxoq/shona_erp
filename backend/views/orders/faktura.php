@@ -10,9 +10,9 @@
 <body>
 
 
-<div class="card container" style="margin: 20px; width: 38rem; border-width: medium; border-color: #0f0f0f">
+<div class="card container" style="margin: 20px; width: 36rem; border-width: medium; border-color: #0f0f0f">
     <div class="row justify-content-around align-items-center">
-        <div class="col-md-3">
+        <div class="col-md-5">
             <img src="/admin/shona.png" alt="" class="img-fluid">
         </div>
         <div class="col-md-3">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Manzili</label>
-                    <textarea disabled  class="form-control" rows="5" id="inputAddress" placeholder="1234 Main St"><?=$order->client_address?></textarea>
+                    <textarea disabled  class="form-control" rows="2" id="inputAddress" placeholder="1234 Main St"><?=$order->client_address?></textarea>
                 </div>
 
             </form>
@@ -67,16 +67,18 @@
                 <div class="row mb-2">
                     <div class="col-md-7">
                         <label for="inputPassword4" class="form-label">Kommentariya</label>
-                        <textarea type="text" disabled class="form-control" id="inputPassword4"><?=$order->name?></textarea>
+                        <textarea type="text" disabled class="form-control" rows="4" id="inputPassword4"><?=$order->name?></textarea>
                     </div>
                     <div class="col-md-5">
                         <label for="inputPassword4" class="form-label">To'lov turi</label>
+                        <input type="text" disabled class="form-control" value="<?=$order->paymentType->name?>" id="inputPassword4">
+                        <label for="inputPassword4" class="form-label">Yetkazish kodi</label>
                         <input type="text" disabled class="form-control" value="<?=$order->paymentType->name?>" id="inputPassword4">
                     </div>
                 </div>
 
                 <p>Operator: <?=$order->operatorFullname?></p>
-            <p>Aloqa markazi: +998 55 500 74 00</p>
+            <h4 >Aloqa markazi: +998 55 500 74 00</h4>
             </div>
         </div>
     </div>
