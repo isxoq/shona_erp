@@ -73,7 +73,7 @@
                         <label for="inputPassword4" class="form-label">To'lov turi</label>
                         <input type="text" disabled class="form-control" value="<?=$order->paymentType->name?>" id="inputPassword4">
                         <label for="inputPassword4" class="form-label">Yetkazish kodi</label>
-                        <input type="text" disabled class="form-control" value="<?=$order->paymentType->name?>" id="inputPassword4">
+                        <input type="text" disabled class="form-control" value="<?=$order->delivery_code?>" id="inputPassword4">
                     </div>
                 </div>
 
