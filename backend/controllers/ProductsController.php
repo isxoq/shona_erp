@@ -3,6 +3,8 @@
 namespace backend\controllers;
 
 use common\models\ProductImports;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use soft\helpers\ArrayHelper;
 use Yii;
 use common\models\Products;
@@ -216,6 +218,90 @@ class ProductsController extends SoftController
 
     }
 
+
+    public function actionProductImport()
+    {
+
+        ini_set("memory_limit", -1);
+        $request = Yii::$app->request;
+        $params = [
+            'view' => "product-import"
+        ];
+        $viewParams = [];
+        $file = null;
+        $store_id = null;
+        $model = new DynamicModel(compact('file'));
+
+        $model->addRule('file', 'string');
+
+        if ($this->isAjax) {
+
+            if ($model->load($request->post())) {
+
+
+                $inputFileName = Yii::getAlias("@frontend/web{$model->file}");
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $reader->setReadDataOnly(true);
+                $spreadsheet = $reader->load($inputFileName);
+
+                $activeSheet = $spreadsheet->getActiveSheet();
+
+                /*
+                 * array[]
+                 * 'row' int
+                 * 'column' String
+                 */
+
+                $rowsCols = $activeSheet->getHighestRowAndColumn();
+                $arrayValues = [];
+
+                for ($rowIndex = 2; $rowIndex <= $rowsCols['row']; $rowIndex++) {
+
+                    $nameValue = $activeSheet->getCellByColumnAndRow(1, $rowIndex)->getValue();
+                    $priceValue = $activeSheet->getCellByColumnAndRow(2, $rowIndex)->getValue();
+                    $ikpu = $activeSheet->getCellByColumnAndRow(3, $rowIndex)->getValue();
+                    $package = $activeSheet->getCellByColumnAndRow(4, $rowIndex)->getValue();
+                    $product = Products::findOne(['name' => $nameValue]);
+
+                    if (!$product) {
+                        $product = new Products([
+                            "name" => $nameValue,
+                            "price_usd" => (int)$priceValue,
+                            "ikpu" => $ikpu,
+                            "package" => $package,
+                        ]);
+                    }
+                    $product->price_usd = (int)$priceValue;
+                    $product->ikpu = (string)$ikpu;
+                    $product->package = (string)$package;
+                    $product->save();
+                }
+
+                return $this->ajaxCrud->closeModal();
+            } else {
+                return $this->ajaxCrud->createModal($model, $params, $viewParams);
+            }
+
+        } else {
+
+            if ($model->load($request->post()) && $model->save()) {
+
+                dd($model);
+                if (isset($params['returnUrl'])) {
+                    $returnUrl = $params['returnUrl'];
+                } else {
+                    $returnUrl = ['view', 'id' => $model->id];
+                }
+                return $this->controller->redirect($returnUrl);
+            }
+
+            $view = ArrayHelper::getValue($params, 'view', 'import');
+            $viewParams['model'] = $model;
+            return $this->render($view, $viewParams);
+        }
+
+    }
+
     /**
      * Finds a single model for crud actions
      * @param $id
@@ -229,5 +315,34 @@ class ProductsController extends SoftController
             not_found();
         }
         return $model;
+    }
+
+    public function actionProductExport()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $query = Products::find();
+        foreach (range('A', $sheet->getHighestColumn()) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+        $sheet->setCellValue("A1", "Mahsulot nomi");
+        $sheet->setCellValue("B1", "Mahsulot narxi $");
+        $sheet->setCellValue("C1", "IKPU");
+        $sheet->setCellValue("D1", "PACKAGE");
+        $i = 2;
+        foreach ($query->all() as $item) {
+            $sheet->setCellValue("A{$i}", $item->name);
+            $sheet->setCellValue("B{$i}", $item->priceUsd);
+            $sheet->setCellValue("C{$i}", $item->ikpu);
+            $sheet->setCellValue("D{$i}", $item->package);
+            $i++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export.xlsx');
+
+        return Yii::$app->response->sendFile("export.xlsx");
     }
 }

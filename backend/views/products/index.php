@@ -14,8 +14,25 @@ $this->registerAjaxCrudAssets();
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'toolbarTemplate' => '{import}{create}{refresh}',
+    'toolbarTemplate' => '{product_export} {product_import} {import} {create} {refresh}',
     'toolbarButtons' => [
+        'product_export' => [
+            /** @see soft\widget\button\Button for other configurations */
+            'modal' => false,
+            "url" => ["product-export"],
+            "pjax" => false,
+            "cssClass" => "mr-1 btn btn-info",
+            "type" => \soft\widget\button\Button::TYPE_LINK,
+            "content" => t("Mahsulotlar export"),
+        ],
+        'product_import' => [
+            /** @see soft\widget\button\Button for other configurations */
+            'modal' => true,
+            "url" => ["product-import"],
+            "cssClass" => "mr-1 btn btn-primary",
+            "type" => \soft\widget\button\Button::TYPE_LINK,
+            "content" => t("Mahsulotlar import"),
+        ],
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => true,
@@ -26,7 +43,7 @@ $this->registerAjaxCrudAssets();
             "url" => ["import"],
             "cssClass" => "btn btn-success",
             "type" => \soft\widget\button\Button::TYPE_LINK,
-            "content" => t("Import"),
+            "content" => t("Ombor import"),
         ],
     ],
     'bulkButtonsTemplate' => '{delete}',
