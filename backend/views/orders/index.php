@@ -87,8 +87,8 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
                 $btn = Html::a("<i class='fa fa-download'></i>", ["/orders/faktura", "id" => $model->id], [
 //                    "role" => "modal-remote",
                     "class" => "btn btn-info",
-                    'target'=>'_blank',
-                    'data-pjax'=>0
+                    'target' => '_blank',
+                    'data-pjax' => 0
 
                 ]);
                 return $btn;
@@ -178,7 +178,11 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
                     "role" => "modal-remote",
                     "class" => "badge badge-info btn-small class-color-{$model->status}"
                 ]);
-                return $btn;
+                if ($model->status != \common\models\Orders::STATUS_CANCELLED) {
+                    return $btn;
+                } else {
+                    return "<span class='badge badge-info btn-small class-color-{$model->status}'>{$model->statusBtn}</span> {$model->cancel_comment}";
+                }
             },
             "format" => "raw",
             'filter' => \common\models\Orders::getStatusList(),
@@ -191,18 +195,24 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
                 ],
             ],
         ],
-//        [
-//            "label" => "Bekor qilish",
-//            "value" => function ($model) {
-//                $btn = Html::a("<i class=''></i> Bekor qilish", ["/orders/faktura", "id" => $model->id], [
-////                    "role" => "modal-remote",
-//                    "class" => "btn btn-danger"
-//                ]);
-//
-//                return $btn;
-//            },
-//            "format" => "raw",
-//        ],
+        [
+            "label" => "Bekor qilish",
+            "value" => function ($model) {
+
+                $btn = Html::a("<i class='fa fa-ban'></i>", ["/orders/cancel-order", "id" => $model->id], [
+                    "role" => "modal-remote",
+                    "class" => "btn btn-danger"
+                ]);
+
+                if ($model->status != \common\models\Orders::STATUS_CANCELLED) {
+                    return $btn;
+                } else {
+                    return $model->cancelledUser?->fullName;
+                }
+
+            },
+            "format" => "raw",
+        ],
         [
             "attribute" => "taminotchi_id",
             "visible" => Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
@@ -239,7 +249,10 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
             ],
             'visibleButtons' => [
                 'delete' => function ($model) {
-                    return Yii::$app->user->identity->checkRoles(["Rahbar", "admin"]);
+                    return Yii::$app->user->identity->checkRoles(["Rahbar", "admin"]) || $model->status != \common\models\Orders::STATUS_CANCELLED;
+                },
+                'update' => function ($model) {
+                    return $model->status != \common\models\Orders::STATUS_CANCELLED;
                 },
             ]
         ],

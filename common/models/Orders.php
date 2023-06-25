@@ -14,6 +14,7 @@ use yii\helpers\Html;
  * @property string|null $name
  * @property int|null $payment_type
  * @property int|null $client_id
+ * @property int|null $cancel_user_id
  * @property string|null $client_fullname
  * @property string|null $client_phone
  * @property string|null $client_address
@@ -24,6 +25,7 @@ use yii\helpers\Html;
  * @property int|null $status
  * @property int|null $order_type
  * @property string|null $credit_file
+ * @property string|null $cancel_comment
  * @property string|null $delivery_code
  * @property int|null $partner_order_id
  * @property int|null $is_deleted
@@ -89,6 +91,8 @@ class Orders extends \soft\db\ActiveRecord
     public function rules()
     {
         return [
+            ['cancel_comment', 'string'],
+            ['cancel_user_id', 'integer'],
             [['operator_diller_id', "taminotchi_id"], "integer"],
             ['order_products', 'safe'],
             ['partner_fees', 'safe'],
@@ -126,6 +130,7 @@ class Orders extends \soft\db\ActiveRecord
             'deleted_by' => Yii::t('app', 'Deleted By'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'cancel_comment' => Yii::t('app', 'Bekor qilish sababi'),
         ];
     }
 
@@ -222,7 +227,6 @@ class Orders extends \soft\db\ActiveRecord
             $statuses = [
                 self::STATUS_NEW => t("Yangi"),
                 self::STATUS_DELIVERED => t("Yetkazib berilldi"),
-                self::STATUS_CANCELLED => t("Bekor qilindi"),
                 self::STATUS_HAS_PROBLEM => t("Muammoli"),
             ];
         }
@@ -356,6 +360,130 @@ class Orders extends \soft\db\ActiveRecord
     public function getPartnerFees()
     {
         return $this->hasMany(PartnerFees::class, ['order_id' => 'id']);
+    }
+
+    public static function runSalaryCalculate(Orders $order)
+    {
+        switch ($order->status) {
+            case Orders::STATUS_DELIVERED:
+            {
+
+                // Operatorga oylik va zarar yozish
+                $revenue = UserRevenue::find()
+                    ->andWhere(['order_id' => $order->id])
+                    ->andWhere(['user_id' => $order->operator_diller_id])
+                    ->one();
+                if (!$revenue) {
+                    $revenue = new UserRevenue([
+                        "order_id" => $order->id,
+                        "user_id" => $order->operator_diller_id
+                    ]);
+                }
+
+                if ($order->benefit > 0) {
+                    $revenueAmount = $order->benefit;
+                    $prePriceAmount = $order->buyPrice;
+
+                    if ($prePriceAmount) {
+                        $percent = ($revenueAmount / $prePriceAmount) * 100;
+                    }
+
+                    $bonus = 0;
+                    if ($prePriceAmount <= 5) {
+                        $bonus = $revenueAmount * 0.05;
+                    } elseif ($percent > 5 && $percent < 20) {
+                        $bonus = $revenueAmount * 0.08;
+                    } elseif ($percent >= 20) {
+                        $bonus = $revenueAmount * 0.15;
+                    }
+                    $revenue->amount = $bonus;
+                    $revenue->type = UserRevenue::TYPE_BONUS;
+                    $revenue->comment = "Operator zakaz olgani uchun uchun";
+                    $revenue->save();
+
+
+                    $revenueAmount = $order->benefit;
+                    $bonus = $revenueAmount * \Yii::$app->params['salary']['taminotchi'] / 100;
+
+                    $revenue = UserRevenue::find()
+                        ->andWhere(['order_id' => $order->id])
+                        ->andWhere(['user_id' => $order->taminotchi_id])
+                        ->one();
+                    if (!$revenue) {
+                        $revenue = new UserRevenue([
+                            "order_id" => $order->id,
+                            "user_id" => $order->taminotchi_id
+                        ]);
+                    }
+                    $revenue->amount = abs($bonus);
+                    $revenue->type = UserRevenue::TYPE_BONUS;
+                    $revenue->comment = "Ta'minotchi muvaffaqiyatli yetkazgani uchun";
+                    $revenue->save();
+
+
+                } else {
+                    $fine = $order->benefit;
+
+                    $userFine = UserFine::find()
+                        ->andWhere(['order_id' => $order->id])
+                        ->andWhere(['user_id' => $order->operator_diller_id])
+                        ->one();
+                    if (!$userFine) {
+                        $userFine = new UserFine([
+                            "order_id" => $order->id,
+                            "user_id" => $order->operator_diller_id
+                        ]);
+                    }
+                    $userFine->amount = abs($fine);
+                    $userFine->comment = "Zakazda foyda bo'lmagani uchun";
+                    $userFine->save();
+                }
+
+
+                //Ta'minotchiga oylik va jarima yozish
+
+
+            }
+            case Orders::STATUS_CANCELLED:
+            {
+
+                if (!$order->cancel_user_id) {
+                    break;
+                }
+
+                $differenceHour = (time() - $order->created_at) / 3600 / 24;
+                if ($differenceHour > 1) {
+                    $userFineTaminotchi = new UserFine([
+                        "order_id" => $order->id,
+                        "user_id" => $order->taminotchi_id
+                    ]);
+
+                    $userFineOperator = new UserFine([
+                        "order_id" => $order->id,
+                        "user_id" => $order->operator_diller_id
+                    ]);
+                    $userFineTaminotchi->comment = "Zakaz bekor qilingani uchun";
+                    $userFineOperator->comment = "Zakaz bekor qilingani uchun";
+
+                    $cancelledUser = User::findOne($order->cancel_user_id);
+
+                    if ($cancelledUser->checkRoles(["Ta'minotchi"])) {
+                        $userFineTaminotchi->amount = 75000;
+                        $userFineOperator->amount = 25000;
+                    } else {
+                        $userFineTaminotchi->amount = 25000;
+                        $userFineOperator->amount = 75000;
+                    }
+                    $userFineTaminotchi->save();
+                    $userFineOperator->save();
+                }
+            }
+        }
+    }
+
+    public function getCancelledUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'cancel_user_id']);
     }
 
     //</editor-fold>

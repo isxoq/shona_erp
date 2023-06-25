@@ -3,12 +3,16 @@
 namespace backend\controllers;
 
 use api\components\Phone;
+use backend\modules\usermanager\models\User;
 use common\components\Statistics;
 use common\models\Clients;
 use common\models\Order;
+use common\models\OrderStates;
 use common\models\PartnerShops;
 use common\models\Products;
 use common\models\ProductSales;
+use common\models\UserFine;
+use common\models\UserRevenue;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use soft\helpers\ArrayHelper;
@@ -278,6 +282,16 @@ class OrdersController extends SoftController
 
         if ($model->load($request->post()) && $model->save()) {
 
+            Orders::runSalaryCalculate($model);
+
+            $state = new OrderStates([
+                "order_id" => $model->id,
+                "user_id" => user("id"),
+                "state_id" => $model->status,
+            ]);
+            $state->save();
+
+
             $forceClose = ArrayHelper::getValue($params, 'forceClose', true);
             if ($forceClose) {
                 return $this->ajaxCrud->closeModal();
@@ -359,7 +373,7 @@ class OrdersController extends SoftController
 
             $text = "";
             foreach ($item->salesProducts as $salesProduct) {
-                $text .= "{$salesProduct->product?->name} {$salesProduct->count} ta. {$salesProduct->sold_price} UZS. {$salesProduct->partnerShop?->name} - {$salesProduct->partner_shop_price} UZS" . PHP_EOL;
+                $text .= "{$salesProduct->product?->name} {$salesProduct->count} ta. {$salesProduct->sold_price} UZS. {$salesProduct->partnerShop?->name} - {$salesProduct->partner_shop_price} UZS " . PHP_EOL;
             }
 
             $sheet->setCellValue("K{$i}", $text);
@@ -367,7 +381,7 @@ class OrdersController extends SoftController
 
             $partnerFeeText = "";
             foreach ($item->partnerFees as $partnerFee) {
-                $partnerFeeText .= "{$partnerFee->partner?->name} - {$partnerFee->amount} UZS" . PHP_EOL;
+                $partnerFeeText .= "{$partnerFee->partner?->name} - {$partnerFee->amount} UZS " . PHP_EOL;
             }
             $sheet->setCellValue("L{$i}", $partnerFeeText);
 
@@ -393,5 +407,121 @@ class OrdersController extends SoftController
         return $this->renderAjax("faktura", [
             'order' => $order
         ]);
+    }
+
+    public function runSalaryCalculate(Orders $order)
+    {
+        switch ($order->status) {
+            case Orders::STATUS_DELIVERED:
+            {
+
+                // Operatorga oylik va zarar yozish
+                $revenue = UserRevenue::find()
+                    ->andWhere(['order_id' => $order->id])
+                    ->andWhere(['user_id' => $order->operator_diller_id])
+                    ->one();
+                if (!$revenue) {
+                    $revenue = new UserRevenue([
+                        "order_id" => $order->id,
+                        "user_id" => $order->operator_diller_id
+                    ]);
+                }
+
+                if ($order->benefit > 0) {
+                    $revenueAmount = $order->benefit;
+                    $prePriceAmount = $order->buyPrice;
+
+                    if ($prePriceAmount) {
+                        $percent = ($revenueAmount / $prePriceAmount) * 100;
+                    }
+
+
+                    if ($prePriceAmount <= 5) {
+                        $bonus = $revenueAmount * 0.05;
+                    } elseif ($percent > 5 && $percent < 20) {
+                        $bonus = $revenueAmount * 0.08;
+                    } elseif ($percent >= 20) {
+                        $bonus = $revenueAmount * 0.15;
+                    }
+                    $revenue->amount = $bonus;
+                    $revenue->comment = "Zakaz foyda bilan muvaffaqiyatli tugatilgani uchun";
+                    $revenue->save();
+
+                } else {
+                    $fine = $order->benefit;
+
+                    $userFine = UserFine::find()
+                        ->andWhere(['order_id' => $order->id])
+                        ->andWhere(['user_id' => $order->operator_diller_id])
+                        ->one();
+                    if (!$userFine) {
+                        $userFine = new UserFine([
+                            "order_id" => $order->id,
+                            "user_id" => $order->operator_diller_id
+                        ]);
+                    }
+                    $userFine->amount = $fine;
+                    $userFine->comment = "Zakazda foyda bo'lmagani uchun";
+                    $userFine->save();
+                }
+
+
+                //Ta'minotchiga oylik va jarima yozish
+
+                $revenueAmount = $order->benefit;
+                $bonus = $revenueAmount * \Yii::$app->params['salary']['taminotchi'] / 100;
+
+                $revenue = UserRevenue::find()
+                    ->andWhere(['order_id' => $order->id])
+                    ->andWhere(['user_id' => $order->taminotchi_id])
+                    ->one();
+                if (!$revenue) {
+                    $revenue = new UserRevenue([
+                        "order_id" => $order->id,
+                        "user_id" => $order->taminotchi_id
+                    ]);
+                }
+                $revenue->amount = $bonus;
+                $revenue->comment = "Zakaz foyda bilan muvaffaqiyatli tugatilgani uchun";
+                $revenue->save();
+
+            }
+        }
+    }
+
+    public function actionCancelOrder($id)
+    {
+        $request = Yii::$app->request;
+
+        $model = $this->findModel($id);
+        $params = [];
+        $viewParams = [];
+
+        $params['view'] = "_cancelOrder";
+        $model->cancel_user_id = \user("id");
+        $model->status = Orders::STATUS_CANCELLED;
+
+        if ($model->load($request->post()) && $model->save()) {
+
+            Orders::runSalaryCalculate($model);
+
+            $state = new OrderStates([
+                "order_id" => $model->id,
+                "user_id" => user("id"),
+                "state_id" => $model->status,
+            ]);
+            $state->save();
+
+
+            $forceClose = ArrayHelper::getValue($params, 'forceClose', true);
+            if ($forceClose) {
+                return $this->ajaxCrud->closeModal();
+            } else {
+                return $this->ajaxCrud->viewAction($model, ['footer' => $this->afterCreateFooter(), 'forceReload' => '#crud-datatable-pjax']);
+            }
+
+        } else {
+            return $this->ajaxCrud->createModal($model, $params, $viewParams);
+        }
     }
 }
