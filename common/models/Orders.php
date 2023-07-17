@@ -367,7 +367,6 @@ class Orders extends \soft\db\ActiveRecord
         switch ($order->status) {
             case Orders::STATUS_DELIVERED:
             {
-
                 // Operatorga oylik va zarar yozish
                 $revenue = UserRevenue::find()
                     ->andWhere(['order_id' => $order->id])
@@ -389,12 +388,12 @@ class Orders extends \soft\db\ActiveRecord
                     }
 
                     $bonus = 0;
-                    if ($prePriceAmount <= 5) {
+                    if ($percent <= 5) {
                         $bonus = $revenueAmount * 0.05;
-                    } elseif ($percent > 5 && $percent < 20) {
+                    } elseif ($percent > 5 && $percent <= 14) {
                         $bonus = $revenueAmount * 0.08;
-                    } elseif ($percent >= 20) {
-                        $bonus = $revenueAmount * 0.15;
+                    } elseif ($percent > 14) {
+                        $bonus = $revenueAmount * 0.10;
                     }
                     $revenue->amount = $bonus;
                     $revenue->type = UserRevenue::TYPE_BONUS;
@@ -403,7 +402,7 @@ class Orders extends \soft\db\ActiveRecord
 
 
                     $revenueAmount = $order->benefit;
-                    $bonus = $revenueAmount * \Yii::$app->params['salary']['taminotchi'] / 100;
+                    $bonus = $revenueAmount * 0.01;
 
                     $revenue = UserRevenue::find()
                         ->andWhere(['order_id' => $order->id])
