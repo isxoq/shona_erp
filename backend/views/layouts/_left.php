@@ -25,7 +25,7 @@ $menuItems = [
     ['label' => "Yetkazish usullari", 'url' => ['/delivery-types'], 'icon' => 'truck', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ['label' => "Mijoz oqim turlari", 'url' => ['/network-types'], 'icon' => 'hashtag', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ['label' => "Kurslar", 'url' => ['/currency/index'], 'icon' => 'hand-holding-usd', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
-    ['label' => "Oylik maosh", 'url' => ['/staff/salary'], 'icon' => 'money-bill-wave', "visible" => !Yii::$app->user->identity->checkRoles(["Administrator", "Rahbar"])],
+//    ['label' => "Oylik maosh", 'url' => ['/staff/salary'], 'icon' => 'money-bill-wave', "visible" => !Yii::$app->user->identity->checkRoles(["Administrator", "Rahbar"])],
     ['label' => "Oylik maosh", 'url' => ['/staff/total-salary'], 'icon' => 'money-bill-wave', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"]),"items"=>[
         ['label' => "Ulush va bonus", 'url' => ['/user-revenue/index'], 'icon' => 'list',],
         ['label' => "Jarimalar", 'url' => ['/user-fine/index'], 'icon' => 'list',],
