@@ -25,7 +25,7 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
             'modal' => true,
         ]
     ],
-    'bulkButtonsTemplate' => '{delete}',
+    'bulkButtonsTemplate' => '',
     'bulkButtons' => [
         'delete' => [
             /** @see soft\widget\button\BulkButton for other configurations */
@@ -72,14 +72,14 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
         'comment:ntext',
         //'created_at',
         //'updated_at',
-        'actionColumn' => [
-            'viewOptions' => [
-                'role' => 'modal-remote',
-            ],
-            'updateOptions' => [
-                'role' => 'modal-remote',
-            ],
-        ],
+//        'actionColumn' => [
+//            'viewOptions' => [
+//                'role' => 'modal-remote',
+//            ],
+//            'updateOptions' => [
+//                'role' => 'modal-remote',
+//            ],
+//        ],
     ],
 ]); ?>
     

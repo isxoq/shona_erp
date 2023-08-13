@@ -16,14 +16,14 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
     'id' => 'crud-datatable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'toolbarTemplate' => '{create}{refresh}',
+    'toolbarTemplate' => '{refresh}',
     'toolbarButtons' => [
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => true,
         ]
     ],
-    'bulkButtonsTemplate' => '{delete}',
+    'bulkButtonsTemplate' => '',
     'bulkButtons' => [
         'delete' => [
             /** @see soft\widget\button\BulkButton for other configurations */
@@ -72,14 +72,14 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
         //'status',
         //'created_at',
         //'updated_at',
-        'actionColumn' => [
-            'viewOptions' => [
-                'role' => 'modal-remote',
-            ],
-            'updateOptions' => [
-                'role' => 'modal-remote',
-            ],
-        ],
+//        'actionColumn' => [
+//            'viewOptions' => [
+//                'role' => 'modal-remote',
+//            ],
+//            'updateOptions' => [
+//                'role' => 'modal-remote',
+//            ],
+//        ],
     ],
 ]); ?>
     
