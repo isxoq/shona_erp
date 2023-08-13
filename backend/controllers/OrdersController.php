@@ -56,7 +56,11 @@ class OrdersController extends SoftController
 
     public function actionCalculateSalary()
     {
-        ;
+
+        if (!Yii::$app->user->identity->checkRoles(["Administrator", "Rahbar", "admin"])) {
+            forbidden();
+        }
+
         $searchModel = new OrdersSearch();
 
         $searchModel->order_type = Order::TYPE_SIMPLE;

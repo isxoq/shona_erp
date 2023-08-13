@@ -52,7 +52,8 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
                 'options' => ['prompt' => 'Tanlang..'],
                 'pluginOptions' => [
                     "allowClear" => true,
-                    'width' => '100px'
+                    'width' => '100px',
+                    "disabled" => !Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])
                 ],
             ],
         ],
@@ -98,9 +99,10 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
                     "class" => "btn btn-primary"
                 ]);
                 return $btn;
-
             },
+            "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"]),
             "format" => "raw",
+
         ],
         //'comment:ntext',
         //'created_at',

@@ -13,8 +13,8 @@ class UserRevenueController extends SoftController
 {
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -38,12 +38,18 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Lists all UserRevenue models.
-    * @return mixed
-    */
+     * Lists all UserRevenue models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $searchModel = new UserRevenueSearch();
+
+
+        if (!Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])) {
+            $searchModel->user_id = Yii::$app->user->id;
+        }
+
         $dataProvider = $searchModel->search();
 
         return $this->render('index', [
@@ -53,11 +59,11 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Displays a single UserRevenue model.
-    * @param integer $id
-    * @return string
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Displays a single UserRevenue model.
+     * @param integer $id
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionView($id)
     {
         $model = $this->findModel($id);
@@ -65,10 +71,10 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Creates a new UserRevenue model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    * @return string
-    */
+     * Creates a new UserRevenue model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string
+     */
     public function actionCreate()
     {
         $model = new UserRevenue();
@@ -76,12 +82,12 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Updates an existing UserRevenue model.
-    * If update is successful, the browser will be redirected to the 'view' page.
-    * @param integer $id
-    * @return string
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Updates an existing UserRevenue model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -89,12 +95,12 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Deletes an existing UserRevenue model.
-    * If deletion is successful, the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Deletes an existing UserRevenue model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -102,13 +108,13 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Delete multiple existing UserRevenue model.
-    * For ajax request will return json object
-    * and for non-ajax request if deletion is successful,
-    * the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    */
+     * Delete multiple existing UserRevenue model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful,
+     * the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionBulkdelete()
     {
         $request = Yii::$app->request;
@@ -121,15 +127,15 @@ class UserRevenueController extends SoftController
     }
 
     /**
-    * Finds a single model for crud actions
-    * @param $id
-    * @return UserRevenue
-    * @throws yii\web\NotFoundHttpException
-    */
+     * Finds a single model for crud actions
+     * @param $id
+     * @return UserRevenue
+     * @throws yii\web\NotFoundHttpException
+     */
     public function findModel($id)
     {
         $model = UserRevenue::find()->andWhere(['id' => $id])->one();
-        if ($model == null){
+        if ($model == null) {
             not_found();
         }
         return $model;

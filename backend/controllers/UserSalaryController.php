@@ -49,6 +49,12 @@ class UserSalaryController extends SoftController
     public function actionIndex()
     {
         $searchModel = new UserSalarySearch();
+
+        if (!Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])) {
+            $searchModel->user_id = Yii::$app->user->id;
+        }
+
+
         $dataProvider = $searchModel->search();
 
         return $this->render('index', [
@@ -142,6 +148,11 @@ class UserSalaryController extends SoftController
 
     public function actionCalculateSalary()
     {
+
+
+        if (!Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])) {
+            forbidden();
+        }
 
         UserSalary::calculate();
 

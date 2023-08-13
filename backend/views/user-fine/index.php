@@ -50,8 +50,10 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
             'filterWidgetOptions' => [
                 'options' => ['prompt' => 'Tanlang..'],
                 'pluginOptions' => [
-                    "allowClear"=>true,
-                    'width' => '100px'
+                    "allowClear" => true,
+                    'width' => '100px',
+                    "disabled" => !Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])
+
                 ],
             ],
         ],
