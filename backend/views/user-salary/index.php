@@ -61,7 +61,7 @@ $filtered = map(\common\models\User::find()->all(), "id", 'fullName');
             "value" => function ($model) {
                 return date("M", strtotime("01.{$model->month}.{$model->year}"));
             },
-            'filter' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            'filter' => [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 11 => 11, 12 => 12],
             'filterType' => \soft\grid\GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => 'Tanlang..'],

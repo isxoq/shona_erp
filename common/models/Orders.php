@@ -362,7 +362,7 @@ class Orders extends \soft\db\ActiveRecord
         return $this->hasMany(PartnerFees::class, ['order_id' => 'id']);
     }
 
-    public static function runSalaryCalculate(Orders $order)
+    public static function runSalaryCalculate(Orders $order, $timestamp = null)
     {
         switch ($order->status) {
             case Orders::STATUS_DELIVERED:
@@ -375,7 +375,7 @@ class Orders extends \soft\db\ActiveRecord
                 if (!$revenue) {
                     $revenue = new UserRevenue([
                         "order_id" => $order->id,
-                        "user_id" => $order->operator_diller_id
+                        "user_id" => $order->operator_diller_id,
                     ]);
                 }
 
@@ -400,6 +400,11 @@ class Orders extends \soft\db\ActiveRecord
                     $revenue->comment = "Operator zakaz olgani uchun uchun";
                     $revenue->save();
 
+                    if ($timestamp) {
+                        $revenue->created_at = $timestamp;
+                        $revenue->save();
+                    }
+
 
                     $revenueAmount = $order->benefit;
                     $bonus = $revenueAmount * 0.01;
@@ -414,11 +419,19 @@ class Orders extends \soft\db\ActiveRecord
                             "user_id" => $order->taminotchi_id
                         ]);
                     }
+                    if ($timestamp) {
+                        $revenue->created_at = $timestamp;
+                    }
+
                     $revenue->amount = abs($bonus);
                     $revenue->type = UserRevenue::TYPE_BONUS;
                     $revenue->comment = "Ta'minotchi muvaffaqiyatli yetkazgani uchun";
                     $revenue->save();
 
+                    if ($timestamp) {
+                        $revenue->created_at = $timestamp;
+                        $revenue->save();
+                    }
 
                 } else {
                     $fine = $order->benefit;
@@ -433,9 +446,18 @@ class Orders extends \soft\db\ActiveRecord
                             "user_id" => $order->operator_diller_id
                         ]);
                     }
+
+                    if ($timestamp) {
+                        $userFine->created_at = $timestamp;
+                    }
                     $userFine->amount = abs($fine);
                     $userFine->comment = "Zakazda foyda bo'lmagani uchun";
                     $userFine->save();
+
+                    if ($timestamp) {
+                        $userFine->created_at = $timestamp;
+                        $userFine->save();
+                    }
                 }
 
 
@@ -473,8 +495,24 @@ class Orders extends \soft\db\ActiveRecord
                         $userFineTaminotchi->amount = 25000;
                         $userFineOperator->amount = 75000;
                     }
+
+                    if ($timestamp) {
+                        $userFineTaminotchi->created_at = $timestamp;
+                        $userFineOperator->created_at = $timestamp;
+                    }
+
                     $userFineTaminotchi->save();
                     $userFineOperator->save();
+
+
+                    if ($timestamp) {
+                        $userFineTaminotchi->created_at = $timestamp;
+                        $userFineTaminotchi->save();
+
+                        $userFineOperator->created_at = $timestamp;
+                        $userFineOperator->save();
+                    }
+
                 }
             }
         }

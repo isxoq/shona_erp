@@ -53,6 +53,28 @@ class OrdersController extends SoftController
         ];
     }
 
+
+    public function actionCalculateSalary()
+    {
+        ;
+        $searchModel = new OrdersSearch();
+
+        $searchModel->order_type = Order::TYPE_SIMPLE;
+
+        $dataProvider = $searchModel->search(null, 10, Yii::$app->request->queryParams[1] ?? []);
+
+
+        $orders = $dataProvider->query->all();
+
+        foreach ($orders as $order) {
+            Orders::runSalaryCalculate($order, $order->created_at);
+        }
+
+        return $this->back();
+
+
+    }
+
     /**
      * Lists all Orders models.
      * @return mixed
@@ -76,6 +98,7 @@ class OrdersController extends SoftController
 
 
         $dataProvider = $searchModel->search();
+
         $filterSales = Statistics::calculateOrdersSales($dataProvider->query->all());
         $filterBenefit = Statistics::calculateOrdersBenefits($dataProvider->query->all());
 

@@ -47,8 +47,17 @@ if (Yii::$app->user->identity->checkRoles(["Rahbar", "admin"])) {
         'before' => $this->render("_panel", compact("filterSales", "filterBenefit")),
 //        'footer' => true
     ],
-    'toolbarTemplate' => '{exportData}{create}{refresh}',
+    'toolbarTemplate' => '{calculateSalary}{exportData}{create}{refresh}',
     'toolbarButtons' => [
+        'calculateSalary' => [
+            "content" => Html::button('<i class="fas fa-calculator"></i>', [
+                'class' => 'btn btn-success',
+                'title' => Yii::t('app', 'Oylik hisoblash'),
+
+            ]),
+            "url" => ['orders/calculate-salary', Yii::$app->request->queryParams],
+            "pjax" => false
+        ],
         'create' => [
             /** @see soft\widget\button\Button for other configurations */
             'modal' => false,

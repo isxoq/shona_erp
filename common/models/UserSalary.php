@@ -77,42 +77,58 @@ class UserSalary extends \soft\db\ActiveRecord
     public static function calculate()
     {
         $users = User::find()->all();
+
+
         foreach ($users as $user) {
+
+
             if (!$user->checkRoles(['Rahbar', "admin"])) {
-                $currentMonthSalary = UserSalary::find()
-                    ->andWhere(['user_id' => $user->id])
-                    ->andWhere(['month' => (int)date("m")])
-                    ->andWhere(['year' => (int)date("Y")])
-                    ->one();
-                if (!$currentMonthSalary) {
-                    $currentMonthSalary = new UserSalary([
-                        "user_id" => $user->id,
-                        "month" => (int)date("m"),
-                        "year" => (int)date("Y"),
-                    ]);
-                    $currentMonthSalary->save();
-                }
 
-                $dateString = "Y-m-01"; // Set the day to 01
-                $lastDayOfMonth = date('Y-m-t');
+                $oldMonth = (int)date("m", strtotime("-1 month"));
+                $oldYear = (int)date("Y", strtotime("-1 month"));
 
-                $allUserRevenue = UserRevenue::find()
-                    ->andWhere(['=', "user_id", $user->id])
-                    ->andWhere(['>=', "created_at", strtotime($dateString)])
-                    ->andWhere(['<=', "created_at", strtotime($lastDayOfMonth)])
-                    ->sum("amount");
-
-                $allUserFine = UserFine::find()
-                    ->andWhere(['=', "user_id", $user->id])
-                    ->andWhere(['>=', "created_at", strtotime($dateString)])
-                    ->andWhere(['<=', "created_at", strtotime($lastDayOfMonth)])
-                    ->sum("amount");
-
-                $currentMonthSalary->amount = $allUserRevenue - $allUserFine + 1000000;
-                $currentMonthSalary->save();
+                self::calculateUserSalary($user, $oldMonth, $oldYear);
+                self::calculateUserSalary($user, ((int)date("m")), ((int)date("Y")));
             }
-
         }
+    }
+
+    public static function calculateUserSalary($user, $month, $year)
+    {
+
+
+        $currentMonthSalary = UserSalary::find()
+            ->andWhere(['user_id' => $user->id])
+            ->andWhere(['month' => $month])
+            ->andWhere(['year' => $year])
+            ->one();
+        if (!$currentMonthSalary) {
+            $currentMonthSalary = new UserSalary([
+                "user_id" => $user->id,
+                "month" => $month,
+                "year" => $year,
+            ]);
+            $currentMonthSalary->save();
+        }
+
+        $dateString = "{$year}-{$month}-01"; // Set the day to 01
+        $lastDayOfMonth = date("Y-m-t", strtotime($dateString));
+
+        $allUserRevenue = UserRevenue::find()
+            ->andWhere(['=', "user_id", $user->id])
+            ->andWhere(['>=', "created_at", strtotime($dateString)])
+            ->andWhere(['<=', "created_at", strtotime($lastDayOfMonth)])
+            ->sum("amount");
+
+
+        $allUserFine = UserFine::find()
+            ->andWhere(['=', "user_id", $user->id])
+            ->andWhere(['>=', "created_at", strtotime($dateString)])
+            ->andWhere(['<=', "created_at", strtotime($lastDayOfMonth)])
+            ->sum("amount");
+
+        $currentMonthSalary->amount = $allUserRevenue - $allUserFine + 1000000;
+        $currentMonthSalary->save();
     }
 
     public function getUser()
