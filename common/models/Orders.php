@@ -407,7 +407,7 @@ class Orders extends \soft\db\ActiveRecord
 
 
                     $revenueAmount = $order->benefit;
-                    $bonus = $revenueAmount * 0.01;
+                    $bonus = $revenueAmount * 0.015;
 
                     $revenue = UserRevenue::find()
                         ->andWhere(['order_id' => $order->id])
