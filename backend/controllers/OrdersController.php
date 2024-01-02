@@ -106,6 +106,7 @@ class OrdersController extends SoftController
         $filterSales = Statistics::calculateOrdersSales($dataProvider->query->all());
         $filterBenefit = Statistics::calculateOrdersBenefits($dataProvider->query->all());
 
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

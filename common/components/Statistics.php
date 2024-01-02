@@ -5,6 +5,9 @@ namespace common\components;
 use common\models\Clients;
 use common\models\Order;
 use common\models\Orders;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
+
 
 class Statistics
 {
@@ -78,22 +81,39 @@ class Statistics
 
     public static function calculateOrdersSales($models)
     {
-        $totalSale = 0;
-        foreach ($models as $model) {
-            $totalSale += $model->getSalesProducts()->sum("sold_price");
-        }
-
+        $ids = ArrayHelper::getColumn($models, 'id');
+        $totalSale = (new Query())
+            ->select('SUM(orders.amount) as totalSale')
+            ->from('orders')
+//            ->join('INNER JOIN', 'product_sales', 'orders.id = product_sales.order_id')
+//            ->groupBy(["orders.id"])
+            ->where(['orders.id' => $ids])
+            ->scalar();
         return $totalSale;
     }
 
     public static function calculateOrdersBenefits($models)
     {
-        $totalSale = 0;
-        foreach ($models as $model) {
-            $totalSale += $model->benefit;
-        }
+        $ids = ArrayHelper::getColumn($models, 'id');
 
-        return $totalSale;
+        $totalBenefitWithoutDelivery = (new Query())
+            ->select([
+                'totalBenefit' => 'SUM((product_sales.sold_price - product_sales.partner_shop_price) * product_sales.count)',
+            ])
+            ->from('orders')
+            ->join('INNER JOIN', 'product_sales', 'orders.id = product_sales.order_id')
+            ->where(['orders.id' => $ids])
+            ->scalar();
+
+        $totalDelivery = (new Query())
+            ->select([
+                'totalBenefit' => 'SUM(orders.delivery_price)',
+            ])
+            ->from('orders')
+            ->where(['orders.id' => $ids])
+            ->scalar();
+
+        return $totalBenefitWithoutDelivery - $totalDelivery;
     }
 
 }
