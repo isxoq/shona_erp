@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1 class="text-center"><?= Html::encode($this->title) ?></h1>
+<h1 class="text-center"><?= Html::encode(Yii::$app->params['appName']) ?></h1>
 <br><br><br>
 <div class="row justify-content-center">
     <div class="col-md-12 text-center">
