@@ -9,7 +9,7 @@
 
 use yii\helpers\Html;
 
-$this->title = Yii::$app->name;
+$this->title = Yii::$app->params['appName'];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
