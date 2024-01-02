@@ -4,12 +4,15 @@ use soft\helpers\Html;
 use soft\widget\kartik\ActiveForm;
 use soft\widget\kartik\Form;
 use soft\widget\kartik\InputType;
+use \yii\web\JsExpression;
 
 /* @var $this soft\web\View */
 /* @var $model common\models\Orders */
 
 
 $client_change_event = <<<JS
+
+
 
 let client_id = $(this).val()
 
@@ -38,6 +41,87 @@ JS;
 $client_select_event = <<<JS
 JS;
 
+
+$clientformatJs = <<< 'JS'
+var clientformatRepo = function (repo) {
+    if (repo.loading) {
+        return repo.text;
+    }
+    var markup =
+        '<div style="margin-left:5px">' + repo.full_name + '</div>' + 
+        '<div style="margin-left:5px">' + repo.phone + '</div>'
+;
+    if (repo.description) {
+      markup += '<p>' + repo.description + '</p>';
+    }
+    return '<div style="overflow:hidden;">' + markup + '</div>';
+};
+var clientformatRepoSelection = function (repo) {
+    return repo.full_name;
+}
+JS;
+
+
+$productformatJs = <<< 'JS'
+var productformatRepo = function (repo) {
+    if (repo.loading) {
+        return repo.text;
+    }
+    var markup =        '<div style="margin-left:5px">' + repo.name + '</div>';
+    if (repo.description) {
+      markup += '<p>' + repo.description + '</p>';
+    }
+    return '<div style="overflow:hidden;">' + markup + '</div>';
+};
+var productformatRepoSelection = function (repo) {
+    return repo.name;
+}
+JS;
+
+
+// script to parse the results into the format expected by Select2
+$resultsJs = <<< JS
+function (data, params) {
+    params.page = params.page || 1;
+    return {
+        results: data.items,
+        pagination: {
+            more: (params.page * 30) < data.total_count
+        }
+    };
+}
+JS;
+// render your widget
+
+
+// Register the formatting script
+
+$clientFrontJS = <<<JS
+
+        $(document).ready(function() {
+            // Loop through each div with the class 'myDiv'
+            setTimeout(function() {
+              $("#select2-orders-client_id-container").text($("#orders-client_fullname").val())
+              
+              
+              $(".multiple-input-list__item").each(function() {
+                  
+                  $(this).find(".select2-selection__rendered").text($(this).find(".productName").val())
+                  
+              })
+              
+              
+              
+            },1000)
+        });
+JS;
+
+
+$this->registerJs($clientFrontJS, \soft\web\View::POS_END);
+$this->registerJs($clientformatJs, \soft\web\View::POS_HEAD);
+$this->registerJs($productformatJs, \soft\web\View::POS_HEAD);
+
+
 ?>
 
 
@@ -57,16 +141,45 @@ JS;
             'columns' => 4,
             'attributes' => [
                 'client_id:select2' => [
-                    'options' => [
+                    "options" => [
                         "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
-                        'data' => map(\common\models\Clients::find()->all(), 'id', 'full_name'),
                         "pluginEvents" => [
                             "change" => "function() { {$client_change_event} }",
                             "select2:unselect" => "function() { {$client_unselect_event} }",
                             "select2:select" => "function() { {$client_select_event} }"
-                        ]
-                    ],
+                        ],
+                        'initValueText' => "test",
+                        'options' => [
+                            'placeholder' => 'Qidiruv ...',
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'minimumInputLength' => 3,
+                            'ajax' => [
+                                'url' => "/admin/search/clients",
+                                'dataType' => 'json',
+                                'delay' => 250,
+                                'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
+                                'processResults' => new JsExpression($resultsJs),
+                                'cache' => true
+                            ],
+                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                            'templateResult' => new JsExpression('clientformatRepo'),
+                            'templateSelection' => new JsExpression('clientformatRepoSelection'),
+                        ],
+                    ]
                 ],
+//                'client_id:select2' => [
+//                    'options' => [
+//                        "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"]),
+//                        'data' => map(\common\models\Clients::find()->all(), 'id', 'full_name'),
+//                        "pluginEvents" => [
+//                            "change" => "function() { {$client_change_event} }",
+//                            "select2:unselect" => "function() { {$client_unselect_event} }",
+//                            "select2:select" => "function() { {$client_select_event} }"
+//                        ]
+//                    ],
+//                ],
                 'client_fullname' => [
                     "options" => [
                         "disabled" => !Yii::$app->user->identity->checkRoles(["Operator", "Diller"])
@@ -174,7 +287,7 @@ JS;
                     'options' => [
                         "iconSource" => \unclead\multipleinput\MultipleInput::ICONS_SOURCE_FONTAWESOME,
                         'max' => 10,
-                        'min' =>0,
+                        'min' => 0,
                         "iconMap" => [
                             'fa' => [
                                 'drag-handle' => 'fa fa-bars',
@@ -240,12 +353,36 @@ JS;
                                 'type' => \kartik\widgets\Select2::class,
                                 'title' => t("Mahsulot"),
                                 "options" => [
-                                    'data' => \soft\helpers\ArrayHelper::map(\common\models\Products::find()->all(), 'id', 'fullName'),
-                                    "options" => [
-                                        "width" => "30px",
-                                        "placeholder" => t("Tanlang...")
-                                    ]
-                                ]
+                                    'options' => [
+                                        'placeholder' => 'Qidiruv ...',
+                                    ],
+                                    'pluginOptions' => [
+
+                                        'allowClear' => true,
+                                        'minimumInputLength' => 3,
+                                        'ajax' => [
+                                            'url' => "/admin/search/products",
+                                            'dataType' => 'json',
+                                            'delay' => 250,
+                                            'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
+                                            'processResults' => new JsExpression($resultsJs),
+                                            'cache' => true
+                                        ],
+                                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                        'templateResult' => new JsExpression('productformatRepo'),
+                                        'templateSelection' => new JsExpression('productformatRepoSelection'),
+                                    ],
+                                ],
+                                'headerOptions' => ['style' => 'width:350px; white-space:normal;word-break: break-word;'],
+                            ],
+                            [
+                                "name" => "product_name",
+                                "value" => function ($model) {
+                                    return $model?->product?->name;
+                                },
+                                "options" => [
+                                    "class" => "productName d-none"
+                                ],
                             ],
                             [
                                 'name' => 'count',
@@ -257,6 +394,8 @@ JS;
                             ],
                             [
                                 'name' => 'product_source',
+                                'headerOptions' => ['style' => 'width:150px; white-space:normal;word-break: break-word;'],
+
                                 'type' => 'dropDownList',
                                 'title' => t("Ombor"),
                                 "options" => [
@@ -269,6 +408,8 @@ JS;
                                 "name" => "currency_partner_price",
                                 "title" => t("Hamkordan olingan narx $"),
 //                                "type" => \kartik\money\MaskMoney::class,
+                                'headerOptions' => ['style' => 'width:100px; white-space:normal;word-break: break-word;'],
+
                                 "options" => [
                                     "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
 //                                    'pluginOptions' => [
@@ -286,6 +427,8 @@ JS;
                                 "name" => "sold_price",
                                 "title" => t("Mijozga sotilgan narx UZS"),
 //                                "type" => \kartik\money\MaskMoney::class,
+                                'headerOptions' => ['style' => 'width:200px; white-space:normal;word-break: break-word;'],
+
                                 "options" => [
                                     "readonly" => !Yii::$app->user->identity->checkRoles(["Operator"]),
 //                                    'pluginOptions' => [
@@ -303,6 +446,7 @@ JS;
                                 "name" => "partner_shop_payed",
                                 "title" => "Hamkorga to'lov qilinganligi",
                                 "type" => \kartik\widgets\SwitchInput::class,
+
                                 "options" => [
                                     "readonly" => !Yii::$app->user->identity->checkRoles(["Ta'minotchi"]),
                                     'pluginOptions' => [
