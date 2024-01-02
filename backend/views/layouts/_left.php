@@ -11,7 +11,7 @@ $menuItems = [
         ['label' => "Buyurtmalar", 'url' => ['/orders'], 'icon' => 'clipboard-list',],
     ]],
     ['label' => "Ombor", 'icon' => 'download', "items" => [
-        ['label' => "Aspsiy Ombor", 'url' => ['/store'], 'icon' => 'store', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
+        ['label' => "Asosiy Ombor", 'url' => ['/store'], 'icon' => 'store', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Administrator", "Rahbar"])],
         ['label' => "Mahsulotlar", 'url' => ['/products'], 'icon' => 'list', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar", "Operator", "Diller"])],
         ['label' => "Hamkor do'konlar", 'url' => ['/partner-shops'], 'icon' => 'store-alt', "visible" => Yii::$app->user->identity->checkRoles(["admin", "Rahbar"])],
     ]],
