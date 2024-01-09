@@ -68,6 +68,7 @@ class Statistics
         $orders = Orders::find()
             ->andWhere(['>=', "created_at", $start])
             ->andWhere(['<=', "created_at", $end])
+            ->andWhere(['status' => Orders::STATUS_DELIVERED])
             ->all();
         foreach ($orders as $order) {
             foreach ($order->salesProducts as $salesProduct) {
