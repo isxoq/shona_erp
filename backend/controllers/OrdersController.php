@@ -552,4 +552,19 @@ class OrdersController extends SoftController
             return $this->ajaxCrud->createModal($model, $params, $viewParams);
         }
     }
+
+    public function actionFixValyuta()
+    {
+
+        $productSales = ProductSales::find()
+            ->andWhere(['IS', "partner_shop_price", new Expression("NULL")])
+            ->andWhere(['IS NOT', "currency_partner_price", new Expression("NULL")])
+            ->all();
+
+        foreach ($productSales as $productSale) {
+            $productSale->partner_shop_price = $productSale->currency_partner_price * $productSale->partnerShop->currency;
+            $productSale->save();
+        }
+        return "Fixed: " . count($productSales);
+    }
 }
